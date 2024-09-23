@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">User Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Supplier Management</h1>
       <Toolbar class="mb-6">
           <template #start>
             <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />

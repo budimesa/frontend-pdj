@@ -10,8 +10,7 @@ const model = ref([
     },
     {
         label: 'Users',
-        icon: 'pi pi-fw pi-briefcase',
-        to: '/pages',
+        // to: '/pages',
         items: [
             {
                 label: 'User Management',
@@ -21,13 +20,12 @@ const model = ref([
         ]
     },
     {
-        label: 'Master',
-        to: '/pages',
+        label: 'Supplier',
         items: [
             {
-                label: 'General Data',
-                icon: 'pi pi-fw pi-table',
-                to: '/pages/users'
+                label: 'Supplier Management',
+                icon: 'pi pi-fw pi-users',
+                to: '/pages/suppliers'
             },
         ]
     },
