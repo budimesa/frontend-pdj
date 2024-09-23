@@ -23,13 +23,14 @@ export const useSupplierStore = defineStore('supplier', {
                 created_at: new Date(supplier.created_at), // Mengonversi ke objek Date
                 updated_at: new Date(supplier.updated_at),
             }));
+            return this.suppliers;
         },
-        async createSupplier(name, email, password) {
-            await apiClient.post('/suppliers', { name, email, password });
+        async createSupplier({supplier_type, supplier_code, supplier_name, phone_number, address}) {
+            await apiClient.post('/suppliers', { supplier_type, supplier_code, supplier_name, phone_number, address });
             await this.fetchSuppliers(); // Refresh the supplier list
         },
-        async updateSupplier(id, name, email) {
-            await apiClient.put(`/suppliers/${id}`, { name, email });
+        async updateSupplier({id, supplier_type, supplier_code, supplier_name, phone_number, address}) {
+            await apiClient.put(`/suppliers/${id}`, { supplier_type, supplier_code, supplier_name, phone_number, address });
             await this.fetchSuppliers(); // Refresh the supplier list
         },
         async deleteSupplier(id) {

@@ -122,6 +122,11 @@ const router = createRouter({
                     component: () => import('@/views/pages/Suppliers.vue')
                 },
                 {
+                    path: '/pages/warehouses',
+                    name: 'warehouses',
+                    component: () => import('@/views/pages/Warehouses.vue')
+                },
+                {
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')
