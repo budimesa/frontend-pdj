@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
 const apiClient = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'http://backend-pdj.test/api/',
     headers: {
         'X-Requested-With': 'XMLHttpRequest',
         'Content-Type': 'application/json',

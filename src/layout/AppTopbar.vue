@@ -5,7 +5,7 @@
                 <i class="pi pi-bars"></i>
             </button>
             <router-link to="/" class="layout-topbar-logo">
-                <span>ERP PD Jaya</span>
+                <span>PD Jaya</span>
             </router-link>
         </div>
 

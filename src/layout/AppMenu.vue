@@ -10,7 +10,6 @@ const model = ref([
     },
     {
         label: 'Users',
-        // to: '/pages',
         items: [
             {
                 label: 'User Management',
@@ -20,7 +19,7 @@ const model = ref([
         ]
     },
     {
-        label: 'Supplier',
+        label: 'Suppliers',
         items: [
             {
                 label: 'Supplier Management',
@@ -30,12 +29,22 @@ const model = ref([
         ]
     },
     {
-        label: 'Warehouse',
+        label: 'Warehouses',
         items: [
             {
                 label: 'Warehouse Management',
                 icon: 'pi pi-fw pi-building',
                 to: '/pages/warehouses'
+            },
+        ]
+    },
+    {
+        label: 'Items',
+        items: [
+            {
+                label: 'Item Management',
+                icon: 'pi pi-fw pi-box',
+                to: '/pages/items'
             },
         ]
     }

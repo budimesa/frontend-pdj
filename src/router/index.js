@@ -127,6 +127,11 @@ const router = createRouter({
                     component: () => import('@/views/pages/Warehouses.vue')
                 },
                 {
+                    path: '/pages/items',
+                    name: 'items',
+                    component: () => import('@/views/pages/Items.vue')
+                },
+                {
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')
