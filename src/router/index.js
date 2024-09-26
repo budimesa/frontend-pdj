@@ -132,6 +132,22 @@ const router = createRouter({
                     component: () => import('@/views/pages/Items.vue')
                 },
                 {
+                    path: '/pages/incoming-items',
+                    name: 'incoming-items.index',
+                    component: () => import('@/views/pages/IncomingItems.vue'),
+                },
+                {
+                    path: 'pages/incoming-items/create',
+                    name: 'incoming-items.create',
+                    component: () => import('@/views/pages/IncomingItemCreate.vue'),
+                },
+                // {
+                //     path: 'pages/incoming-items/edit/:id',
+                //     name: 'incoming-items.edit',
+                //     component: () => import('@/views/pages/IncomingItemsEdit.vue'),
+                //     props: true // Pass route params as props to the component
+                // },
+                {
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')

@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config';
 import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import { createApp } from 'vue';
+import 'vue-multiselect/dist/vue-multiselect.css';
 import App from './App.vue';
 import router from './router';
 
