@@ -47,7 +47,7 @@ const model = ref([
                 to: '/pages/items'
             },
             {
-                label: 'Item Incoming',
+                label: 'Incoming Items',
                 icon: 'pi pi-fw pi-box',
                 to: '/pages/incoming-items'
             },

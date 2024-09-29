@@ -14,6 +14,8 @@ const apiClient = axios.create({
 export const useBatchStore = defineStore('batch', {
     state: () => ({
         batches: [],
+        regularBatch: [],
+        nonRegularBatch: [],
     }),
     actions: {
         async fetchBatches() {
@@ -24,17 +26,31 @@ export const useBatchStore = defineStore('batch', {
                 updated_at: new Date(batch.updated_at),
             }));
         },
-        async createBatch(name, email, password) {
-            await apiClient.post('/batches', { name, email, password });
-            await this.fetchBatches(); // Refresh the batch list
+
+        async createBatch({ batch_code, supplier_id, batch_code_type }) {
+            try {
+                await apiClient.post('/batches', { batch_code, supplier_id, batch_code_type });
+            } catch (error) {
+                console.error('Error creating batch:', error);
+            }
         },
-        async updateBatch(id, name, email) {
-            await apiClient.put(`/batches/${id}`, { name, email });
-            await this.fetchBatches(); // Refresh the batch list
+
+        async fetchRegularBatch(supplierId) {
+            try {
+                const response = await apiClient.get(`/batches/regular/${supplierId}`);
+                this.regularBatch = response.data.map(batch => ({
+                    ...batch,
+                    created_at: new Date(batch.created_at),
+                    updated_at: new Date(batch.updated_at),
+                }));
+            } catch (error) {
+                console.error('Error fetching regular batches:', error);
+            }
         },
-        async deleteBatch(id) {
-            await apiClient.delete(`/batches/${id}`);
-            await this.fetchBatches(); // Refresh the batch list
+
+        async fetchNonRegularBatch() {
+            const response = await apiClient.get('/batches-non-regular');
+            this.nonRegularBatch = response.data
         },
     },
 });
