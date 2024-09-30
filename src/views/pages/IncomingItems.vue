@@ -42,12 +42,12 @@
           </template>
         </Column>
   
-        <Column field="item_description" header="Description" style="min-width: 12rem">
+        <Column field="notes" header="Notes" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.item_description }}
+            {{ data.notes }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by item_description" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by notes" />
           </template>
         </Column>
   
@@ -92,8 +92,8 @@
           <small v-if="submitted && !formData.item_name" class="text-red-500">Item Name is required.</small>
         </div>
         <div>
-          <label for="item_description" class="block font-bold mb-3">Description</label>
-          <InputText id="item_description" v-model="formData.item_description" fluid />
+          <label for="notes" class="block font-bold mb-3">Description</label>
+          <InputText id="notes" v-model="formData.notes" fluid />
         </div>
       </div>
   
@@ -132,7 +132,7 @@ const isSaving = ref(false);
 const isDeleting = ref(false);
 const itemStore = useItemStore();
 
-const formData = ref({ item_code: '', item_name: '',  item_description: '' });
+const formData = ref({ item_code: '', item_name: '',  notes: '' });
 const fetchItems = async () => {
     await itemStore.fetchItems();
 };
@@ -146,7 +146,7 @@ const initFilters = () => {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         item_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         item_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        item_description: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        notes: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
     };
 };
@@ -164,7 +164,7 @@ const clearFilter = () => {
 };
 
 const resetForm = () => {
-    formData.value = { item_code: '', item_name: '', item_description: '' };
+    formData.value = { item_code: '', item_name: '', notes: '' };
     submitted.value = false;
     isEditMode.value = false;
 };

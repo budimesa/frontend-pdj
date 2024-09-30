@@ -25,12 +25,12 @@ export const useItemStore = defineStore('item', {
             }));
             return this.items;
         },
-        async createItem({item_code, item_name, item_description}) {
-            await apiClient.post('/items', { item_code, item_name, item_description});
+        async createItem({item_code, item_name, notes, sale_unit}) {
+            await apiClient.post('/items', { item_code, item_name, notes, sale_unit});
             await this.fetchItems(); // Refresh the item list
         },
-        async updateItem({id, item_code, item_name, item_description}) {
-            await apiClient.put(`/items/${id}`, { item_code, item_name, item_description});
+        async updateItem({id, item_code, item_name, notes, sale_unit}) {
+            await apiClient.put(`/items/${id}`, { item_code, item_name, notes, sale_unit});
             await this.fetchItems(); // Refresh the item list
         },
         async deleteItem(id) {

@@ -39,14 +39,15 @@
           <Column  v-for="col in columns" :key="col.field" :field="col.field" :header="col.header"
                 :class="[{ 'hidden': col.field === 'item_id' }]">
               <template #body="{ data, field }">
-                  <span v-if="field !== 'code'">{{ field === 'total_price' ? formatIDR(data[field]) : data[field] }}</span>
+                  <!-- <span v-if="field !== 'code'">{{ field === 'total_price' ? formatIDR(data[field]) : data[field] }}</span> -->
+                  <span v-if="field !== 'code'">{{  data[field] }}</span>
                   <input v-if="field === 'code'" type="hidden" v-model="data[field]" />
               </template>
               <template #editor="{ data, field }">
                   <template v-if="field === 'item_id'">
                       <input type="hidden" v-model="data[field]" />
                   </template>
-                  <template v-else-if="field === 'quantity'">
+                  <template v-else-if="field === 'actual_stock'">
                       <InputNumber 
                           v-model="data[field]" 
                           inputId="horizontal-buttons" 
@@ -71,9 +72,7 @@
                         :formatter="formatIDR" autofocus fluid />
                   </template>
                   <template v-else-if="field === 'total_price'">
-                      <InputNumber v-model="data[field]" mode="currency" currency="IDR"
-                        locale="id-ID"
-                        :formatter="formatIDR" autofocus fluid />
+                    <span>{{ data[field] }}</span>
                   </template>
                   <template v-else-if="field === 'labor_cost'">
                       <InputNumber v-model="data[field]" mode="currency" currency="IDR"
@@ -92,6 +91,36 @@
           </Column>
         </DataTable>
 
+      </div>
+      <div class="col-span-1 md:col-span-12">
+        <table class="table border">
+            <tr>
+                <td>
+                    Other Fee :
+                </td>                
+                <td>
+                    123.000
+                </td>
+                
+            </tr>
+            <tr>
+                <td>
+                    Shipping :
+                </td>
+                
+                <td>
+                    123.000
+                </td>                
+            </tr>
+            <tr>
+                <td>
+                    Grand Total :
+                </td>
+                <td>
+                    123.000
+                </td>                                
+            </tr>
+        </table>
       </div>
 
       <!-- Uncomment these sections as needed -->
@@ -141,7 +170,7 @@ const formatIDR = (value) => {
 const getColumnClasses = (field) => {
   const classes = {
     item_id: 'hidden',
-    // quantity: 'w-1/6', // 16.67%
+    // actual_stock: 'w-1/6', // 16.67%
     // name: 'w-1/3',     // 33.33%
     // unit_price: 'w-1/6',
     // total_price: 'w-1/6',
@@ -186,8 +215,6 @@ const addProduct = () => {
             item_id : selectedProduct.value.id,
             name: selectedProduct.value.concat_code_name,
             code: selectedProduct.value.code,
-            quantity: 20, // Default value if needed
-            unit_price: 10, // Default price if needed
         };
         products.value.push(newProduct);
         selectedProduct.value = null; // Reset after adding
@@ -204,11 +231,12 @@ const products = ref([
     { 
         item_id: 'I001', 
         // batch_id: 'KPK24I0001', 
-        name: 'Item A', 
+        name: 'Item A',
+        description: 'Ikan Asin Wangi SPR', 
         gross_weight: 15.5, 
         net_weight: 14.0, 
         unit_price: 50.00, 
-        quantity: 20, 
+        actual_stock: 20, 
         total_price: 1000.00, 
         labor_cost: 100.00, 
         notes: 'First batch of Item A' 
@@ -219,12 +247,13 @@ const columns = ref([
     { field: 'item_id', header: 'Item ID' },
     // { field: 'batch_id', header: 'Batch ID' },
     { field: 'name', header: 'Item' },
+    { field: 'description', header: 'Description' },
     { field: 'gross_weight', header: 'Bruto' },
     { field: 'net_weight', header: 'Neto' },
-    { field: 'unit_price', header: 'Unit Price' },
-    { field: 'quantity', header: 'Quantity' },
-    { field: 'total_price', header: 'Total Price' },
     { field: 'labor_cost', header: 'Labor Cost' },
+    { field: 'actual_stock', header: 'Quantity' },
+    { field: 'unit_price', header: 'Unit Price' },
+    { field: 'total_price', header: 'Total Price' },
     { field: 'notes', header: 'Notes' },
 ]);
 
@@ -232,8 +261,20 @@ const onCellEditComplete = (event) => {
     let { data, newValue, field } = event;
 
     switch (field) {
-        case 'quantity':
+        case 'actual_stock':
         case 'unit_price':
+            if (isPositiveInteger(newValue) || field === 'unit_price') {
+                data[field] = newValue;
+
+                // Hitung total_price otomatis
+                const unitPrice = parseFloat(data.unit_price) || 0;
+                const actualStock = parseFloat(data.actual_stock) || 0;
+                data.total_price = (unitPrice * actualStock).toFixed(2); // Menyimpan total_price sebagai string dengan 2 desimal
+            } else {
+                event.preventDefault();
+            }
+            break;
+
         case 'total_price':
         case 'labor_cost':
             if (isPositiveInteger(newValue)) {
@@ -252,6 +293,7 @@ const onCellEditComplete = (event) => {
             break;
     }
 };
+
 
 const isPositiveInteger = (val) => {
     let str = String(val).trim();
@@ -284,14 +326,14 @@ onMounted(() => {
     fetchItems();
 });
 
-const formData = ref({ item_code: '', item_name: '',  item_description: '' });
+const formData = ref({ item_code: '', item_name: '',  notes: '' });
 
 const initFilters = () => {
     filters.value = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
         item_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         item_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        item_description: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        notes: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
     };
 };
@@ -308,16 +350,6 @@ const fetchSuppliers = async () => {
 
 fetchSuppliers();
 
-// await fetchSuppliers();
-//   if (item.value.supplier_id === '' || item.value.supplier_id === null) {
-//     selectedSupplier.value = { label: '', id: '' };
-//   } else {
-//     const selectedOption = supplierOptions.value.find(option => option.id === item.value.supplier_id);
-//     if (selectedOption) {
-//       selectedSupplier.value = selectedOption;
-//     }
-//   }
-
 const formatDate = (date) => {
     if (!date) return '-';
     const d = new Date(date);
@@ -329,7 +361,7 @@ const clearFilter = () => {
 };
 
 const resetForm = () => {
-    formData.value = { item_code: '', item_name: '', item_description: '' };
+    formData.value = { item_code: '', item_name: '', notes: '' };
     submitted.value = false;
     isEditMode.value = false;
 };
@@ -353,29 +385,6 @@ const hideDialog = () => {
 
 const save = async () => {
   submitted.value = true;
-  
-  // Check for required fields
-//   if (!formData.value.item_name || !formData.value.item_code) {
-//     toast.add({ severity: 'error', summary: 'Error', detail: 'Please fill in all required fields.', life: 3000 });
-//     return;
-//   }
-//   isSaving.value = true; 
-//   try {
-//       if (isEditMode.value) {
-//         await itemStore.updateItem(formData.value);
-//         toast.add({ severity: 'success', summary: 'Success', detail: 'Item updated successfully', life: 3000 });
-//       } else {
-//         console.log(formData.value)
-//         await itemStore.createItem(formData.value);
-//         toast.add({ severity: 'success', summary: 'Success', detail: 'Item created successfully', life: 3000 });
-//       }
-//       fetchItems();
-//       hideDialog();
-//     } catch (error) {
-//       toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save item', life: 3000 });
-//     } finally {
-//       isSaving.value = false; // Set to false after the process is complete
-//     }
 };
 
 
@@ -385,17 +394,6 @@ const confirmDelete = (item) => {
 };
 
 const deleteItem = async (id) => {
-//    isDeleting.value = true; // Set loading state before deletion
-//     try {
-//         await itemStore.deleteItem(id);
-//         toast.add({ severity: 'success', summary: 'Successful', detail: 'Item Deleted', life: 3000 });
-//         fetchItems();
-//     } catch (error) {
-//         toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete item', life: 3000 });
-//     } finally {
-//         deleteDialog.value = false;
-//         isDeleting.value = false; // Reset loading state after the process
-//     }
 };
 
 const exportCSV = () => {
