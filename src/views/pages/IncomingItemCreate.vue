@@ -93,40 +93,41 @@
 
       </div>
       <div class="col-span-1 md:col-span-12">
-        <table class="table border">
-            <tr>
-                <td>
-                    Other Fee :
-                </td>                
-                <td>
-                    123.000
-                </td>
-                
-            </tr>
-            <tr>
-                <td>
-                    Shipping :
-                </td>
-                
-                <td>
-                    123.000
-                </td>                
-            </tr>
-            <tr>
-                <td>
-                    Grand Total :
-                </td>
-                <td>
-                    123.000
-                </td>                                
-            </tr>
-        </table>
+        <div class="flex justify-end">
+            <table class="border border-gray-300 w-1/4">
+                <thead>
+                    <tr class="bg-gray-100 dark:bg-gray-700">
+                        <th class="py-2 px-4 text-left">Description</th>
+                        <th class="py-2 px-4 text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-2 px-4">Labor Cost:</td>
+                        <td class="py-2 px-4 text-right">{{ formatIDR(totalLaborCost) }}</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-2 px-4">Other Fee:</td>
+                        <td class="py-2 px-4 text-right">{{ formatIDR(other_fee) }}</td>
+                    </tr>
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-2 px-4">Shipping:</td>
+                        <td class="py-2 px-4 text-right">{{ formatIDR(shipping_cost) }}</td>
+                    </tr>
+                    <tr class="font-bold">
+                        <td class="py-2 px-4">Grand Total:</td>
+                        <td class="py-2 px-4 text-right">{{ formatIDR(calculateGrandTotal) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
       </div>
 
       <!-- Uncomment these sections as needed -->
       <div class="col-span-1 md:col-span-4">
-          <label for="shipment_cost" class="block font-bold mb-3">Shipping Cost</label>
-          <InputNumber id="shipment_cost" v-model="shipment_cost" mode="currency" currency="IDR"
+          <label for="shipping_cost" class="block font-bold mb-3">Shipping Cost</label>
+          <InputNumber id="shipping_cost" v-model="shipping_cost" mode="currency" currency="IDR"
             locale="id-ID"
             :formatter="formatIDR" fluid />
       </div>
@@ -140,7 +141,12 @@
           <label for="notes" class="block font-bold mb-3">Notes</label>
           <InputText type="text" v-model="notes" fluid/>
       </div>
+      <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
+        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
+    </div>
   </div>
+  
 </template>
 
 
@@ -155,8 +161,8 @@ import { computed, onMounted, ref } from 'vue';
 const options = ref([]);
 const shipment_date = ref();
 const received_date = ref();
-const shipment_cost = ref();
-const other_fee = ref();
+const shipping_cost = ref(0);
+const other_fee = ref(0);
 const notes = ref();
 
 const formatIDR = (value) => {
@@ -209,6 +215,24 @@ const search = (event) => {
     filteredProducts.value = items.value.filter(item => item.item_name.toLowerCase().includes(query));
 };
 
+// Computed property untuk total labor_cost
+const totalLaborCost = computed(() => {
+  return products.value.reduce((total, product) => {
+    return total + (parseFloat(product.labor_cost * product.actual_stock) || 0);
+  }, 0);
+});
+
+const totalItemPrice = computed(() => {
+  return products.value.reduce((total, product) => {
+    return total + (parseFloat(product.total_price) || 0);
+  }, 0);
+});
+
+// Computed property untuk menghitung grand total
+const calculateGrandTotal = computed(() => {
+  return totalItemPrice.value + totalLaborCost.value + (parseFloat(other_fee.value) || 0) + (parseFloat(shipping_cost.value) || 0);
+});
+
 const addProduct = () => {
     if (selectedProduct.value) {
         const newProduct = {
@@ -231,15 +255,15 @@ const products = ref([
     { 
         item_id: 'I001', 
         // batch_id: 'KPK24I0001', 
-        name: 'Item A',
-        description: 'Ikan Asin Wangi SPR', 
+        name: 'TN-Teri Nasi',
+        description: 'Ikan Teri Nasi SPR', 
         gross_weight: 15.5, 
         net_weight: 14.0, 
         unit_price: 50.00, 
         actual_stock: 20, 
         total_price: 1000.00, 
-        labor_cost: 100.00, 
-        notes: 'First batch of Item A' 
+        labor_cost: 500.00, 
+        notes: 'First batch' 
     }
 ]);
 
@@ -269,7 +293,7 @@ const onCellEditComplete = (event) => {
                 // Hitung total_price otomatis
                 const unitPrice = parseFloat(data.unit_price) || 0;
                 const actualStock = parseFloat(data.actual_stock) || 0;
-                data.total_price = (unitPrice * actualStock).toFixed(2); // Menyimpan total_price sebagai string dengan 2 desimal
+                data.total_price = (unitPrice * actualStock); // Menyimpan total_price sebagai string dengan 2 desimal
             } else {
                 event.preventDefault();
             }

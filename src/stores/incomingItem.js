@@ -25,12 +25,12 @@ export const useIncomingItemStore = defineStore('incomingItem', {
             }));
             return this.incomingItems;
         },
-        async createIncomingItem({incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date}) {
-            await apiClient.post('/incoming-items', { incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date});
+        async createIncomingItem({incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date, total_item_price, shipping_cost, labor_cost, other_fee, total_cost, notes, invoice_files}) {
+            await apiClient.post('/incoming-items', { incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date, total_item_price, shipping_cost, labor_cost, other_fee, total_cost, notes, invoice_files});
             await this.fetchIncomingItems(); // Refresh the item list
         },
-        async updateIncomingItem({id, incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date}) {
-            await apiClient.put(`/incoming-items/${id}`, { incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date});
+        async updateIncomingItem({id, incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date, total_item_price, shipping_cost, labor_cost, other_fee, total_cost, notes, invoice_files}) {
+            await apiClient.put(`/incoming-items/${id}`, { incoming_item_code, supplier_id, warehouse_id, shipment_date, received_date, total_item_price, shipping_cost, labor_cost, other_fee, total_cost, notes, invoice_files});
             await this.fetchIncomingItems(); // Refresh the item list
         },
         async deleteIncomingItem(id) {
