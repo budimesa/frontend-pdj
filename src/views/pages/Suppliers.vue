@@ -255,8 +255,7 @@ const save = async () => {
       if (isEditMode.value) {
         await supplierStore.updateSupplier(formData.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier updated successfully', life: 3000 });
-      } else {
-        console.log(formData.value)
+      } else {        
         await supplierStore.createSupplier(formData.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
       }

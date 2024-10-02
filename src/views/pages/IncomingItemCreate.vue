@@ -255,13 +255,13 @@ const products = ref([
     { 
         item_id: 'I001', 
         // batch_id: 'KPK24I0001', 
-        name: 'TN-Teri Nasi',
+        name: 'TN - Teri Nasi',
         description: 'Ikan Teri Nasi SPR', 
         gross_weight: 15.5, 
         net_weight: 14.0, 
-        unit_price: 50.00, 
+        unit_price: 5000.00, 
         actual_stock: 20, 
-        total_price: 1000.00, 
+        total_price: 100000.00, 
         labor_cost: 500.00, 
         notes: 'First batch' 
     }
@@ -318,7 +318,6 @@ const onCellEditComplete = (event) => {
     }
 };
 
-
 const isPositiveInteger = (val) => {
     let str = String(val).trim();
     if (!str) return false;
@@ -336,7 +335,7 @@ const fetchItems = async () => {
     items.value = fetchedItems; // Mengupdate items dengan data yang diambil
     items.value = fetchedItems.map(item => ({
         ...item,
-        concat_code_name: `${item.item_code}-${item.item_name}`
+        concat_code_name: `${item.item_code} - ${item.item_name}`
     }));
     filteredProducts.value = [...items.value];
 };
@@ -409,6 +408,23 @@ const hideDialog = () => {
 
 const save = async () => {
   submitted.value = true;
+
+  isSaving.value = true; 
+  try {
+      if (isEditMode.value) {
+        await supplierStore.updateSupplier(formData.value);
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier updated successfully', life: 3000 });
+      } else {        
+        await supplierStore.createSupplier(formData.value);
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
+      }
+      fetchSuppliers();
+      hideDialog();
+    } catch (error) {
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save supplier', life: 3000 });
+    } finally {
+      isSaving.value = false; // Set to false after the process is complete
+    }
 };
 
 
