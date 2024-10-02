@@ -1,17 +1,21 @@
 <template>
   <div class="card grid grid-cols-1 md:grid-cols-12 gap-6">
-      <div class="col-span-1 md:col-span-4">
+      <div class="col-span-1 md:col-span-3">
+          <label for="shipment_date" class="block font-bold mb-3">Incoming Item Code</label>            
+          <InputText type="text" v-model="incomingItemStore.newItemCode" fluid disabled/>
+      </div>
+      <div class="col-span-1 md:col-span-3">
           <label for="shipment_date" class="block font-bold mb-3">Shipment Date</label>            
-          <DatePicker v-model="shipment_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
+          <DatePicker v-model="formData.shipment_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
       </div>
-      <div class="col-span-1 md:col-span-4">
+      <div class="col-span-1 md:col-span-3">
           <label for="received_date" class="block font-bold mb-3">Received Date</label>
-          <DatePicker v-model="received_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
+          <DatePicker v-model="formData.received_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
       </div>
-      <div class="col-span-1 md:col-span-4">
+      <div class="col-span-1 md:col-span-3">
           <label for="supplier" class="block font-bold mb-3">Supplier</label>            
           <Dropdown 
-            v-model="selectedOption" 
+            v-model="formData.supplier_id" 
             :options="supplierOptions" 
             optionLabel="label" 
             :placeholder="selectedOption ? selectedOption.label : 'Select supplier'"
@@ -116,7 +120,7 @@
                     </tr>
                     <tr class="font-bold">
                         <td class="py-2 px-4">Grand Total:</td>
-                        <td class="py-2 px-4 text-right">{{ formatIDR(calculateGrandTotal) }}</td>
+                        <td class="py-2 px-4 text-right">{{ formatIDR(grandTotal) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -152,11 +156,13 @@
 
 <script setup>
 import { useBatchStore } from '@/stores/batch';
+import { useIncomingItemStore } from '@/stores/incomingItem';
 import { useItemStore } from '@/stores/item';
 import { useSupplierStore } from '@/stores/supplier';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const options = ref([]);
 const shipment_date = ref();
@@ -194,6 +200,7 @@ const placeholder = computed(() => {
 
 const toast = useToast();
 const dt = ref();
+const router = useRouter();
 const formDialog = ref(false);
 const deleteDialog = ref(false);
 const filters = ref({});
@@ -202,6 +209,7 @@ const isEditMode = ref(false);
 const isSaving = ref(false);
 const isDeleting = ref(false);
 const supplierStore = useSupplierStore();
+const incomingItemStore = useIncomingItemStore();
 const selectedSupplier = ref({label: '', code: ''});
 const supplierOptions = ref([]);
 const itemStore = useItemStore();
@@ -209,11 +217,6 @@ const batchStore = useBatchStore();
 const items = ref();
 const selectedProduct = ref(null);
 const filteredProducts = ref([]);
-
-const search = (event) => {
-    const query = event.target.value.toLowerCase();
-    filteredProducts.value = items.value.filter(item => item.item_name.toLowerCase().includes(query));
-};
 
 // Computed property untuk total labor_cost
 const totalLaborCost = computed(() => {
@@ -229,8 +232,23 @@ const totalItemPrice = computed(() => {
 });
 
 // Computed property untuk menghitung grand total
-const calculateGrandTotal = computed(() => {
+const grandTotal = computed(() => {
   return totalItemPrice.value + totalLaborCost.value + (parseFloat(other_fee.value) || 0) + (parseFloat(shipping_cost.value) || 0);
+});
+
+const formData = ref({ 
+  incoming_item_code: incomingItemStore.newItemCode,
+  supplier_id: '',  
+  warehouse_id: '' ,
+  shipment_date: '',
+  received_date: '',
+  total_item_price: totalItemPrice,
+  shipping_cost: shipping_cost,
+  labor_cost: totalLaborCost,
+  other_fee: other_fee,
+  total_cost: grandTotal,
+  notes: '',
+
 });
 
 const addProduct = () => {
@@ -344,12 +362,15 @@ const fetchNonRegularBatch = async () => {
     await batchStore.fetchNonRegularBatch();
 }
 
+const generateNewIncomingItemCode = async () => {
+    await incomingItemStore.generateNewIncomingItemCode();
+}
+
 onMounted(() => {
+    generateNewIncomingItemCode();
     fetchNonRegularBatch();
     fetchItems();
 });
-
-const formData = ref({ item_code: '', item_name: '',  notes: '' });
 
 const initFilters = () => {
     filters.value = {
@@ -412,16 +433,16 @@ const save = async () => {
   isSaving.value = true; 
   try {
       if (isEditMode.value) {
-        await supplierStore.updateSupplier(formData.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier updated successfully', life: 3000 });
+        // await incomingItemStore.updateIncomingItem(formData.value);
+        // toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier updated successfully', life: 3000 });
       } else {        
-        await supplierStore.createSupplier(formData.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
-      }
-      fetchSuppliers();
-      hideDialog();
+        // await incomingItemStore.createIncomingItem(formData.value);
+        // toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
+        console.log(formData.value)
+      }      
+      // router.push('/pages/incoming-items');
     } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save supplier', life: 3000 });
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save incoming items', life: 3000 });
     } finally {
       isSaving.value = false; // Set to false after the process is complete
     }

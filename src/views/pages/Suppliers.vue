@@ -224,7 +224,7 @@ const openNew = () => {
     formDialog.value = true;
     resetForm();
 };
-
+  
 const edit = (supplierData) => {
   formData.value = { ...supplierData };
   submitted.value = false;
@@ -255,7 +255,8 @@ const save = async () => {
       if (isEditMode.value) {
         await supplierStore.updateSupplier(formData.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier updated successfully', life: 3000 });
-      } else {        
+      } else {
+        console.log(formData.value)
         await supplierStore.createSupplier(formData.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
       }
