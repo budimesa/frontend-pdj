@@ -99,7 +99,7 @@
       </div>
       <div class="col-span-1 md:col-span-12">
         <div class="flex justify-end">
-            <table class="border border-gray-300 w-1/4">
+            <table class="border border-gray-300 w-1/3">
                 <thead>
                     <tr class="bg-gray-100 dark:bg-gray-700">
                         <th class="py-2 px-4 text-left">Description</th>
@@ -425,6 +425,9 @@ const save = async () => {
         formData.value.labor_cost = totalLaborCost.value;
         formData.value.total_item_price = totalItemPrice.value;
         formData.value.total_cost = grandTotal.value;
+
+        console.log(formData.value);
+        console.log(products.value);
 
         await incomingItemStore.createIncomingItem({
           ...formData.value,
