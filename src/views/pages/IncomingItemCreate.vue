@@ -270,21 +270,7 @@ const deleteRow = (data) => {
   products.value = products.value.filter(product => product !== data);
 };
 
-const products = ref([
-    { 
-        item_id: 'I001', 
-        // batch_id: 'KPK24I0001', 
-        name: 'TN - Teri Nasi',
-        description: 'Ikan Teri Nasi SPR', 
-        gross_weight: 15.5, 
-        net_weight: 14.0, 
-        unit_price: 5000.00, 
-        actual_stock: 20, 
-        total_price: 100000.00, 
-        labor_cost: 500.00, 
-        notes: 'First batch' 
-    }
-]);
+const products = ref([]);
 
 const columns = ref([
     { field: 'item_id', header: 'Item ID' },
@@ -434,16 +420,18 @@ const save = async () => {
       if (isEditMode.value) {
         // await incomingItemStore.updateIncomingItem(formData.value);
         // toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier updated successfully', life: 3000 });
-      } else {        
-        // await incomingItemStore.createIncomingItem(formData.value);
-        // toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
-
-
+      } else {
         formData.value.incoming_item_code = incomingItemStore.newItemIncomingCode;
         formData.value.labor_cost = totalLaborCost.value;
         formData.value.total_item_price = totalItemPrice.value;
         formData.value.total_cost = grandTotal.value;
-        console.log(formData.value)
+
+        await incomingItemStore.createIncomingItem({
+          ...formData.value,
+          details: products.value
+        });
+        // await incomingItemStore.createIncomingItem(formData.value);
+        // toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
       }      
       // router.push('/pages/incoming-items');
     } catch (error) {
