@@ -159,7 +159,7 @@ const saleUnits = [
   { label: 'Plastik', value: 'Plastik' },
 ];
 
-const formData = ref({ sale_unit: 'Dus', item_code: '', item_name: '',  notes: '', sale_unit: '' });
+const formData = ref({ item_code: '', item_name: '',  notes: '', sale_unit: '' });
 const fetchItems = async () => {
     await itemStore.fetchItems();
 };

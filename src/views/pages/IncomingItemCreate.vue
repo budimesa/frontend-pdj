@@ -1,8 +1,8 @@
 <template>
   <div class="card grid grid-cols-1 md:grid-cols-12 gap-6">
       <div class="col-span-1 md:col-span-3">
-          <label for="shipment_date" class="block font-bold mb-3">Incoming Item Code</label>            
-          <InputText type="text" v-model="incomingItemStore.newItemCode" fluid disabled/>
+          <label for="incoming_item_code" class="block font-bold mb-3">Incoming Item Code</label>            
+          <InputText type="text" v-model="incomingItemStore.newItemIncomingCode" fluid disabled/>
       </div>
       <div class="col-span-1 md:col-span-3">
           <label for="shipment_date" class="block font-bold mb-3">Shipment Date</label>            
@@ -18,6 +18,7 @@
             v-model="formData.supplier_id" 
             :options="supplierOptions" 
             optionLabel="label" 
+            optionValue="value"
             :placeholder="selectedOption ? selectedOption.label : 'Select supplier'"
             filter 
             showClear 
@@ -131,19 +132,19 @@
       <!-- Uncomment these sections as needed -->
       <div class="col-span-1 md:col-span-4">
           <label for="shipping_cost" class="block font-bold mb-3">Shipping Cost</label>
-          <InputNumber id="shipping_cost" v-model="shipping_cost" mode="currency" currency="IDR"
+          <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR"
             locale="id-ID"
             :formatter="formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">
           <label for="other_fee" class="block font-bold mb-3">Other Fee</label>
-          <InputNumber id="other_fee" v-model="other_fee" mode="currency" currency="IDR"
+          <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR"
             locale="id-ID"
             :formatter="formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">
           <label for="notes" class="block font-bold mb-3">Notes</label>
-          <InputText type="text" v-model="notes" fluid/>
+          <InputText type="text" v-model="formData.notes" fluid/>
       </div>
       <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
         <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
@@ -237,16 +238,16 @@ const grandTotal = computed(() => {
 });
 
 const formData = ref({ 
-  incoming_item_code: incomingItemStore.newItemCode,
+  incoming_item_code: incomingItemStore.newItemIncomingCode,
   supplier_id: '',  
   warehouse_id: '' ,
   shipment_date: '',
   received_date: '',
-  total_item_price: totalItemPrice,
-  shipping_cost: shipping_cost,
-  labor_cost: totalLaborCost,
-  other_fee: other_fee,
-  total_cost: grandTotal,
+  total_item_price: '',
+  shipping_cost: '',
+  labor_cost: '',
+  other_fee: '',
+  total_cost: '',
   notes: '',
 
 });
@@ -370,6 +371,7 @@ onMounted(() => {
     generateNewIncomingItemCode();
     fetchNonRegularBatch();
     fetchItems();
+    fetchSuppliers();
 });
 
 const initFilters = () => {
@@ -391,9 +393,6 @@ const fetchSuppliers = async () => {
       value: supplier.id
     }));
 }
-
-fetchSuppliers();
-
 const formatDate = (date) => {
     if (!date) return '-';
     const d = new Date(date);
@@ -438,6 +437,12 @@ const save = async () => {
       } else {        
         // await incomingItemStore.createIncomingItem(formData.value);
         // toast.add({ severity: 'success', summary: 'Success', detail: 'Supplier created successfully', life: 3000 });
+
+
+        formData.value.incoming_item_code = incomingItemStore.newItemIncomingCode;
+        formData.value.labor_cost = totalLaborCost.value;
+        formData.value.total_item_price = totalItemPrice.value;
+        formData.value.total_cost = grandTotal.value;
         console.log(formData.value)
       }      
       // router.push('/pages/incoming-items');
