@@ -183,11 +183,6 @@ const formatIDR = (value) => {
 const getColumnClasses = (field) => {
   const classes = {
     item_id: 'hidden',
-    // actual_stock: 'w-1/6', // 16.67%
-    // name: 'w-1/3',     // 33.33%
-    // unit_price: 'w-1/6',
-    // total_price: 'w-1/6',
-    // labor_cost: 'w-1/6'
   };
   return classes[field] || 'w-auto'; // Default ke 'auto' jika field tidak ditemukan
 };
