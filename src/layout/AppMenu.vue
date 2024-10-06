@@ -51,11 +51,11 @@ const model = ref([
                 icon: 'pi pi-fw pi-inbox',
                 to: '/pages/incoming-items'
             },
-            // {
-            //     label: 'Inventory',
-            //     icon: 'pi pi-fw pi-database',
-            //     to: '/pages/incoming-items'
-            // },
+            {
+                label: 'Inventory',
+                icon: 'pi pi-fw pi-database',
+                to: '/pages/inventories'
+            },
         ]
     },
     

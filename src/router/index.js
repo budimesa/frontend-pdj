@@ -148,6 +148,11 @@ const router = createRouter({
                     props: true // Pass route params as props to the component
                 },
                 {
+                    path: '/pages/inventories',
+                    name: 'inventories.index',
+                    component: () => import('@/views/pages/master/inventories/Inventory.vue'),
+                },
+                {
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')

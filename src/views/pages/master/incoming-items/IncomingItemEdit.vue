@@ -65,7 +65,7 @@
                   </template>
                 </InputNumber>
               </template>
-              <template v-else-if="field === 'name'">
+              <template v-else-if="field === 'concat_code_name'">
                 <span>{{ data[field] }}</span>
               </template>
               <template v-else-if="field === 'unit_price'">
@@ -173,7 +173,7 @@ import { useRoute, useRouter } from 'vue-router';
   const columns = ref([
     { field: 'item_id', header: 'Item ID' },
     // { field: 'batch_id', header: 'Batch ID' },
-    { field: 'name', header: 'Item' },
+    { field: 'concat_code_name', header: 'Item' },
     { field: 'description', header: 'Description' },
     { field: 'gross_weight', header: 'Bruto' },
     { field: 'net_weight', header: 'Neto' },
@@ -232,7 +232,7 @@ import { useRoute, useRouter } from 'vue-router';
     if (selectedProduct.value) {
       const newProduct = {
         item_id: selectedProduct.value.id,
-        name: selectedProduct.value.concat_code_name,
+        concat_code_name: selectedProduct.value.concat_code_name,
         // Add any other necessary fields
       };
       products.value.push(newProduct);
