@@ -21,9 +21,12 @@
               <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
             </IconField>
           </div>
+        </template>        
+        <template #empty>
+            <div class="flex items-center justify-center h-full">
+                <span>No Suppliers found.</span>
+            </div>
         </template>
-        <template #empty>No Suppliers found.</template>
-  
         <Column field="supplier_code" header="Supplier Code" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.supplier_code }}

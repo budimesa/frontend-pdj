@@ -203,8 +203,6 @@ import { useRouter } from 'vue-router';
   const createNew = () => {
     router.push('/pages/bom-formula/create');
   };
-  
-
   const fetchMergedRawAndWIP = async () => {
     await bomFormulaStore.fetchMergeRawMaterialAndWIP();
   }

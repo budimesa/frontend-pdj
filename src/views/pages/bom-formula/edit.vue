@@ -166,7 +166,6 @@ const fetchBomFormula = async (id) => {
     console.log(bomFormulaStore.bomFormulaDetails)
     item.value = { ...bomFormulaStore.bomFormula };    
     products.value = { ...bomFormulaStore.bomFormulaDetails};
-    // filteredProducts.value = response.details || [];
 };
 
 const onCellEditComplete = (event) => {

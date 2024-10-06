@@ -22,8 +22,11 @@
             </IconField>
           </div>
         </template>
-        <template #empty>No Warehouses found.</template>
-  
+        <template #empty>
+          <div class="flex items-center justify-center h-full">
+              <span>No Warehouses found.</span>
+          </div>
+        </template>  
         <Column field="warehouse_code" header="Warehouse Code" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.warehouse_code }}

@@ -114,39 +114,39 @@ const router = createRouter({
                 {
                     path: '/pages/users',
                     name: 'users',
-                    component: () => import('@/views/pages/Users.vue')
+                    component: () => import('@/views/pages/master/users/UserCrud.vue')
                 },
                 {
                     path: '/pages/suppliers',
                     name: 'suppliers',
-                    component: () => import('@/views/pages/Suppliers.vue')
+                    component: () => import('@/views/pages/master/suppliers/SupplierCrud.vue')
                 },
                 {
                     path: '/pages/warehouses',
                     name: 'warehouses',
-                    component: () => import('@/views/pages/Warehouses.vue')
+                    component: () => import('@/views/pages/master/warehouses/WarehouseCrud.vue')
                 },
                 {
                     path: '/pages/items',
                     name: 'items',
-                    component: () => import('@/views/pages/Items.vue')
+                    component: () => import('@/views/pages/master/items/ItemCrud.vue')
                 },
                 {
                     path: '/pages/incoming-items',
                     name: 'incoming-items.index',
-                    component: () => import('@/views/pages/IncomingItems.vue'),
+                    component: () => import('@/views/pages/master/incoming-items/IncomingItems.vue'),
                 },
                 {
                     path: 'pages/incoming-items/create',
                     name: 'incoming-items.create',
-                    component: () => import('@/views/pages/IncomingItemCreate.vue'),
+                    component: () => import('@/views/pages/master/incoming-items/IncomingItemCreate.vue'),
                 },
-                // {
-                //     path: 'pages/incoming-items/edit/:id',
-                //     name: 'incoming-items.edit',
-                //     component: () => import('@/views/pages/IncomingItemsEdit.vue'),
-                //     props: true // Pass route params as props to the component
-                // },
+                {
+                    path: 'pages/incoming-items/edit/:id',
+                    name: 'incoming-items.edit',
+                    component: () => import('@/views/pages/master/incoming-items/IncomingItemEdit.vue'),
+                    props: true // Pass route params as props to the component
+                },
                 {
                     path: '/documentation',
                     name: 'documentation',

@@ -22,8 +22,11 @@
                     </IconField>
                 </div>
             </template>
-            <template #empty>No Users found.</template>
-  
+            <template #empty>
+              <div class="flex items-center justify-center h-full">
+                  <span>No Users found.</span>
+              </div>
+            </template>  
             <Column field="name" header="Name" style="min-width: 12rem">
                 <template #body="{ data }">
                     {{ data.name }}

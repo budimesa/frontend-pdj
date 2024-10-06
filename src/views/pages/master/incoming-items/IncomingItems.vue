@@ -1,44 +1,52 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Item Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Incoming Item Management</h1>
       <Toolbar class="mb-6">
         <template #start>
-          <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
+          <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" />
         </template>
         <template #end>
           <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
         </template>
       </Toolbar>
-      <DataTable v-model:filters="filters" :value="itemStore.items" paginator showGridlines :rows="10" dataKey="id"
-                 filterDisplay="menu" :globalFilterFields="['item_code', 'item_name']">
+      <DataTable v-model:filters="filters" scrollable :value="incomingItemStore.items" showGridlines :rows="10" dataKey="id"
+            filterDisplay="menu" :globalFilterFields="['incoming_item_code', 'supplier_name']">
         <template #header>
-          <div class="flex justify-between">
-            <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
-              <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-            </IconField>
-          </div>
+            <div class="flex justify-between">
+                <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
+                <IconField>
+                    <InputIcon>
+                        <i class="pi pi-search" />
+                    </InputIcon>
+                    <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+                </IconField>
+            </div>
+        </template>        
+        <template #empty>
+            <div class="flex items-center justify-center h-full">
+                <span>No Incoming Items found.</span>
+            </div>
         </template>
-        <template #empty>No Items found.</template>
-  
-        <Column field="item_code" header="Item Code" style="min-width: 12rem">
+        <Column header="No." style="min-width: 4rem">
+            <template #body="{ index }">
+                {{ incomingItemStore.pagination.offset + index + 1 }}
+            </template>
+        </Column>   
+        <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.item_code }}
+            {{ data.incoming_item_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by item code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by incoming item code" />
           </template>
         </Column>
   
-        <Column field="item_name" header="Item Name" style="min-width: 12rem">
+        <Column field="supplier_name" header="Supplier" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.item_name }}
+            {{ data.supplier_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by item name" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by supplier" />
           </template>
         </Column>
   
@@ -48,15 +56,6 @@
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Search by notes" />
-          </template>
-        </Column>
-
-        <Column field="sale_unit" header="Sale Unit" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ data.sale_unit }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by sale unit" />
           </template>
         </Column>
   
@@ -85,61 +84,35 @@
           </template>
         </Column>
       </DataTable>
+
+      <Paginator
+        v-model:rows="incomingItemStore.rows"
+        :totalRecords="incomingItemStore.totalRecords"
+        :first="incomingItemStore.first"
+        :rowsPerPageOptions="[10, 20, 30]"
+        @page="handlePageChange"
+      ></Paginator>
     </div>
-  
-    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Item Details" :modal="true">
-      <div class="flex flex-col gap-6">
-        <div>
-          <label for="item_code" class="block font-bold mb-3">Item Code</label>
-          <!-- <InputText id="item_code" v-model="formData.item_code" required fluid /> -->
-          <InputText id="item_code" v-model="formData.item_code" required fluid />
-          <small v-if="submitted && !formData.item_code" class="text-red-500">Item Code is required.</small>
-        </div>
-        <div>
-          <label for="item_name" class="block font-bold mb-3">Item Name</label>
-          <InputText id="item_name" v-model="formData.item_name" required fluid />
-          <small v-if="submitted && !formData.item_name" class="text-red-500">Item Name is required.</small>
-        </div>
-        <div>
-          <label for="notes" class="block font-bold mb-3">Notes</label>
-          <InputText id="notes" v-model="formData.notes" fluid />
-        </div>
-        <div>
-          <label for="sale_unit" class="block font-bold mb-3">Sale Unit</label>          
-            <Dropdown
-            v-model="formData.sale_unit"
-            :options="saleUnits"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Select a Sale Unit"
-            class="w-full"
-            />
-        </div>
-      </div>
-  
-      <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
-      </template>
-    </Dialog>
-  
+
     <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="formData">Are you sure you want to delete <b>{{ formData.item_name }}</b>?</span>
+        <span v-if="item">Are you sure you want to delete <b>{{ item.supplier_name }}</b>?</span>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />
-        <Button label="Yes" icon="pi pi-check" @click="deleteItem(formData.id)" :disabled="isDeleting"/>
+        <Button label="Yes" icon="pi pi-check" @click="deleteItem(item.id)" :disabled="isDeleting"/>
       </template>
     </Dialog>
   </template>
 
 <script setup>
-import { useItemStore } from '@/stores/item';
+import { useIncomingItemStore } from '@/stores/incomingItem';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import { useDebounce } from '@vueuse/core';
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 const toast = useToast();
 const dt = ref();
@@ -150,31 +123,47 @@ const submitted = ref(false);
 const isEditMode = ref(false);
 const isSaving = ref(false);
 const isDeleting = ref(false);
-const itemStore = useItemStore();
+const incomingItemStore = useIncomingItemStore();
+const router = useRouter();
+const debouncedFilters = useDebounce(filters, 300);
 
-const saleUnits = [
-  { label: 'Dus', value: 'Dus' },
-  { label: 'Keranjang', value: 'Keranjang' },
-  { label: 'Karung', value: 'Karung' },
-  { label: 'Plastik', value: 'Plastik' },
-];
+watch(debouncedFilters, () => {
+    fetchData(1); // Fetch data for the current page when filters change
+  }, { deep: true }); 
 
-const formData = ref({ item_code: '', item_name: '',  notes: '', sale_unit: '' });
-const fetchItems = async () => {
-    await itemStore.fetchItems();
+const createNew = () => {
+  router.push('/pages/incoming-items/create');
 };
 
-onMounted(() => {
-    fetchItems();
-});
+const edit = async (incomingItem) => {
+    router.push({ name: 'incoming-items.edit', params: { id: incomingItem.id } });
+  };
+
+const item = ref({});
+
+const fetchData = async (page = 1) => {
+    await incomingItemStore.fetchIncomingItems(page, filters.value);
+  };
+  
+  const handlePageChange = (event) => {  
+    fetchData(event.page + 1);
+  };
+  
+  // Watch for changes in rows
+  watch(incomingItemStore.rows, () => {  
+    fetchData(1); // Fetch data for the first page with the new per_page value
+  });
+  
+  onMounted(() => {  
+    fetchData();
+  });
 
 const initFilters = () => {
     filters.value = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        item_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        item_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        notes: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        sale_unit: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
+        supplier_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        incoming_item_code: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        // notes: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
     };
 };
@@ -192,7 +181,7 @@ const clearFilter = () => {
 };
 
 const resetForm = () => {
-    formData.value = { item_code: '', item_name: '', notes: '', sale_unit: '' };
+    item.value = { incoming_item_code: '', supplier_name: '', notes: '' };
     submitted.value = false;
     isEditMode.value = false;
 };
@@ -200,13 +189,6 @@ const resetForm = () => {
 const openNew = () => {
     formDialog.value = true;
     resetForm();
-};
-
-const edit = (itemData) => {
-  formData.value = { ...itemData };
-  submitted.value = false;
-  isEditMode.value = true;
-  formDialog.value = true;
 };
 
 const hideDialog = () => {
@@ -218,18 +200,17 @@ const save = async () => {
   submitted.value = true;
   
   // Check for required fields
-  if (!formData.value.item_name || !formData.value.item_code) {
+  if (!item.value.supplier_name || !item.value.incoming_item_code) {
     toast.add({ severity: 'error', summary: 'Error', detail: 'Please fill in all required fields.', life: 3000 });
     return;
   }
   isSaving.value = true; 
   try {
       if (isEditMode.value) {
-        await itemStore.updateItem(formData.value);
+        await itemStore.updateItem(item.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Item updated successfully', life: 3000 });
       } else {
-        console.log(formData.value)
-        await itemStore.createItem(formData.value);
+        await itemStore.createItem(item.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Item created successfully', life: 3000 });
       }
       fetchItems();
@@ -243,7 +224,7 @@ const save = async () => {
 
 
 const confirmDelete = (item) => {
-  formData.value = item;
+  item.value = item;
   deleteDialog.value = true;
 };
 

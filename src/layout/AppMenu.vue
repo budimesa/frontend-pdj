@@ -48,9 +48,14 @@ const model = ref([
             },
             {
                 label: 'Incoming Items',
-                icon: 'pi pi-fw pi-box',
+                icon: 'pi pi-fw pi-inbox',
                 to: '/pages/incoming-items'
             },
+            // {
+            //     label: 'Inventory',
+            //     icon: 'pi pi-fw pi-database',
+            //     to: '/pages/incoming-items'
+            // },
         ]
     },
     
