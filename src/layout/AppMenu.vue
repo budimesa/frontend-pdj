@@ -29,6 +29,16 @@ const model = ref([
         ]
     },
     {
+        label: 'Customers',
+        items: [
+            {
+                label: 'Customer Management',
+                icon: 'pi pi-fw pi-user-plus',
+                to: '/pages/customers'
+            },
+        ]
+    },
+    {
         label: 'Warehouses',
         items: [
             {
