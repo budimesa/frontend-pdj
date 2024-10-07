@@ -143,8 +143,8 @@
     </div>
   </template>
   
-  <script setup>
-  import { useIncomingItemStore } from '@/stores/incomingItem';
+<script setup>
+import { useIncomingItemStore } from '@/stores/incomingItem';
 import { useItemStore } from '@/stores/item';
 import { useSupplierStore } from '@/stores/supplier';
 import { useToast } from 'primevue/usetoast';
