@@ -40,7 +40,7 @@ const model = ref([
             {
                 label: 'Credit Limit',
                 icon: 'pi pi-fw pi-credit-card',
-                to: '/pages/customers'
+                to: '/pages/customer-limits'
             },
         ]
     },

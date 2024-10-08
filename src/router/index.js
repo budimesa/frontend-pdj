@@ -127,6 +127,11 @@ const router = createRouter({
                     component: () => import('@/views/pages/master/customers/CustomerCrud.vue')
                 },
                 {
+                    path: '/pages/customer-limits',
+                    name: 'customer-limits',
+                    component: () => import('@/views/pages/master/customer-credit-limits/CustomerCreditLimitCrud.vue')
+                },
+                {
                     path: '/pages/warehouses',
                     name: 'warehouses',
                     component: () => import('@/views/pages/master/warehouses/WarehouseCrud.vue')
