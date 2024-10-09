@@ -132,7 +132,7 @@
 import { useCustomerStore } from '@/stores/customer';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const toast = useToast();
 const dt = ref();

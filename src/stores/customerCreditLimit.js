@@ -36,8 +36,9 @@ export const useCustomerCreditLimitStore = defineStore('customerCreditLimit', {
             });
             await this.fetchCreditLimits(); // Refresh the credit limits list
         },
-        async updateCreditLimit({ id, limit_amount, limit_used, limit_remaining, is_unlimited }) {
+        async updateCreditLimit({ id, customer_id, limit_amount, limit_used, limit_remaining, is_unlimited }) {
             await apiClient.put(`/customer-credit-limits/${id}`, {
+                customer_id,
                 limit_amount,
                 limit_used,
                 limit_remaining,

@@ -14,6 +14,7 @@ const apiClient = axios.create({
 export const useCustomerStore = defineStore('customer', {
     state: () => ({
         customers: [],
+        regularCustomers: [],
     }),
     actions: {
         async fetchCustomers() {
@@ -24,6 +25,17 @@ export const useCustomerStore = defineStore('customer', {
                 updated_at: new Date(customer.updated_at),
             }));
             return this.customers;
+        },
+        async fetchRegularCustomers() {
+            const response = await apiClient.get('/customers');
+            this.regularCustomers = response.data
+                .filter(customer => customer.customer_type === 'regular') // Memfilter berdasarkan customer_type
+                .map(customer => ({
+                    ...customer,
+                    created_at: new Date(customer.created_at), // Mengonversi ke objek Date
+                    updated_at: new Date(customer.updated_at),
+                }));
+            return this.regularCustomers;
         },
         async createCustomer({customer_type, customer_code, customer_name, phone_number, address}) {
             await apiClient.post('/customers', { customer_type, customer_code, customer_name, phone_number, address });
