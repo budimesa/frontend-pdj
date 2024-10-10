@@ -91,7 +91,7 @@ export const useIncomingItemStore = defineStore('incomingItem', {
         },
        
         async createIncomingItem(incomingItem) {
-            this.isSaving = true;            
+            this.isSaving = true;
             try {                
                 await apiClient.post('/incoming-items', incomingItem);
             } catch (error) {

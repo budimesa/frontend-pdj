@@ -42,6 +42,23 @@ const model = ref([
                 icon: 'pi pi-fw pi-credit-card',
                 to: '/pages/customer-limits'
             },
+            
+            {
+                label: 'Customer Balance',
+                icon: 'pi pi-fw pi-bookmark',
+                items: [
+                    {
+                        label: 'Balance',
+                        icon: 'pi pi-fw pi-bookmark',
+                        to: '/pages/balances'
+                    },                    
+                    {
+                        label: 'Balance Deposit',
+                        icon: 'pi pi-fw pi-bookmark',
+                        to: '/pages/balance-deposits'
+                    },                    
+                ]
+            }
         ]
     },
     {
