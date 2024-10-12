@@ -150,7 +150,7 @@ const fetchData = async (page = 1) => {
   };
   
   // Watch for changes in rows
-  watch(incomingItemStore.rows, () => {  
+  watch(() => incomingItemStore.rows, () => {  
     fetchData(1); // Fetch data for the first page with the new per_page value
   });
   

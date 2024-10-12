@@ -51,12 +51,7 @@ const model = ref([
                         label: 'Balance',
                         icon: 'pi pi-fw pi-bookmark',
                         to: '/pages/balances'
-                    },                    
-                    {
-                        label: 'Balance Deposit',
-                        icon: 'pi pi-fw pi-bookmark',
-                        to: '/pages/balance-deposits'
-                    },                    
+                    },                                     
                 ]
             }
         ]

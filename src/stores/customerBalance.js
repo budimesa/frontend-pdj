@@ -17,14 +17,24 @@ export const useCustomerBalanceStore = defineStore('customerBalance', {
         balances: [],
     }),
     actions: {
-        async fetchBalances() {
-            const response = await apiClient.get('/customer-balances');
-            this.balances = response.data.map(limit => ({
-                ...limit,
-                created_at: new Date(limit.created_at), // Mengonversi ke objek Date
-                updated_at: new Date(limit.updated_at),
-            }));
-            return this.balances;
+        async fetchBalances(retries = 3) {
+            try {
+                const response = await apiClient.get('/customer-balances');
+                this.balances = response.data.map(limit => ({
+                    ...limit,
+                    created_at: new Date(limit.created_at),
+                    updated_at: new Date(limit.updated_at),
+                }));
+                return this.balances;
+            } catch (error) {
+                if (error.response && error.response.status === 500 && retries > 0) {
+                    console.log(`Retrying... (${3 - retries + 1})`);
+                    return this.fetchBalances(retries - 1);
+                } else {
+                    // Jika bukan error 500 atau sudah mencapai batas retry
+                    throw error;
+                }
+            }
         },
         async createBalance(balanceData) {
             this.isSaving = true;            

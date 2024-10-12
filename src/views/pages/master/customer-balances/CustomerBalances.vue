@@ -81,8 +81,8 @@
                 <DatePicker v-model="formData.deposit_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
             </div>
             <div>
-                <label for="balance_amount" class="block font-bold mb-3">Deposit Amount</label>
-                <InputNumber v-model="formData.balance_amount" inputId="currency-us" mode="currency" currency="IDR" locale="id-ID" fluid />
+                <label for="deposit_amount" class="block font-bold mb-3">Deposit Amount</label>
+                <InputNumber v-model="formData.deposit_amount" inputId="currency-us" mode="currency" currency="IDR" locale="id-ID" fluid />
             </div>
         </div>
         <template #footer>
@@ -113,12 +113,13 @@ const customerStore = useCustomerStore();
 const formData = ref({
     id: null,
     customer_id: null,
-    balance_amount: null,
+    deposit_amount: null,
     deposit_date: null,
 });
 
 onMounted(() => {
     customerStore.fetchRegularCustomers();
+    customerBalanceStore.fetchBalances();
 });
 
 
@@ -143,7 +144,7 @@ const clearFilter = () => {
 };
 
 const resetForm = () => {
-  formData.value = { customer_id: null, is_unlimited: false, balance_amount: null, };
+  formData.value = { customer_id: null, is_unlimited: false, deposit_amount: null, };
   submitted.value = false;
   isEditMode.value = false;
 };

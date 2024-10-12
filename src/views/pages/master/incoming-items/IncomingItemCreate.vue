@@ -6,11 +6,11 @@
       </div>
       <div class="col-span-1 md:col-span-3">
           <label for="shipment_date" class="block font-bold mb-3">Shipment Date</label>            
-          <DatePicker v-model="formData.shipment_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
+          <DatePicker v-model="formData.shipment_date" :showIcon="true" :showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
       </div>
       <div class="col-span-1 md:col-span-3">
           <label for="received_date" class="block font-bold mb-3">Received Date</label>
-          <DatePicker v-model="formData.received_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
+          <DatePicker v-model="formData.received_date" :showIcon="true" :showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
       </div>
       <div class="col-span-1 md:col-span-3">
           <label for="supplier" class="block font-bold mb-3">Supplier</label>            
@@ -321,12 +321,8 @@ const fetchItems = async () => {
     filteredProducts.value = [...items.value];
 };
 
-const generateNewIncomingItemCode = async () => {
-    await incomingItemStore.generateNewIncomingItemCode();
-}
-
 onMounted(() => {
-    generateNewIncomingItemCode();
+    incomingItemStore.generateNewIncomingItemCode();
     fetchItems();
     fetchSuppliers();
 });
