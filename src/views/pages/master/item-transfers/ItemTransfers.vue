@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Incoming Item Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Transfer Item Management</h1>
       <Toolbar class="mb-6">
         <template #start>
           <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" />
@@ -9,8 +9,8 @@
           <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
         </template>
       </Toolbar>
-      <DataTable v-model:filters="filters" scrollable :value="incomingItemStore.items" showGridlines :rows="10" dataKey="id"
-            filterDisplay="menu" :globalFilterFields="['incoming_item_code', 'supplier_name']">
+      <DataTable v-model:filters="filters" scrollable :value="itemTransferStore.items" showGridlines :rows="10" dataKey="id"
+            filterDisplay="menu" :globalFilterFields="['incoming_item_code', 'from_warehouse_name']">
         <template #header>
             <div class="flex justify-between">
                 <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
@@ -24,15 +24,15 @@
         </template>        
         <template #empty>
             <div class="flex items-center justify-center h-full">
-                <span>No Incoming Items found.</span>
+                <span>No Transfer Items found.</span>
             </div>
         </template>
         <Column header="No." style="min-width: 4rem">
             <template #body="{ index }">
-                {{ incomingItemStore.pagination.offset + index + 1 }}
+                {{ itemTransferStore.pagination.offset + index + 1 }}
             </template>
         </Column>   
-        <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 12rem">
+        <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 14rem">
           <template #body="{ data }">
             {{ data.incoming_item_code }}
           </template>
@@ -40,16 +40,61 @@
             <InputText v-model="filterModel.value" type="text" placeholder="Search by incoming item code" />
           </template>
         </Column>
-  
-        <Column field="supplier_name" header="Supplier" style="min-width: 12rem">
+
+        <Column field="transfer_code" header="Transfer Code" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.supplier_name }}
+            {{ data.transfer_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by supplier" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by Transfer code" />
           </template>
         </Column>
   
+        <Column field="from_warehouse_name" header="From Warehouse" style="min-width: 13rem">
+          <template #body="{ data }">
+            {{ data.from_warehouse_name }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by from warehouse" />
+          </template>
+        </Column>
+
+        <Column field="to_warehouse_name" header="To Warehouse" style="min-width: 12rem">
+          <template #body="{ data }">
+            {{ data.to_warehouse_name }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by to warehouse" />
+          </template>
+        </Column>
+  
+        <Column field="total_quantity" header="Total Quantity" style="min-width: 12rem">
+          <template #body="{ data }">
+            {{ data.total_quantity }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by total quantity" />
+          </template>
+        </Column>
+
+        <Column field="total_item_price" header="Total Price" style="min-width: 12rem">
+          <template #body="{ data }">
+            {{ data.total_item_price }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by total item price" />
+          </template>
+        </Column>
+
+        <Column field="transfer_status" header="Status" style="min-width: 12rem">
+          <template #body="{ data }">
+            {{ data.transfer_status }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by status" />
+          </template>
+        </Column>
+
         <Column field="notes" header="Notes" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.notes }}
@@ -77,7 +122,7 @@
           </template>
         </Column>
   
-        <Column :exportable="false" header="Actions" alignFrozen="right" style="min-width: 8rem" frozen>
+        <Column :exportable="false" header="Actions" alignFrozen="right" frozen style="min-width: 8rem">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -86,9 +131,9 @@
       </DataTable>
 
       <Paginator
-        v-model:rows="incomingItemStore.rows"
-        :totalRecords="incomingItemStore.totalRecords"
-        :first="incomingItemStore.first"
+        v-model:rows="itemTransferStore.rows"
+        :totalRecords="itemTransferStore.totalRecords"
+        :first="itemTransferStore.first"
         :rowsPerPageOptions="[10, 20, 30]"
         @page="handlePageChange"
       ></Paginator>
@@ -97,7 +142,7 @@
     <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="item">Are you sure you want to delete <b>{{ item.supplier_name }}</b>?</span>
+        <span v-if="item">Are you sure you want to delete <b>{{ item.transfer_code }}</b>?</span>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />
@@ -107,7 +152,7 @@
   </template>
 
 <script setup>
-import { useIncomingItemStore } from '@/stores/incomingItem';
+import { useItemTransferStore } from '@/stores/itemTransfer';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useDebounce } from '@vueuse/core';
 import { useToast } from 'primevue/usetoast';
@@ -116,14 +161,10 @@ import { useRouter } from 'vue-router';
 
 const toast = useToast();
 const dt = ref();
-const formDialog = ref(false);
 const deleteDialog = ref(false);
 const filters = ref({});
-const submitted = ref(false);
-const isEditMode = ref(false);
-const isSaving = ref(false);
 const isDeleting = ref(false);
-const incomingItemStore = useIncomingItemStore();
+const itemTransferStore = useItemTransferStore();
 const router = useRouter();
 const debouncedFilters = useDebounce(filters, 300);
 
@@ -132,17 +173,17 @@ watch(debouncedFilters, () => {
   }, { deep: true }); 
 
 const createNew = () => {
-  router.push('/pages/incoming-items/create');
+  router.push('/pages/item-transfers/create');
 };
 
-const edit = async (incomingItem) => {
-    router.push({ name: 'incoming-items.edit', params: { id: incomingItem.id } });
+const edit = async (itemTransfer) => {
+    router.push({ name: 'item-transfers.edit', params: { id: itemTransfer.id } });
   };
 
 const item = ref({});
 
 const fetchData = async (page = 1) => {
-    await incomingItemStore.fetchIncomingItems(page, filters.value);
+    await itemTransferStore.fetchItemTransfers(page, filters.value);
   };
   
   const handlePageChange = (event) => {  
@@ -150,7 +191,7 @@ const fetchData = async (page = 1) => {
   };
   
   // Watch for changes in rows
-  watch(() => incomingItemStore.rows, () => {  
+  watch(() => itemTransferStore.rows, () => {  
     fetchData(1); // Fetch data for the first page with the new per_page value
   });
   
@@ -161,7 +202,8 @@ const fetchData = async (page = 1) => {
 const initFilters = () => {
     filters.value = {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-        supplier_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        from_warehouse_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+        to_warehouse_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         incoming_item_code: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         // notes: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
@@ -179,49 +221,6 @@ const formatDate = (date) => {
 const clearFilter = () => {
     initFilters();
 };
-
-const resetForm = () => {
-    item.value = { incoming_item_code: '', supplier_name: '', notes: '' };
-    submitted.value = false;
-    isEditMode.value = false;
-};
-
-const openNew = () => {
-    formDialog.value = true;
-    resetForm();
-};
-
-const hideDialog = () => {
-  formDialog.value = false;
-  resetForm();
-};
-
-const save = async () => {
-  submitted.value = true;
-  
-  // Check for required fields
-  if (!item.value.supplier_name || !item.value.incoming_item_code) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Please fill in all required fields.', life: 3000 });
-    return;
-  }
-  isSaving.value = true; 
-  try {
-      if (isEditMode.value) {
-        await itemStore.updateItem(item.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Item updated successfully', life: 3000 });
-      } else {
-        await itemStore.createItem(item.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Item created successfully', life: 3000 });
-      }
-      fetchItems();
-      hideDialog();
-    } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save item', life: 3000 });
-    } finally {
-      isSaving.value = false; // Set to false after the process is complete
-    }
-};
-
 
 const confirmDelete = (item) => {
   item.value = item;

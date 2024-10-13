@@ -14,6 +14,7 @@ const apiClient = axios.create({
 export const useItemStore = defineStore('item', {
     state: () => ({
         items: [],
+        filteredProducts: [],
     }),
     actions: {
         async fetchItems() {
@@ -36,6 +37,14 @@ export const useItemStore = defineStore('item', {
         async deleteItem(id) {
             await apiClient.delete(`/items/${id}`);
             await this.fetchItems(); // Refresh the item list
+        },
+        async fetchItemOptions() {
+            const response = await apiClient.get('/items');
+            this.filteredProducts = response.data.map(item => ({
+                ...item,
+                concat_code_name: `${item.item_code} - ${item.item_name}`,
+            }));
+            return this.filteredProducts;
         },
     },
 });

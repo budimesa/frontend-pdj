@@ -29,6 +29,7 @@ export const useInventoryStore = defineStore('inventory', {
         inventory: {},
         inventories: [],
         inventoryDetails: [],
+        filteredProducts: [],
         selectedItem: null,
         formDialog: false,
         deleteDialog: false,
@@ -56,17 +57,18 @@ export const useInventoryStore = defineStore('inventory', {
                 console.error('Error fetching inventories:', error);
             }
         },
-        async createInventory({incoming_item_id, item_id, batch_id, description, barcode_number, gross_weight, net_weight, actual_weight, unit_price, avaiable_stock, actual_stock, total_price, labor_cost, expiry_date}) {
-            await apiClient.post('/inventories', { incoming_item_id, item_id, batch_id, description, barcode_number, gross_weight, net_weight, actual_weight, unit_price, avaiable_stock, actual_stock, total_price, labor_cost, expiry_date});
-            await this.fetchInventories(); // Refresh the inventory list
-        },
-        async updateInventory({id, incoming_item_id, item_id, batch_id, description, barcode_number, gross_weight, net_weight, actual_weight, unit_price, avaiable_stock, actual_stock, total_price, labor_cost, expiry_date}) {
-            await apiClient.put(`/inventories/${id}`, { incoming_item_id, item_id, batch_id, description, barcode_number, gross_weight, net_weight, actual_weight, unit_price, avaiable_stock, actual_stock, total_price, labor_cost, expiry_date});
-            await this.fetchInventories(); // Refresh the inventory list
-        },
         async deleteInventory(id) {
             await apiClient.delete(`/inventories/${id}`);
             await this.fetchInventories(); // Refresh the inventory list
         },
+        async fetchInventoryOptions() {
+            const response = await apiClient.get('/inventories');
+            this.filteredProducts = response.data.data
+                .filter(inventory => inventory.actual_stock > 0) // Filter untuk actual_stock > 0
+                .map(inventory => ({
+                    ...inventory
+                }));
+            return this.filteredProducts;
+        }
     }
 })

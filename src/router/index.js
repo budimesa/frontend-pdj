@@ -163,6 +163,22 @@ const router = createRouter({
                     props: true // Pass route params as props to the component
                 },
                 {
+                    path: '/pages/item-transfers',
+                    name: 'item-transfers.index',
+                    component: () => import('@/views/pages/master/item-transfers/ItemTransfers.vue'),
+                },
+                {
+                    path: 'pages/item-transfers/create',
+                    name: 'item-transfers.create',
+                    component: () => import('@/views/pages/master/item-transfers/ItemTransferCreate.vue'),
+                },
+                {
+                    path: 'pages/item-transfers/edit/:id',
+                    name: 'item-transfers.edit',
+                    component: () => import('@/views/pages/master/item-transfers/ItemTransferEdit.vue'),
+                    props: true // Pass route params as props to the component
+                },
+                {
                     path: '/pages/inventories',
                     name: 'inventories.index',
                     component: () => import('@/views/pages/master/inventories/Inventory.vue'),

@@ -14,6 +14,7 @@ const apiClient = axios.create({
 export const useSupplierStore = defineStore('supplier', {
     state: () => ({
         suppliers: [],
+        supplierOptions: [],
     }),
     actions: {
         async fetchSuppliers() {
@@ -37,5 +38,12 @@ export const useSupplierStore = defineStore('supplier', {
             await apiClient.delete(`/suppliers/${id}`);
             await this.fetchSuppliers(); // Refresh the supplier list
         },
+        async fetchSupplierOptions() {
+            await this.fetchSuppliers();
+            this.supplierOptions = this.suppliers.map(supplier => ({
+                label: supplier.supplier_name,
+                value: supplier.id
+            }))
+        }
     },
 });

@@ -182,7 +182,7 @@ const exportCSV = () => {
           <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
         </template>
       </Column>
-      <Column :exportable="false" header="Actions" alignFrozen="right" frozen>
+      <Column :exportable="false" header="Actions" alignFrozen="right" frozen style="min-width: 12rem">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
           <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />

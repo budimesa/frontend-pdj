@@ -14,6 +14,7 @@ const apiClient = axios.create({
 export const useWarehouseStore = defineStore('warehouse', {
     state: () => ({
         warehouses: [],
+        warehouseOptions: [],
     }),
     actions: {
         async fetchWarehouses() {
@@ -37,5 +38,12 @@ export const useWarehouseStore = defineStore('warehouse', {
             await apiClient.delete(`/warehouses/${id}`);
             await this.fetchWarehouses(); // Refresh the warehouse list
         },
+        async fetchWarehouseOptions() {
+            await this.fetchWarehouses();
+            this.warehouseOptions = this.warehouses.map(warehouse => ({
+                label: warehouse.warehouse_name,
+                value: warehouse.id
+            }))
+        }
     },
 });

@@ -16,7 +16,7 @@
           <label for="supplier" class="block font-bold mb-3">Supplier</label>            
           <Dropdown 
             v-model="formData.supplier_id" 
-            :options="supplierOptions" 
+            :options="supplierStore.supplierOptions" 
             optionLabel="label" 
             optionValue="value"
             :placeholder="selectedOption ? selectedOption.label : 'Select supplier'"
@@ -29,7 +29,7 @@
         <label for="product" class="block font-bold mb-3">Product</label> 
         <Dropdown 
           v-model="selectedProduct" 
-          :options="filteredProducts" 
+          :options="itemStore.filteredProducts" 
           optionLabel="concat_code_name" 
           @change="addProduct"
           filter 
@@ -187,11 +187,8 @@ const submitted = ref(false);
 const isSaving = ref(false);
 const supplierStore = useSupplierStore();
 const incomingItemStore = useIncomingItemStore();
-const supplierOptions = ref([]);
 const itemStore = useItemStore();
-const items = ref();
 const selectedProduct = ref(null);
-const filteredProducts = ref([]);
 
 // Computed property untuk total labor_cost
 const totalLaborCost = computed(() => {
@@ -311,20 +308,10 @@ const formatCurrency = (value) => {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
 };
 
-const fetchItems = async () => {
-    const fetchedItems = await itemStore.fetchItems();
-    items.value = fetchedItems; // Mengupdate items dengan data yang diambil
-    items.value = fetchedItems.map(item => ({
-        ...item,
-        concat_code_name: `${item.item_code} - ${item.item_name}`
-    }));
-    filteredProducts.value = [...items.value];
-};
-
 onMounted(() => {
     incomingItemStore.generateNewIncomingItemCode();
-    fetchItems();
-    fetchSuppliers();
+    itemStore.fetchItemOptions();
+    supplierStore.fetchSupplierOptions();
 });
 
 const initFilters = () => {
@@ -339,14 +326,6 @@ const initFilters = () => {
 
 initFilters();
 
-const fetchSuppliers = async () => {
-    const response = await supplierStore.fetchSuppliers();
-    supplierOptions.value = response.map(supplier => ({
-      label: supplier.supplier_name,
-      value: supplier.id
-    }));
-}
-
 const resetForm = () => {
     formData.value = { item_code: '', item_name: '', notes: '' };
     submitted.value = false;
@@ -357,10 +336,22 @@ const cancelForm = () => {
   resetForm();
 };
 
+const getFormattedDate = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    const year = d.getFullYear(); // Ambil tahun
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Ambil bulan dan tambahkan 1 (0-11 ke 1-12), lalu format menjadi 2 digit
+    const day = String(d.getDate()).padStart(2, '0'); // Ambil hari dan format menjadi 2 digit
+
+    return `${year}-${month}-${day}`;
+  };
+
 const save = async () => {
   submitted.value = true;
   isSaving.value = true; 
   try {
+      formData.value.shipment_date = getFormattedDate(formData.value.shipment_date);
+      formData.value.received_date = getFormattedDate(formData.value.received_date);
       formData.value.incoming_item_code = incomingItemStore.newItemIncomingCode;
       formData.value.labor_cost = totalLaborCost.value;
       formData.value.total_item_price = totalItemPrice.value;

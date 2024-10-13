@@ -56,7 +56,7 @@
         </template>
       </Column>
 
-      <Column :exportable="false" header="Actions" alignFrozen="right" frozen>
+      <Column :exportable="false" header="Actions" alignFrozen="right" frozen style="min-width: 12rem">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
           <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -84,7 +84,7 @@
         <InputNumber v-model="formData.limit_amount" inputId="currency-us" mode="currency" currency="IDR" locale="id-ID" :disabled="isDisabled" fluid />
       </div>
       <div class="flex items-center">
-        <Checkbox v-model="formData.is_unlimited" binary  @click="toggleDisabled"/>
+        <Checkbox inputId="is_unlimited" v-model="formData.is_unlimited" binary  @click="toggleDisabled"/>
         <label for="is_unlimited" class="ml-2"> Is Limit Unlimited?</label>
       </div>
 

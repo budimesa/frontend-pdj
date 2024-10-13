@@ -65,6 +65,9 @@
                   </template>
                 </InputNumber>
               </template>
+              <template v-else-if="field === 'batch_code'">
+                <span>{{ data[field] }}</span>
+              </template>
               <template v-else-if="field === 'concat_code_name'">
                 <span>{{ data[field] }}</span>
               </template>
@@ -168,11 +171,10 @@ import { useRoute, useRouter } from 'vue-router';
     notes: '',
   });
 
-  const item = ref({});
   const products = ref([]);
   const columns = ref([
     { field: 'item_id', header: 'Item ID' },
-    // { field: 'batch_id', header: 'Batch ID' },
+    { field: 'batch_code', header: 'Batch Code' },
     { field: 'concat_code_name', header: 'Item' },
     { field: 'description', header: 'Description' },
     { field: 'gross_weight', header: 'Bruto' },
@@ -243,13 +245,24 @@ import { useRoute, useRouter } from 'vue-router';
   const deleteRow = (data) => {
     products.value = products.value.filter(product => product !== data);
   };
+
+  const getFormattedDate = (date) => {
+    if (!date) return null;
+    const d = new Date(date);
+    const year = d.getFullYear(); // Ambil tahun
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Ambil bulan dan tambahkan 1 (0-11 ke 1-12), lalu format menjadi 2 digit
+    const day = String(d.getDate()).padStart(2, '0'); // Ambil hari dan format menjadi 2 digit
+
+    return `${year}-${month}-${day}`;
+  };
   
   const save = async () => {
     try {
+      formData.value.shipment_date = getFormattedDate(formData.value.shipment_date);
+      formData.value.received_date = getFormattedDate(formData.value.received_date);
       formData.value.labor_cost = totalLaborCost.value;
       formData.value.total_item_price = totalItemPrice.value;
       formData.value.total_cost = grandTotal.value;
-
       await incomingItemStore.updateIncomingItem({
         ...formData.value,
         details: products.value,

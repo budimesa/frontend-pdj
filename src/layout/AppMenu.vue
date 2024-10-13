@@ -45,11 +45,11 @@ const model = ref([
             
             {
                 label: 'Customer Balance',
-                icon: 'pi pi-fw pi-bookmark',
+                icon: 'pi pi-fw pi-wallet',
                 items: [
                     {
                         label: 'Balance',
-                        icon: 'pi pi-fw pi-bookmark',
+                        icon: 'pi pi-fw pi-wallet',
                         to: '/pages/balances'
                     },                                     
                 ]
@@ -63,6 +63,11 @@ const model = ref([
                 label: 'Warehouse Management',
                 icon: 'pi pi-fw pi-building',
                 to: '/pages/warehouses'
+            },
+            {
+                label: 'Transfer Items',
+                icon: 'pi pi-fw pi-send',
+                to: '/pages/item-transfers'
             },
         ]
     },
