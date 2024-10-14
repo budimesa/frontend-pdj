@@ -102,7 +102,7 @@ export const useItemTransferStore = defineStore('itemTransfer', {
                 this.formDialog = false; // Close dialog after save
             }
         },
-        async updateItemTransfer(itemTransfer) {
+        async updateItemTransfer(itemTransfer) {            
             this.isSaving = true;            
             try {                
                 await apiClient.put(`/item-transfers/${itemTransfer.id}`, itemTransfer);

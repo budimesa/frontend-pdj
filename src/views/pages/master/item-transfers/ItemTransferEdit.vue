@@ -76,10 +76,10 @@
                     <template v-else-if="field === 'batch_code'">
                         <span>{{ data[field] }}</span>
                     </template>
-                    <template v-else-if="field === 'warehouse_name'">
+                    <!-- <template v-else-if="field === 'warehouse_name'">
                         <span>{{ data[field] }}</span>
-                    </template>
-                    <template v-else-if="field === 'name'">
+                    </template> -->
+                    <template v-else-if="field === 'concat_code_name'">
                         <span>{{ data[field] }}</span>
                     </template>
                     <template v-else-if="field === 'net_weight'">
@@ -245,7 +245,7 @@ import { useRoute, useRouter } from 'vue-router';
                 description : selectedProduct.value.description,
                 gross_weight : selectedProduct.value.gross_weight,
                 labor_cost : selectedProduct.value.labor_cost,
-                name: selectedProduct.value.concat_code_name,
+                concat_code_name: selectedProduct.value.concat_code_name,
                 net_weight: selectedProduct.value.net_weight,
                 initial_stock: selectedProduct.value.initial_stock,
                 actual_stock: selectedProduct.value.actual_stock,
@@ -273,10 +273,10 @@ import { useRoute, useRouter } from 'vue-router';
   
   const columns = ref([
       { field: 'item_id', header: 'Item ID' },
-      { field: 'warehouse_name', header: 'Warehouse' },
+      // { field: 'warehouse_name', header: 'Warehouse' },
       { field: 'incoming_item_code', header: 'Incoming Item Code' },
       { field: 'batch_code', header: 'Batch Code' },
-      { field: 'name', header: 'Item' },
+      { field: 'concat_code_name', header: 'Item' },
       { field: 'net_weight', header: 'Neto (KG)' },
       { field: 'actual_stock', header: 'Quantity' },
       { field: 'max_stock', header: 'Max Stock' },
@@ -334,11 +334,18 @@ import { useRoute, useRouter } from 'vue-router';
   const formatCurrency = (value) => {
       return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
   };
+
+  const fetchItemTransfer = async (id) => {
+    await itemTransferStore.fetchItemTransfer(id);    
+    formData.value = { ...itemTransferStore.itemTransfer };    
+    products.value = itemTransferStore.itemTransferDetails || []    
+ };
   
   onMounted(() => {
-      const { id } = route.params;
-      itemTransferStore.fetchItemTransfer(id);
+      const { id } = route.params;      
+      // itemTransferStore.fetchItemTransfer(id);
     //   itemTransferStore.fetchItemTransferDetails(id);
+      fetchItemTransfer(id);
       inventoryStore.fetchInventoryOptions();
       warehouseStore.fetchWarehouseOptions();
   });
@@ -384,21 +391,20 @@ import { useRoute, useRouter } from 'vue-router';
     submitted.value = true;
     isSaving.value = true; 
     try {
-        formData.value.transfer_date = getFormattedDate(formData.value.transfer_date);
-        formData.value.transfer_code = itemTransferStore.newTransferCode;
+        formData.value.transfer_date = getFormattedDate(formData.value.transfer_date);        
         formData.value.total_item_price = totalItemPrice.value;
         formData.value.total_quantity = totalItemQuantity.value;
         formData.value.total_cost = grandTotal.value;
   
-        await itemTransferStore.createItemTransfer({
+        await itemTransferStore.updateItemTransfer({
           ...formData.value,
           details: products.value
         });
           
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Incoming Item created successfully', life: 3000 });     
+        toast.add({ severity: 'success', summary: 'Success', detail: 'item transfer updated successfully', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save incoming items', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to update item transfers', life: 3000 });
       } finally {
         isSaving.value = false; // Set to false after the process is complete
       }

@@ -189,11 +189,11 @@ import { useRoute, useRouter } from 'vue-router';
   const selectedProduct = ref(null);
   const filteredProducts = ref([]);
   
-  const fetchItemDetails = async (id) => {
-    const data = await incomingItemStore.fetchIncomingItem(id);
-    // formData.value = { ...data };
-    // products.value = data.details; // Assuming the details are fetched along with the item
-  };
+  // const fetchItemDetails = async (id) => {
+  //   const data = await incomingItemStore.fetchIncomingItem(id);
+  //   // formData.value = { ...data };
+  //   // products.value = data.details; // Assuming the details are fetched along with the item
+  // };
   
   const fetchSuppliers = async () => {
     const response = await supplierStore.fetchSuppliers();
@@ -334,7 +334,8 @@ const isPositiveInteger = (val) => {
   
   onMounted(() => {
     const { id } = route.params; // Get the id from route params
-    fetchItemDetails(id);
+    // fetchItemDetails(id);
+    // incomingItemStore.fetchIncomingItem(id);
     fetchIncomingItem(id);
     fetchSuppliers();
     fetchItems();

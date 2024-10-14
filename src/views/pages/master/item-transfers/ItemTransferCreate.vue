@@ -76,9 +76,9 @@
                     <template v-else-if="field === 'batch_code'">
                         <span>{{ data[field] }}</span>
                     </template>
-                    <template v-else-if="field === 'warehouse_name'">
+                    <!-- <template v-else-if="field === 'warehouse_name'">
                         <span>{{ data[field] }}</span>
-                    </template>
+                    </template> -->
                     <template v-else-if="field === 'name'">
                         <span>{{ data[field] }}</span>
                     </template>
@@ -271,7 +271,7 @@ import { useRouter } from 'vue-router';
   
   const columns = ref([
       { field: 'item_id', header: 'Item ID' },
-      { field: 'warehouse_name', header: 'Warehouse' },
+      // { field: 'warehouse_name', header: 'Warehouse' },
       { field: 'incoming_item_code', header: 'Incoming Item Code' },
       { field: 'batch_code', header: 'Batch Code' },
       { field: 'name', header: 'Item' },
@@ -394,7 +394,7 @@ import { useRouter } from 'vue-router';
         toast.add({ severity: 'success', summary: 'Success', detail: 'Incoming Item created successfully', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save incoming items', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save item transfers', life: 3000 });
       } finally {
         isSaving.value = false; // Set to false after the process is complete
       }
