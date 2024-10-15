@@ -115,10 +115,10 @@ const exportCSV = () => {
 </script>
 <template>
   <div class="card">
-    <h1 class="text-2xl font-bold mb-4">Customer Management</h1>
+    <h1 class="text-2xl font-bold mb-4">Manajemen Pelanggan</h1>
     <Toolbar class="mb-6">
       <template #start>
-        <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
+        <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
       </template>
       <template #end>
         <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
@@ -142,47 +142,31 @@ const exportCSV = () => {
           <span>No Customers found.</span>
         </div>
       </template>  
-      <Column field="customer_name" header="Name" style="min-width: 12rem">
+      <Column field="customer_name" header="Nama" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.customer_name }}
         </template>
         <template #filter="{ filterModel }">
-          <InputText v-model="filterModel.value" type="text" placeholder="Search by customer name" />
+          <InputText v-model="filterModel.value" type="text" placeholder="Search by Nama Pelanggan" />
         </template>
       </Column>
-      <Column field="customer_type" header="Customer Type" style="min-width: 12rem">
+      <Column field="customer_type" header="Tipe Pelanggan" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.customer_type }}
         </template>
         <template #filter="{ filterModel }">
-          <InputText v-model="filterModel.value" type="text" placeholder="Search by customer type" />
+          <InputText v-model="filterModel.value" type="text" placeholder="Search by Tipe Pelanggan" />
         </template>
       </Column>
-      <Column field="phone_number" header="Phone Number" style="min-width: 12rem">
+      <Column field="phone_number" header="Nomor HP" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.phone_number }}
         </template>
         <template #filter="{ filterModel }">
-          <InputText v-model="filterModel.value" type="text" placeholder="Search by phone number" />
+          <InputText v-model="filterModel.value" type="text" placeholder="Search by Nomor HP" />
         </template>
-      </Column>
-      <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-        <template #body="{ data }">
-          {{ formatDate(data.created_at) }}
-        </template>
-        <template #filter="{ filterModel }">
-          <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-        </template>
-      </Column>
-      <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-        <template #body="{ data }">
-          {{ formatDate(data.updated_at) }}
-        </template>
-        <template #filter="{ filterModel }">
-          <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-        </template>
-      </Column>
-      <Column :exportable="false" header="Actions" alignFrozen="right" frozen style="min-width: 12rem">
+      </Column>      
+      <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
           <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -190,30 +174,30 @@ const exportCSV = () => {
       </Column>
     </DataTable>
 
-    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Customer Details" :modal="true">
+    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Detail Pelanggan" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
-          <label for="customer_type" class="block font-bold mb-3">Customer Type</label>          
+          <label for="customer_type" class="block font-bold mb-3">Tipe Pelanggan</label>          
           <Dropdown
             v-model="customerStore.formData.customer_type"
             :options="customerTypes"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a Customer Type"
+            placeholder="Select a Tipe Pelanggan"
             class="w-full"
           />
         </div>
         <div>
-          <label for="customer_name" class="block font-bold mb-3">Customer Name</label>
+          <label for="customer_name" class="block font-bold mb-3">Nama Pelanggan</label>
           <InputText id="customer_name" v-model="customerStore.formData.customer_name" required fluid />
-          <small v-if="submitted && !customerStore.formData.customer_name" class="text-red-500">Customer Name is required.</small>
+          <small v-if="submitted && !customerStore.formData.customer_name" class="text-red-500">Nama Pelanggan is required.</small>
         </div>
         <div>
-          <label for="phone_number" class="block font-bold mb-3">Phone Number</label>
+          <label for="phone_number" class="block font-bold mb-3">Nomor HP</label>
           <InputText id="phone_number" v-model="customerStore.formData.phone_number" fluid />
         </div>
         <div>
-          <label for="address" class="block font-bold mb-3">Address</label>
+          <label for="address" class="block font-bold mb-3">Alamat</label>
           <InputText id="address" v-model="customerStore.formData.address" fluid />
         </div>
       </div>

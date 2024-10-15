@@ -3,7 +3,7 @@
     <h1 class="text-2xl font-bold mb-4">Customer Credit Limit Management</h1>
     <Toolbar class="mb-6">
       <template #start>
-        <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
+        <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
       </template>
       <template #end>
         <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
@@ -27,7 +27,7 @@
               <span>No Customers found.</span>
           </div>
       </template>  
-      <Column field="customer.customer_name" header="Name" style="min-width: 12rem">
+      <Column field="customer.customer_name" header="Nama" style="min-width: 12rem">
         <template #body="{ data }">
           {{ data.customer.customer_name }}
         </template>
@@ -35,28 +35,10 @@
           <InputText v-model="filterModel.value" type="text" placeholder="Search by customer name" />
         </template>
       </Column>
-      <Column field="limit_amount" header="Limit Amount" style="min-width: 12rem" />
-      <Column field="limit_used" header="Limit Used" style="min-width: 12rem" />
-      <Column field="limit_remaining" header="Limit Remaining" style="min-width: 12rem" />
-      <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-        <template #body="{ data }">
-          {{ formatDate(data.created_at) }}
-        </template>
-        <template #filter="{ filterModel }">
-          <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-        </template>
-      </Column>
-
-      <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-        <template #body="{ data }">
-          {{ formatDate(data.updated_at) }}
-        </template>
-        <template #filter="{ filterModel }">
-          <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-        </template>
-      </Column>
-
-      <Column :exportable="false" header="Actions" alignFrozen="right" frozen style="min-width: 12rem">
+      <Column field="limit_amount" header="Jumlah Limit" style="min-width: 12rem" />
+      <Column field="limit_used" header="Limit Terpakai" style="min-width: 12rem" />
+      <Column field="limit_remaining" header="Sisa Limit" style="min-width: 12rem" />
+      <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
           <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -80,7 +62,7 @@
         <small v-if="submitted && !formData.customer_id" class="text-red-500">Customer is required.</small>
       </div>      
       <div>
-        <label for="limit_amount" class="block font-bold mb-3">Limit Amount</label>
+        <label for="limit_amount" class="block font-bold mb-3">Jumlah Limit</label>
         <InputNumber v-model="formData.limit_amount" inputId="currency-us" mode="currency" currency="IDR" locale="id-ID" :disabled="isDisabled" fluid />
       </div>
       <div class="flex items-center">

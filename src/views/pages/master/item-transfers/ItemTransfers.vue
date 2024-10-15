@@ -122,7 +122,7 @@
           </template>
         </Column>
   
-        <Column :exportable="false" header="Actions" alignFrozen="right" frozen style="min-width: 8rem">
+        <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 8rem">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
