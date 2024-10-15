@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Supplier Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Manajemen Supplier</h1>
       <Toolbar class="mb-6">
         <template #start>
           <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -27,39 +27,39 @@
                 <span>No Suppliers found.</span>
             </div>
         </template>
-        <Column field="supplier_code" header="Supplier Code" style="min-width: 12rem">
+        <Column field="supplier_code" header="Kode Supplier" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.supplier_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by supplier code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by Kode Supplier" />
           </template>
         </Column>
   
-        <Column field="supplier_name" header="Supplier Name" style="min-width: 12rem">
+        <Column field="supplier_name" header="Nama Supplier" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.supplier_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by supplier name" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by Nama Supplier" />
           </template>
         </Column>
   
-        <Column field="supplier_type" header="Supplier Type" style="min-width: 12rem">
+        <Column field="supplier_type" header="Tipe Supplier" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.supplier_type }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by supplier type" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by Tipe Supplier" />
           </template>
         </Column>
   
-        <Column field="phone_number" header="Phone Number" style="min-width: 12rem">
+        <Column field="phone_number" header="Nomor HP" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.phone_number }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by phone number" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by Nomor HP" />
           </template>
         </Column>
   
@@ -71,16 +71,7 @@
             <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
           </template>
         </Column>
-  
-        <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.updated_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
+
         <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
@@ -93,19 +84,19 @@
     <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Supplier Details" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
-          <label for="supplier_type" class="block font-bold mb-3">Supplier Type</label>          
+          <label for="supplier_type" class="block font-bold mb-3">Tipe Supplier</label>          
             <Dropdown
             v-model="formData.supplier_type"
             :options="supplierTypes"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a Supplier Type"
+            placeholder="Select a Tipe Supplier"
             class="w-full"
             />
-          <!-- <small v-if="submitted && !formData.supplier_type" class="text-red-500">Supplier Type is required.</small> -->
+          <!-- <small v-if="submitted && !formData.supplier_type" class="text-red-500">Tipe Supplier is required.</small> -->
         </div>
         <div>
-          <label for="supplier_code" class="block font-bold mb-3">Supplier Code</label>
+          <label for="supplier_code" class="block font-bold mb-3">Kode Supplier</label>
           <!-- <InputText id="supplier_code" v-model="formData.supplier_code" required fluid /> -->
           <InputText 
             id="supplier_code" 
@@ -114,19 +105,19 @@
             required
             fluid 
             />
-          <small v-if="submitted && !formData.supplier_code" class="text-red-500">Supplier Code is required.</small>
+          <small v-if="submitted && !formData.supplier_code" class="text-red-500">Kode Supplier is required.</small>
         </div>
         <div>
-          <label for="supplier_name" class="block font-bold mb-3">Supplier Name</label>
+          <label for="supplier_name" class="block font-bold mb-3">Nama Supplier</label>
           <InputText id="supplier_name" v-model="formData.supplier_name" required fluid />
-          <small v-if="submitted && !formData.supplier_name" class="text-red-500">Supplier Name is required.</small>
+          <small v-if="submitted && !formData.supplier_name" class="text-red-500">Nama Supplier is required.</small>
         </div>
         <div>
-          <label for="phone_number" class="block font-bold mb-3">Phone Number</label>
+          <label for="phone_number" class="block font-bold mb-3">Nomor HP</label>
           <InputText id="phone_number" v-model="formData.phone_number" fluid />
         </div>
         <div>
-          <label for="address" class="block font-bold mb-3">Address</label>
+          <label for="address" class="block font-bold mb-3">Alamat</label>
           <InputText id="address" v-model="formData.address" fluid />
         </div>
       </div>
@@ -140,7 +131,7 @@
     <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="formData">Are you sure you want to delete <b>{{ formData.supplier_name }}</b>?</span>
+        <span v-if="formData">Apakah anda yakin ingin menghapus <b>{{ formData.supplier_name }}</b>?</span>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />

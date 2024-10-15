@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">User Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Manajemen Pengguna</h1>
       <Toolbar class="mb-6">
           <template #start>
             <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -27,7 +27,7 @@
                   <span>No Users found.</span>
               </div>
             </template>  
-            <Column field="name" header="Name" style="min-width: 12rem">
+            <Column field="name" header="Nama" style="min-width: 12rem">
                 <template #body="{ data }">
                     {{ data.name }}
                 </template>
@@ -44,23 +44,7 @@
                     <InputText v-model="filterModel.value" type="text" placeholder="Search by email" />
                 </template>
             </Column>
-  
-            <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-                <template #body="{ data }">
-                    {{ formatDate(data.created_at) }}
-                </template>
-                <template #filter="{ filterModel }">
-                    <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-                </template>
-            </Column>  
-            <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-              <template #body="{ data }">
-                    {{ formatDate(data.updated_at) }}
-                </template>
-                <template #filter="{ filterModel }">
-                    <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-                </template>
-            </Column>            
+
             <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen>
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
@@ -69,22 +53,22 @@
             </Column>
         </DataTable>
     </div>
-    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="User Details" :modal="true">
+    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Detail Pengguna" :modal="true">
         <div class="flex flex-col gap-6">
           <div>
-            <label for="name" class="block font-bold mb-3">Name</label>
+            <label for="name" class="block font-bold mb-3">Nama</label>
             <InputText id="name" v-model="formData.name" required fluid autofocus :invalid="submitted && !formData.name"/>
-            <small v-if="submitted && !formData.name" class="text-red-500">Name is required.</small>
+            <small v-if="submitted && !formData.name" class="text-red-500">Nama wajib diisi.</small>
           </div>
           <div>
             <label for="email" class="block font-bold mb-3">Email</label>
             <InputText id="email" v-model="formData.email" required fluid />
-            <small v-if="submitted && !formData.email" class="text-red-500">Email is required.</small>
+            <small v-if="submitted && !formData.email" class="text-red-500">Email wajib diisi.</small>
           </div>
           <div v-if="!isEditMode">
             <label for="password" class="block font-bold mb-3">Password</label>
             <InputText id="password" type="password" v-model="formData.password" required fluid />            
-            <small v-if="submitted && !isEditMode && !formData.password" class="text-red-500">Password is required.</small>
+            <small v-if="submitted && !isEditMode && !formData.password" class="text-red-500">Password wajib diisi.</small>
           </div>
         </div>
   
@@ -98,7 +82,7 @@
             <div class="flex items-center gap-4">
                 <i class="pi pi-exclamation-triangle !text-3xl" />
                 <span v-if="formData"
-                    >Are you sure you want to delete <b>{{ formData.name }}</b
+                    >Apakah anda yakin ingin menghapus <b>{{ formData.name }}</b
                     >?</span
                 >
             </div>
@@ -185,15 +169,15 @@ const save = async () => {
     try {
       if (isEditMode.value) {
         await userStore.updateUser(formData.value.id, formData.value.name, formData.value.email, formData.value.password);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Brand updated successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Pengguna berhasil diperbarui', life: 3000 });
       } else {
         await userStore.createUser(formData.value.name, formData.value.email, formData.value.password);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Brand created successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Pengguna berhasil dibuat', life: 3000 });
       }
       fetchUsers();
       hideDialog();
     } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save brand', life: 3000 });
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save data', life: 3000 });
     } finally {
       isSaving.value = false; // Set to false after the process is complete
     }
@@ -208,10 +192,10 @@ const deleteUser = async (id) => {
    isDeleting.value = true; // Set loading state before deletion
     try {
         await userStore.deleteUser(id);
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'User Deleted', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Successful', detail: 'Pengguna berhasil dihapus', life: 3000 });
         fetchUsers();
     } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete user', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menghapus pengguna', life: 3000 });
     } finally {
         deleteDialog.value = false;
         isDeleting.value = false; // Reset loading state after the process

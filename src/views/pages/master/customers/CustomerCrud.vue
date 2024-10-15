@@ -211,7 +211,7 @@ const exportCSV = () => {
     <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="customerStore.formData">Are you sure you want to delete <b>{{ customerStore.formData.customer_name }}</b>?</span>
+        <span v-if="customerStore.formData">Apakah anda yakin ingin menghapus <b>{{ customerStore.formData.customer_name }}</b>?</span>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />

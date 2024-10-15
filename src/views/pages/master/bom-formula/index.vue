@@ -146,7 +146,7 @@
           <div class="flex items-center gap-4">
               <i class="pi pi-exclamation-triangle !text-3xl" />
               <span v-if="item"
-                  >Are you sure you want to delete <b>{{ item.name }}</b
+                  >Apakah anda yakin ingin menghapus <b>{{ item.name }}</b
                   >?</span
               >
           </div>

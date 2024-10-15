@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <h1 class="text-2xl font-bold mb-4">Customer Balance</h1>
+        <h1 class="text-2xl font-bold mb-4">Saldo Pelanggan</h1>
         <Toolbar class="mb-6">
             <template #start>
                 <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -24,10 +24,10 @@
             </template>        
             <template #empty>
                 <div class="flex items-center justify-center h-full">
-                    <span>No Customers found.</span>
+                    <span>Data tidak ditemukan.</span>
                 </div>
             </template>  
-            <Column field="customer.customer_name" header="Name" style="min-width: 12rem">
+            <Column field="customer.customer_name" header="Nama" style="min-width: 12rem">
                 <template #body="{ data }">
                 {{ data.customer.customer_name }}
                 </template>
@@ -35,25 +35,7 @@
                 <InputText v-model="filterModel.value" type="text" placeholder="Search by customer name" />
                 </template>
             </Column>
-            <Column field="balance_amount" header="Balance Amount" style="min-width: 12rem" />
-            <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-                <template #body="{ data }">
-                {{ formatDate(data.created_at) }}
-                </template>
-                <template #filter="{ filterModel }">
-                <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-                </template>
-            </Column>
-
-            <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-                <template #body="{ data }">
-                {{ formatDate(data.updated_at) }}
-                </template>
-                <template #filter="{ filterModel }">
-                <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-                </template>
-            </Column>
-
+            <Column field="balance_amount" header="Jumlah Saldo" style="min-width: 12rem" />
             <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
                 <template #body="slotProps">
                 <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
@@ -65,7 +47,7 @@
     <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Deposit Details" :modal="true">
         <div class="flex flex-col gap-6">
             <div>
-                <label for="customer_id" class="block font-bold mb-3">Customer</label>
+                <label for="customer_id" class="block font-bold mb-3">Pelanggan</label>
                 <Dropdown
                 v-model="formData.customer_id"
                 :options="customerStore.regularCustomers"
@@ -74,14 +56,14 @@
                 placeholder="Select a Customer"
                 class="w-full"
                 />
-                <small v-if="submitted && !formData.customer_id" class="text-red-500">Customer is required.</small>
+                <small v-if="submitted && !formData.customer_id" class="text-red-500">Pelanggan wajib diisi.</small>
             </div>      
             <div>
-                <label for="deposit_date" class="block font-bold mb-3">Deposit Date</label>            
+                <label for="deposit_date" class="block font-bold mb-3">Tanggal Deposit</label>            
                 <DatePicker v-model="formData.deposit_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
             </div>
             <div>
-                <label for="deposit_amount" class="block font-bold mb-3">Deposit Amount</label>
+                <label for="deposit_amount" class="block font-bold mb-3">Jumlah Deposit</label>
                 <InputNumber v-model="formData.deposit_amount" inputId="currency-us" mode="currency" currency="IDR" locale="id-ID" fluid />
             </div>
         </div>
@@ -127,7 +109,6 @@ const initFilters = () => {
   filters.value = {
       global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       'customer.customer_name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-      created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
   };
 };
 
@@ -180,10 +161,10 @@ try {
     if (isEditMode.value) {
       console.log(formData.value)
       await customerBalanceStore.updateBalance(formData.value);
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Customer Balance updated successfully', life: 3000 });
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Saldo Pelanggan berhasil diperbarui', life: 3000 });
     } else {
       await customerBalanceStore.createBalance(formData.value);
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Customer Balance created successfully', life: 3000 });
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Saldo Pelanggan berhasil dibuat', life: 3000 });
     }
     customerBalanceStore.fetchBalances();
     hideDialog();

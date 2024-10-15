@@ -9,46 +9,46 @@ const model = ref([
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
     },
     {
-        label: 'Users',
+        label: 'Pengguna',
         items: [
             {
-                label: 'User Management',
+                label: 'Master Pengguna',
                 icon: 'pi pi-fw pi-user',
                 to: '/pages/users'
             },
         ]
     },
     {
-        label: 'Suppliers',
+        label: 'Supplier',
         items: [
             {
-                label: 'Supplier Management',
+                label: 'Master Supplier',
                 icon: 'pi pi-fw pi-users',
                 to: '/pages/suppliers'
             },
         ]
     },
     {
-        label: 'Customers',
+        label: 'Pelanggan',
         items: [
             {
-                label: 'Customer Management',
+                label: 'Master Pelanggan',
                 icon: 'pi pi-fw pi-user-plus',
                 to: '/pages/customers'
             },
 
             {
-                label: 'Credit Limit',
+                label: 'Limit Kredit',
                 icon: 'pi pi-fw pi-credit-card',
                 to: '/pages/customer-limits'
             },
             
             {
-                label: 'Customer Balance',
+                label: 'Saldo Pelanggan',
                 icon: 'pi pi-fw pi-wallet',
                 items: [
                     {
-                        label: 'Balance',
+                        label: 'Saldo',
                         icon: 'pi pi-fw pi-wallet',
                         to: '/pages/balances'
                     },                                     
@@ -57,10 +57,10 @@ const model = ref([
         ]
     },
     {
-        label: 'Warehouses',
+        label: 'Gudang',
         items: [
             {
-                label: 'Warehouse Management',
+                label: 'Manajemen Gudang',
                 icon: 'pi pi-fw pi-building',
                 to: '/pages/warehouses'
             },
@@ -72,15 +72,15 @@ const model = ref([
         ]
     },
     {
-        label: 'Items',
+        label: 'Barang',
         items: [
             {
-                label: 'Item Management',
+                label: 'Master Barang',
                 icon: 'pi pi-fw pi-box',
                 to: '/pages/items'
             },
             {
-                label: 'Incoming Items',
+                label: 'Barang Masuk',
                 icon: 'pi pi-fw pi-inbox',
                 to: '/pages/incoming-items'
             },

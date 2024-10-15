@@ -47,10 +47,10 @@
     </DataTable>
   </div>
 
-  <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Customer Details" :modal="true">
+  <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Detail Limit Pelanggan" :modal="true">
     <div class="flex flex-col gap-6">
       <div>
-        <label for="customer_id" class="block font-bold mb-3">Customer</label>
+        <label for="customer_id" class="block font-bold mb-3">Pelanggan</label>
         <Dropdown
           v-model="formData.customer_id"
           :options="customerStore.regularCustomers"
@@ -59,7 +59,7 @@
           placeholder="Select a Customer"
           class="w-full"
         />
-        <small v-if="submitted && !formData.customer_id" class="text-red-500">Customer is required.</small>
+        <small v-if="submitted && !formData.customer_id" class="text-red-500">Pelanggan Wajib Diisi.</small>
       </div>      
       <div>
         <label for="limit_amount" class="block font-bold mb-3">Jumlah Limit</label>
@@ -67,7 +67,7 @@
       </div>
       <div class="flex items-center">
         <Checkbox inputId="is_unlimited" v-model="formData.is_unlimited" binary  @click="toggleDisabled"/>
-        <label for="is_unlimited" class="ml-2"> Is Limit Unlimited?</label>
+        <label for="is_unlimited" class="ml-2"> Limit Tanpa Batas?</label>
       </div>
 
     </div>
@@ -81,7 +81,7 @@
   <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
     <div class="flex items-center gap-4">
       <i class="pi pi-exclamation-triangle !text-3xl" />
-      <span v-if="formData">Are you sure you want to delete <b>{{ formData.customer_name }}</b>?</span>
+      <span v-if="formData">Apakah anda yakin ingin menghapus <b>{{ formData.customer_name }}</b>?</span>
     </div>
     <template #footer>
       <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />

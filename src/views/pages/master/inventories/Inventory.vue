@@ -178,7 +178,7 @@
     <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
       <div class="flex items-center gap-4">
         <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="item">Are you sure you want to delete <b>{{ item.description }}</b>?</span>
+        <span v-if="item">Apakah anda yakin ingin menghapus <b>{{ item.description }}</b>?</span>
       </div>
       <template #footer>
         <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />
