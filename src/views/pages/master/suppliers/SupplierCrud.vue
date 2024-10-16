@@ -72,7 +72,7 @@
           </template>
         </Column>
 
-        <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
+        <Column :exportable="false" header="Aksi" alignFrozen="right" frozen style="min-width: 12rem">
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -90,10 +90,10 @@
             :options="supplierTypes"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a Tipe Supplier"
+            placeholder="Pilih Tipe Supplier"
             class="w-full"
             />
-          <!-- <small v-if="submitted && !formData.supplier_type" class="text-red-500">Tipe Supplier is required.</small> -->
+          <!-- <small v-if="submitted && !formData.supplier_type" class="text-red-500">Tipe Supplier wajib diisi.</small> -->
         </div>
         <div>
           <label for="supplier_code" class="block font-bold mb-3">Kode Supplier</label>
@@ -105,12 +105,12 @@
             required
             fluid 
             />
-          <small v-if="submitted && !formData.supplier_code" class="text-red-500">Kode Supplier is required.</small>
+          <small v-if="submitted && !formData.supplier_code" class="text-red-500">Kode Supplier wajib diisi.</small>
         </div>
         <div>
           <label for="supplier_name" class="block font-bold mb-3">Nama Supplier</label>
           <InputText id="supplier_name" v-model="formData.supplier_name" required fluid />
-          <small v-if="submitted && !formData.supplier_name" class="text-red-500">Nama Supplier is required.</small>
+          <small v-if="submitted && !formData.supplier_name" class="text-red-500">Nama Supplier wajib diisi.</small>
         </div>
         <div>
           <label for="phone_number" class="block font-bold mb-3">Nomor HP</label>
@@ -123,8 +123,8 @@
       </div>
   
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
+        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
       </template>
     </Dialog>
   

@@ -54,7 +54,7 @@
                 </template>
             </Column>
 
-            <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen>
+            <Column :exportable="false" header="Aksi" alignFrozen="right" frozen>
                 <template #body="slotProps">
                 <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
                 <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -71,10 +71,10 @@
                 :options="customerStore.regularCustomers"
                 optionLabel="customer_name" 
                 optionValue="id"
-                placeholder="Select a Customer"
+                placeholder="Pilih pelanggan"
                 class="w-full"
                 />
-                <small v-if="submitted && !formData.customer_id" class="text-red-500">Customer is required.</small>
+                <small v-if="submitted && !formData.customer_id" class="text-red-500">Customer wajib diisi.</small>
             </div>      
             <div>
                 <label for="limit_amount" class="block font-bold mb-3">Deposit Amount</label>
@@ -86,8 +86,8 @@
             </div>
         </div>
         <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
+        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
         </template>
     </Dialog>
 </template>

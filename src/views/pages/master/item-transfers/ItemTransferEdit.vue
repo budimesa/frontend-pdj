@@ -35,7 +35,7 @@
               />
         </div>
         <div class="col-span-1 md:col-span-12">
-          <label for="product" class="block font-bold mb-3">Product</label> 
+          <label for="product" class="block font-bold mb-3">Barang</label> 
           <Dropdown 
             v-model="selectedProduct" 
             :options="inventoryStore.filteredProducts" 
@@ -43,7 +43,7 @@
             @change="addProduct"
             filter 
             filterBy="concat_inventory" 
-            placeholder="Select a Product" 
+            placeholder="Pilih barang" 
             class="w-full"
             fluid
           />
@@ -113,56 +113,24 @@
                     </template>
                 </template>
             </Column>
-            <Column header="Tindakan" alignFrozen="right" frozen>
+            <Column header="Aksi" alignFrozen="right" frozen>
                 <template #body="{ data }">
                   <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
                 </template>
             </Column>
           </DataTable>
-        </div>
-        <div class="col-span-1 md:col-span-12">
-          <div class="flex justify-end">
-              <table class="border border-gray-300 w-1/3">
-                  <thead>
-                      <tr class="bg-gray-100 dark:bg-gray-700">
-                          <th class="py-2 px-4 text-left">Deskripsi</th>
-                          <th class="py-2 px-4 text-right">Jumlah</th>
-                      </tr>
-                  </thead>
-                  <tbody>                  
-                      <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Total Harga Barang:</td>
-                          <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
-                      </tr>                      
-                      <tr class="font-bold">
-                          <td class="py-2 px-4">Grand Total:</td>
-                          <td class="py-2 px-4 text-right">{{ formatIDR(grandTotal) }}</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-        </div>
-  
-        <!-- Uncomment these sections as needed -->
-        <div class="col-span-1 md:col-span-4">
-            <label for="shipping_cost" class="block font-bold mb-3">Shipping Cost</label>
-            <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR"
-              locale="id-ID"
-              :formatter="formatIDR" fluid />
-        </div>
-        <div class="col-span-1 md:col-span-4">
-            <label for="other_fee" class="block font-bold mb-3">Biaya Lain-lain</label>
-            <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR"
-              locale="id-ID"
-              :formatter="formatIDR" fluid />
-        </div>
-        <div class="col-span-1 md:col-span-4">
+        </div>  
+        <div class="col-span-1 md:col-span-6">
             <label for="notes" class="block font-bold mb-3">Keterangan</label>
             <InputText type="text" v-model="formData.notes" fluid/>
         </div>
+        <div class="col-span-1 md:col-span-6">
+            <label for="transfer_status" class="block font-bold mb-3">Status</label>
+            <InputText type="text" v-model="formData.notes" fluid/>
+        </div>
         <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
-          <Button label="Cancel" icon="pi pi-times" text @click="cancelForm" />
-          <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
+          <Button label="Batal" icon="pi pi-times" text @click="cancelForm" />
+          <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
       </div>
     </div>
     
@@ -213,10 +181,6 @@ import { useRoute, useRouter } from 'vue-router';
     id: '',
     transfer_code: '',
     transfer_date: '',
-    total_item_price: '',
-    shipping_cost: '',
-    other_fee: '',
-    total_cost: '',
     notes: '',
   
   });
@@ -250,7 +214,7 @@ import { useRoute, useRouter } from 'vue-router';
             selectedProduct.value = null; // Reset after adding
             }
             else {
-                alert('This product has already been added.'); // Or any other way to show the message
+                alert('Barang ini telah ditambahkan, silahkan pilih yang lain..'); // Or any other way to show the message
             }
       }
   };
@@ -266,7 +230,7 @@ import { useRoute, useRouter } from 'vue-router';
   const columns = ref([
       { field: 'item_id', header: 'Item ID' },
       // { field: 'warehouse_name', header: 'Warehouse' },
-      { field: 'incoming_item_code', header: 'Incoming Item Code' },
+      { field: 'incoming_item_code', header: 'Incoming Kode Barang' },
       { field: 'batch_code', header: 'Batch Code' },
       { field: 'concat_code_name', header: 'Item' },
       { field: 'net_weight', header: 'Neto (KG)' },
@@ -384,19 +348,16 @@ import { useRoute, useRouter } from 'vue-router';
     isSaving.value = true; 
     try {
         formData.value.transfer_date = getFormattedDate(formData.value.transfer_date);        
-        formData.value.total_item_price = totalItemPrice.value;
-        formData.value.total_quantity = totalItemQuantity.value;
-        formData.value.total_cost = grandTotal.value;
-  
+        formData.value.total_quantity = totalItemQuantity.value;  
         await itemTransferStore.updateItemTransfer({
           ...formData.value,
           details: products.value
         });
           
-        toast.add({ severity: 'success', summary: 'Success', detail: 'item transfer updated successfully', life: 3000 });     
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil diperbarui', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to update item transfers', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal memperbarui transfer barang', life: 3000 });
       } finally {
         isSaving.value = false; // Set to false after the process is complete
       }

@@ -37,7 +37,7 @@
                       <InputText v-model="filterModel.value" type="text" placeholder="Search by code" />
                   </template>
               </Column>
-              <Column field="item_code" header="Item Code" style="min-width: 12rem">
+              <Column field="item_code" header="Kode Barang" style="min-width: 12rem">
                   <template #body="{ data }">
                       {{ data.item_code }}
                   </template>
@@ -79,16 +79,16 @@
                       <InputText v-model.trim="item.formula" class="w-full" required />
                   </div>
               </div>
-              <small v-if="submitted && !item.formula" class="text-red-500 block mt-1 ml-32">Item Code is required.</small>
+              <small v-if="submitted && !item.formula" class="text-red-500 block mt-1 ml-32">Kode Barang wajib diisi.</small>
           </div>
           <div class="col-span-1 sm:col-span-2 lg:col-span-4">
               <div class="flex items-center">
-                  <label class="w-32 font-semibold">Item Code F</label>
+                  <label class="w-32 font-semibold">Kode Barang F</label>
                   <div class="flex-1">
                       <InputText v-model.trim="item.item_code" class="w-full" required fluid />
                   </div>
               </div>
-              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Item Code is required.</small>
+              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Kode Barang wajib diisi.</small>
           </div>
 
           <div class="col-span-1 sm:col-span-2 lg:col-span-4">
@@ -98,7 +98,7 @@
                       <InputText v-model.trim="item.item_code" class="w-full" required fluid />
                   </div>
               </div>
-              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Item Code is required.</small>
+              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Kode Barang wajib diisi.</small>
           </div>          
           <div class="col-span-1 sm:col-span-2 lg:col-span-4">
               <div class="flex items-center">
@@ -107,16 +107,16 @@
                       <InputText v-model.trim="item.item_code" class="w-full" required fluid />
                   </div>
               </div>
-              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Item Code is required.</small>
+              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Kode Barang wajib diisi.</small>
           </div>          
           <div class="col-span-1 sm:col-span-2 lg:col-span-4">
               <div class="flex items-center">
-                  <label class="w-32 font-semibold">Item Name F</label>
+                  <label class="w-32 font-semibold">Nama Barang F</label>
                   <div class="flex-1">
                       <InputText v-model.trim="item.item_code" class="w-full" required fluid />
                   </div>
               </div>
-              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Item Code is required.</small>
+              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Kode Barang wajib diisi.</small>
           </div>
           <div class="col-span-1 sm:col-span-2 lg:col-span-4">
               <div class="flex items-center">
@@ -132,12 +132,12 @@
                     />
                   </div>
               </div>
-              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Item Code is required.</small>
+              <small v-if="submitted && !item.item_code" class="text-red-500 block mt-1 ml-32">Kode Barang wajib diisi.</small>
           </div>           
       </div>
       <template #footer>
-          <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-          <Button label="Save" icon="pi pi-check" @click="save" :disabled="bomFormulaStore.isSaving" />
+          <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+          <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="bomFormulaStore.isSaving" />
       </template>
      </Dialog>
   

@@ -32,11 +32,11 @@
                 {{ data.customer.customer_name }}
                 </template>
                 <template #filter="{ filterModel }">
-                <InputText v-model="filterModel.value" type="text" placeholder="Search by customer name" />
+                <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Nama Pelanggan" />
                 </template>
             </Column>
             <Column field="balance_amount" header="Jumlah Saldo" style="min-width: 12rem" />
-            <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
+            <Column :exportable="false" header="Aksi" alignFrozen="right" frozen style="min-width: 12rem">
                 <template #body="slotProps">
                 <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
                 <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -53,7 +53,7 @@
                 :options="customerStore.regularCustomers"
                 optionLabel="customer_name" 
                 optionValue="id"
-                placeholder="Select a Customer"
+                placeholder="Pilih pelanggan"
                 class="w-full"
                 />
                 <small v-if="submitted && !formData.customer_id" class="text-red-500">Pelanggan wajib diisi.</small>
@@ -68,8 +68,8 @@
             </div>
         </div>
         <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
+        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
         </template>
     </Dialog>
 </template>
@@ -169,7 +169,7 @@ try {
     customerBalanceStore.fetchBalances();
     hideDialog();
   } catch (error) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save customer', life: 3000 });
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menyimpan saldo pelanggan', life: 3000 });
   } finally {
     isSaving.value = false; // Set to false after the process is complete
   }

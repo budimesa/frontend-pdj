@@ -53,20 +53,20 @@
             <div class="mb-4">
                 <label for="currentPassword" class="font-semibold block mb-2">Current Password</label>
                 <InputText id="currentPassword" type="password" v-model="currentPassword" class="w-full" autocomplete="off" required />
-                <small v-if="submitted && !currentPassword" class="text-red-500">Current Password is required.</small>
+                <small v-if="submitted && !currentPassword" class="text-red-500">Current Password wajib diisi.</small>
                 <small v-if="submitted && currentPasswordError" class="text-red-500">{{ currentPasswordError }}</small>
             </div>
             
             <div class="mb-4">
                 <label for="newPassword" class="font-semibold block mb-2">New Password</label>
                 <InputText id="newPassword" type="password" v-model="newPassword" class="w-full" autocomplete="off" required />
-                <small v-if="submitted && !newPassword" class="text-red-500">New Password is required.</small>
+                <small v-if="submitted && !newPassword" class="text-red-500">New Password wajib diisi.</small>
             </div>
             
             <div class="mb-8">
                 <label for="confirmNewPassword" class="font-semibold block mb-2">Confirm New Password</label>
                 <InputText id="confirmNewPassword" type="password" v-model="confirmNewPassword" class="w-full" autocomplete="off" required />
-                <small v-if="submitted && !confirmNewPassword" class="text-red-500">Confirm New Password is required.</small>
+                <small v-if="submitted && !confirmNewPassword" class="text-red-500">Confirm New Password wajib diisi.</small>
                 <small v-if="submitted && newPassword !== confirmNewPassword" class="text-red-500">New password and confirm password do not match.</small>
             </div>
             

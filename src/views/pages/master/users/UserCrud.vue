@@ -45,7 +45,7 @@
                 </template>
             </Column>
 
-            <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen>
+            <Column :exportable="false" header="Aksi" alignFrozen="right" frozen>
                 <template #body="slotProps">
                     <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
                     <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -73,8 +73,8 @@
         </div>
   
         <template #footer>
-          <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-          <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
+          <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+          <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
         </template>
       </Dialog>
   

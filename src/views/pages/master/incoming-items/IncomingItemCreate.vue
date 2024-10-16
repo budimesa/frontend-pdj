@@ -1,15 +1,15 @@
 <template>
   <div class="card grid grid-cols-1 md:grid-cols-12 gap-6">
       <div class="col-span-1 md:col-span-3">
-          <label for="incoming_item_code" class="block font-bold mb-3">Incoming Item Code</label>            
+          <label for="incoming_item_code" class="block font-bold mb-3">Kode Barang Masuk</label>            
           <InputText type="text" v-model="incomingItemStore.newItemIncomingCode" fluid disabled/>
       </div>
       <div class="col-span-1 md:col-span-3">
-          <label for="shipment_date" class="block font-bold mb-3">Shipment Date</label>            
+          <label for="shipment_date" class="block font-bold mb-3">Tanggal Pengiriman</label>            
           <DatePicker v-model="formData.shipment_date" :showIcon="true" :showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
       </div>
       <div class="col-span-1 md:col-span-3">
-          <label for="received_date" class="block font-bold mb-3">Received Date</label>
+          <label for="received_date" class="block font-bold mb-3">Tanggal Penerimaan</label>
           <DatePicker v-model="formData.received_date" :showIcon="true" :showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
       </div>
       <div class="col-span-1 md:col-span-3">
@@ -19,14 +19,14 @@
             :options="supplierStore.supplierOptions" 
             optionLabel="label" 
             optionValue="value"
-            :placeholder="selectedOption ? selectedOption.label : 'Select supplier'"
+            :placeholder="selectedOption ? selectedOption.label : 'Pilih supplier'"
             filter 
             showClear 
             fluid
             />
       </div>
       <div class="col-span-1 md:col-span-12">
-        <label for="product" class="block font-bold mb-3">Product</label> 
+        <label for="product" class="block font-bold mb-3">Barang</label> 
         <Dropdown 
           v-model="selectedProduct" 
           :options="itemStore.filteredProducts" 
@@ -34,7 +34,7 @@
           @change="addProduct"
           filter 
           filterBy="concat_code_name" 
-          placeholder="Select a Product" 
+          placeholder="Pilih barang" 
           class="w-full"
           fluid
         />
@@ -43,7 +43,7 @@
         <DataTable :value="products" editMode="cell" @cell-edit-complete="onCellEditComplete" scrollable>
           <template #empty>
               <div class="flex items-center justify-center h-full">
-                  <span>No Items found.</span>
+                  <span>Barang belum ditambahkan.</span>
               </div>
           </template>
           <Column  v-for="col in columns" :key="col.field" :field="col.field" :header="col.header"
@@ -94,7 +94,7 @@
                   </template>
               </template>
           </Column>
-          <Column header="Tindakan" alignFrozen="right" frozen>
+          <Column header="Aksi" alignFrozen="right" frozen>
               <template #body="{ data }">
                 <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
               </template>
@@ -116,7 +116,7 @@
                         <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
                     </tr>
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="py-2 px-4">Labor Cost:</td>
+                        <td class="py-2 px-4">Ongkos Kuli:</td>
                         <td class="py-2 px-4 text-right">{{ formatIDR(totalLaborCost) }}</td>
                     </tr>
                     <tr class="border-b hover:bg-gray-50">
@@ -124,7 +124,7 @@
                         <td class="py-2 px-4 text-right">{{ formatIDR(formData.other_fee) }}</td>
                     </tr>
                     <tr class="border-b hover:bg-gray-50">
-                        <td class="py-2 px-4">Shipping:</td>
+                        <td class="py-2 px-4">Biaya Pengiriman:</td>
                         <td class="py-2 px-4 text-right">{{ formatIDR(formData.shipping_cost) }}</td>
                     </tr>
                     <tr class="font-bold">
@@ -138,7 +138,7 @@
 
       <!-- Uncomment these sections as needed -->
       <div class="col-span-1 md:col-span-4">
-          <label for="shipping_cost" class="block font-bold mb-3">Shipping Cost</label>
+          <label for="shipping_cost" class="block font-bold mb-3">Biaya Pengiriman</label>
           <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR"
             locale="id-ID"
             :formatter="formatIDR" fluid />
@@ -150,12 +150,12 @@
             :formatter="formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">
-          <label for="notes" class="block font-bold mb-3">Notes</label>
+          <label for="notes" class="block font-bold mb-3">Keterangan</label>
           <InputText type="text" v-model="formData.notes" fluid/>
       </div>
       <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
-        <Button label="Cancel" icon="pi pi-times" text @click="cancelForm" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
+        <Button label="Batal" icon="pi pi-times" text @click="cancelForm" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
     </div>
   </div>
   
@@ -245,15 +245,15 @@ const products = ref([]);
 const columns = ref([
     { field: 'item_id', header: 'Item ID' },
     // { field: 'batch_id', header: 'Batch ID' },
-    { field: 'name', header: 'Item' },
-    { field: 'description', header: 'Description' },
+    { field: 'name', header: 'Barang' },
+    { field: 'description', header: 'Deskripsi' },
     { field: 'gross_weight', header: 'Bruto' },
     { field: 'net_weight', header: 'Neto' },
-    { field: 'labor_cost', header: 'Labor Cost' },
-    { field: 'initial_stock', header: 'Quantity' },
-    { field: 'unit_price', header: 'Unit Price' },
-    { field: 'total_price', header: 'Total Price' },
-    { field: 'notes', header: 'Notes' },
+    { field: 'labor_cost', header: 'Ongkos Kuli' },
+    { field: 'initial_stock', header: 'Jumlah' },
+    { field: 'unit_price', header: 'Harga Satuan' },
+    { field: 'total_price', header: 'Total Harga' },
+    { field: 'notes', header: 'Keterangan' },
 ]);
 
 const onCellEditComplete = (event) => {
@@ -361,10 +361,10 @@ const save = async () => {
         details: products.value
       });
         
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Incoming Item created successfully', life: 3000 });     
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Barang Masuk berhasil dibuat', life: 3000 });     
       router.push('/pages/incoming-items');
     } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save incoming items', life: 3000 });
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menyimpan data', life: 3000 });
     } finally {
       isSaving.value = false; // Set to false after the process is complete
     }

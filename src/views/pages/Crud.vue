@@ -211,7 +211,7 @@ function getStatusLabel(status) {
                 <div>
                     <label for="name" class="block font-bold mb-3">Name</label>
                     <InputText id="name" v-model.trim="product.name" required="true" autofocus :invalid="submitted && !product.name" fluid />
-                    <small v-if="submitted && !product.name" class="text-red-500">Name is required.</small>
+                    <small v-if="submitted && !product.name" class="text-red-500">Name wajib diisi.</small>
                 </div>
                 <div>
                     <label for="description" class="block font-bold mb-3">Description</label>
@@ -257,8 +257,8 @@ function getStatusLabel(status) {
             </div>
 
             <template #footer>
-                <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-                <Button label="Save" icon="pi pi-check" @click="saveProduct" />
+                <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+                <Button label="Simpan" icon="pi pi-check" @click="saveProduct" />
             </template>
         </Dialog>
 

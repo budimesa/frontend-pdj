@@ -43,7 +43,7 @@
             @change="addProduct"
             filter 
             filterBy="concat_inventory" 
-            placeholder="Select a Product" 
+            placeholder="Pilih barang" 
             class="w-full"
             fluid
           />
@@ -113,65 +113,25 @@
                     </template>
                 </template>
             </Column>
-            <Column header="Tindakan" alignFrozen="right" frozen>
+            <Column header="Aksi" alignFrozen="right" frozen>
                 <template #body="{ data }">
                   <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
                 </template>
             </Column>
           </DataTable>
         </div>
-        <div class="col-span-1 md:col-span-12">
-          <div class="flex justify-end">
-              <table class="border border-gray-300 w-1/3">
-                  <thead>
-                      <tr class="bg-gray-100 dark:bg-gray-700">
-                          <th class="py-2 px-4 text-left">Deskripsi</th>
-                          <th class="py-2 px-4 text-right">Jumlah</th>
-                      </tr>
-                  </thead>
-                  <tbody>                  
-                      <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Total Harga Barang:</td>
-                          <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
-                      </tr>
-                      <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Biaya Lain-lain:</td>
-                          <td class="py-2 px-4 text-right">{{ formatIDR(formData.other_fee) }}</td>
-                      </tr>
-                      <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Biaya Pengiriman:</td>
-                          <td class="py-2 px-4 text-right">{{ formatIDR(formData.shipping_cost) }}</td>
-                      </tr>
-                      <tr class="font-bold">
-                          <td class="py-2 px-4">Grand Total:</td>
-                          <td class="py-2 px-4 text-right">{{ formatIDR(grandTotal) }}</td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-        </div>
-  
-        <!-- Uncomment these sections as needed -->
-        <div class="col-span-1 md:col-span-4">
-            <label for="shipping_cost" class="block font-bold mb-3">Biaya Pengiriman</label>
-            <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR"
-              locale="id-ID"
-              :formatter="formatIDR" fluid />
-        </div>
-        <div class="col-span-1 md:col-span-4">
-            <label for="other_fee" class="block font-bold mb-3">Biaya Lain-lain</label>
-            <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR"
-              locale="id-ID"
-              :formatter="formatIDR" fluid />
-        </div>
-        <div class="col-span-1 md:col-span-4">
+        <div class="col-span-1 md:col-span-6">
             <label for="notes" class="block font-bold mb-3">Keterangan</label>
             <InputText type="text" v-model="formData.notes" fluid/>
         </div>
+        <div class="col-span-1 md:col-span-6">
+            <label for="transfer_status" class="block font-bold mb-3">Status</label>
+            <InputText type="text" v-model="formData.notes" fluid/>
+        </div>
         <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
-          <Button label="Cancel" icon="pi pi-times" text @click="cancelForm" />
-          <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
-      </div>
+          <Button label="Batal" icon="pi pi-times" text @click="cancelForm" />
+          <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
+        </div>
     </div>
     
   </template>
@@ -209,11 +169,6 @@ import { useRouter } from 'vue-router';
     return products.value.reduce((total, product) => {
       return total + (parseFloat(product.total_price) || 0);
     }, 0);
-  });
-  
-  // Computed property untuk menghitung grand total
-  const grandTotal = computed(() => {
-    return totalItemPrice.value + (parseFloat(formData.value.other_fee) || 0) + (parseFloat(formData.value.shipping_cost) || 0);
   });
   
   const formData = ref({ 
@@ -256,7 +211,7 @@ import { useRouter } from 'vue-router';
             selectedProduct.value = null; // Reset after adding
             }
             else {
-                alert('This product has already been added.'); // Or any other way to show the message
+                alert('Barang ini telah ditambahkan, silahkan pilih yang lain..'); // Or any other way to show the message
             }
       }
   };

@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="col-span-1 md:col-span-4">
-            <label for="item_code" class="block font-bold mb-3">Item Code F</label>
+            <label for="item_code" class="block font-bold mb-3">Kode Barang F</label>
             <div class="flex-1">
                 <InputText v-model.trim="item.item_code" class="w-full" @keyup.enter="validateAndProcessInput" required fluid />
             </div>
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="col-span-1 md:col-span-4">
-            <label for="item_name" class="block font-bold mb-3">Item Name F</label>
+            <label for="item_name" class="block font-bold mb-3">Nama Barang F</label>
             <div class="flex-1">
                 <InputText v-model.trim="item.item_name" class="w-full" required fluid />
             </div>
@@ -55,7 +55,7 @@
                 @filter="onFilter"
                 filter
                 filterBy="item_code"
-                placeholder="Select a Product"
+                placeholder="Pilih barang"
                 class="w-full"
             />
         </div>
@@ -98,7 +98,7 @@
                     </template>
                 </template>
             </Column>
-            <Column header="Tindakan" alignFrozen="right" frozen>
+            <Column header="Aksi" alignFrozen="right" frozen>
                 <template #body="{ data }">
                     <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
                 </template>
@@ -106,8 +106,8 @@
         </DataTable>
     </div>
     <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
+        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
     </div>
 </template>
 
@@ -145,7 +145,7 @@ const mainMaterialOptions = [
 const products = ref([]);
 
 const columns = ref([
-    { field: 'item_code', header: 'Item Code' },
+    { field: 'item_code', header: 'Kode Barang' },
     { field: 'item_spec', header: 'Item Spec' },
     { field: 'unit_use', header: 'Unit Use' },
     { field: 'qty_std_use', header: 'Qty Std Use' },
@@ -153,7 +153,7 @@ const columns = ref([
     { field: 'main_material', header: 'Main Material' },
     { field: 'unit_usg', header: 'Unit Usage' },
     { field: 'spar_rate', header: 'Spar Rate' },
-    { field: 'item_name', header: 'Item Name' },
+    { field: 'item_name', header: 'Nama Barang' },
     { field: 'loss_rate', header: 'Loss Rate' },
     { field: 'effective_date', header: 'Effective Date' },
     { field: 'expiry_date', header: 'Expiry Date' },
@@ -232,7 +232,7 @@ const addProduct = () => {
             selectedProduct.value = null; // Reset after adding
         } else {
            
-            alert('This product has already been added.'); // Or any other way to show the message
+            alert('Barang ini telah ditambahkan, silahkan pilih yang lain..'); // Or any other way to show the message
         }
     }
 };

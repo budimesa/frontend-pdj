@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Item Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Master Barang</h1>
       <Toolbar class="mb-6">
         <template #start>
           <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -24,64 +24,46 @@
         </template>        
         <template #empty>
             <div class="flex items-center justify-center h-full">
-                <span>No Items found.</span>
+                <span>Data tidak ditemukan.</span>
             </div>
         </template>
-        <Column field="item_code" header="Item Code" style="min-width: 12rem">
+        <Column field="item_code" header="Kode Barang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.item_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by item code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Barang" />
           </template>
         </Column>
   
-        <Column field="item_name" header="Item Name" style="min-width: 12rem">
+        <Column field="item_name" header="Nama Barang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.item_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by item name" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Nama Barang" />
           </template>
         </Column>
   
-        <Column field="notes" header="Notes" style="min-width: 12rem">
+        <Column field="notes" header="Keterangan" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.notes }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by notes" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Keterangan" />
           </template>
         </Column>
 
-        <Column field="sale_unit" header="Sale Unit" style="min-width: 12rem">
+        <Column field="sale_unit" header="Satuan Barang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.sale_unit }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by sale unit" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Satuan Barang" />
           </template>
         </Column>
   
-        <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.created_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.updated_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column :exportable="false" header="Tindakan" alignFrozen="right" style="min-width: 12rem" frozen>
+        <Column :exportable="false" header="Aksi" alignFrozen="right" style="min-width: 12rem" frozen>
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -90,39 +72,39 @@
       </DataTable>
     </div>
   
-    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Item Details" :modal="true">
+    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Detail Barang" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
-          <label for="item_code" class="block font-bold mb-3">Item Code</label>
+          <label for="item_code" class="block font-bold mb-3">Kode Barang</label>
           <!-- <InputText id="item_code" v-model="formData.item_code" required fluid /> -->
           <InputText id="item_code" v-model="formData.item_code" required fluid />
-          <small v-if="submitted && !formData.item_code" class="text-red-500">Item Code is required.</small>
+          <small v-if="submitted && !formData.item_code" class="text-red-500">Kode Barang wajib diisi.</small>
         </div>
         <div>
-          <label for="item_name" class="block font-bold mb-3">Item Name</label>
+          <label for="item_name" class="block font-bold mb-3">Nama Barang</label>
           <InputText id="item_name" v-model="formData.item_name" required fluid />
-          <small v-if="submitted && !formData.item_name" class="text-red-500">Item Name is required.</small>
+          <small v-if="submitted && !formData.item_name" class="text-red-500">Nama Barang wajib diisi.</small>
         </div>
         <div>
-          <label for="notes" class="block font-bold mb-3">Notes</label>
+          <label for="notes" class="block font-bold mb-3">Keterangan</label>
           <InputText id="notes" v-model="formData.notes" fluid />
         </div>
         <div>
-          <label for="sale_unit" class="block font-bold mb-3">Sale Unit</label>          
+          <label for="sale_unit" class="block font-bold mb-3">Satuan Barang</label>          
             <Dropdown
             v-model="formData.sale_unit"
             :options="saleUnits"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a Sale Unit"
+            placeholder="Pilih Satuan Barang"
             class="w-full"
             />
         </div>
       </div>
   
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
+        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
       </template>
     </Dialog>
   
@@ -229,16 +211,16 @@ const save = async () => {
   try {
       if (isEditMode.value) {
         await itemStore.updateItem(formData.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Item updated successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Barang berhasil diperbarui', life: 3000 });
       } else {
         console.log(formData.value)
         await itemStore.createItem(formData.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Item created successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Barang berhasil dibuat', life: 3000 });
       }
       fetchItems();
       hideDialog();
     } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save item', life: 3000 });
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menyimpan barang', life: 3000 });
     } finally {
       isSaving.value = false; // Set to false after the process is complete
     }
@@ -254,10 +236,10 @@ const deleteItem = async (id) => {
    isDeleting.value = true; // Set loading state before deletion
     try {
         await itemStore.deleteItem(id);
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Item Deleted', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Successful', detail: 'Barang berhasil dihapus', life: 3000 });
         fetchItems();
     } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete item', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menghapus barang', life: 3000 });
     } finally {
         deleteDialog.value = false;
         isDeleting.value = false; // Reset loading state after the process

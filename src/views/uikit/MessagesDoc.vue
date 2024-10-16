@@ -39,7 +39,7 @@ function showError() {
                 <div class="font-semibold text-xl mt-4 mb-4">Inline</div>
                 <div class="flex flex-wrap mb-4 gap-2">
                     <InputText v-model="username" placeholder="Username" aria-label="username" invalid />
-                    <Message severity="error">Username is required</Message>
+                    <Message severity="error">Username wajib diisi</Message>
                 </div>
                 <div class="flex flex-wrap gap-2">
                     <InputText v-model="email" placeholder="Email" aria-label="email" invalid />

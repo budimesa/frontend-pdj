@@ -166,7 +166,7 @@ const exportCSV = () => {
           <InputText v-model="filterModel.value" type="text" placeholder="Search by Nomor HP" />
         </template>
       </Column>      
-      <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen style="min-width: 12rem">
+      <Column :exportable="false" header="Aksi" alignFrozen="right" frozen style="min-width: 12rem">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
           <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -183,14 +183,14 @@ const exportCSV = () => {
             :options="customerTypes"
             optionLabel="label"
             optionValue="value"
-            placeholder="Select a Tipe Pelanggan"
+            placeholder="Pilih Tipe Pelanggan"
             class="w-full"
           />
         </div>
         <div>
           <label for="customer_name" class="block font-bold mb-3">Nama Pelanggan</label>
           <InputText id="customer_name" v-model="customerStore.formData.customer_name" required fluid />
-          <small v-if="submitted && !customerStore.formData.customer_name" class="text-red-500">Nama Pelanggan is required.</small>
+          <small v-if="submitted && !customerStore.formData.customer_name" class="text-red-500">Nama Pelanggan wajib diisi.</small>
         </div>
         <div>
           <label for="phone_number" class="block font-bold mb-3">Nomor HP</label>
@@ -203,8 +203,8 @@ const exportCSV = () => {
       </div>
   
       <template #footer>
-        <Button label="Cancel" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Save" icon="pi pi-check" @click="save" :disabled="isSaving" />
+        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
+        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
       </template>
     </Dialog>
   

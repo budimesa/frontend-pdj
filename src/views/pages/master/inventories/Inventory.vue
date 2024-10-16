@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Inventory Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Menu Inventory</h1>
       <Toolbar class="mb-6">
         <template #start>
           <!-- <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" /> -->
@@ -24,7 +24,7 @@
         </template>        
         <template #empty>
             <div class="flex items-center justify-center h-full">
-                <span>No Incoming Items found.</span>
+                <span>Data tidak ditemukan.</span>
             </div>
         </template>
         <Column header="No." style="min-width: 4rem">
@@ -32,47 +32,47 @@
                 {{ inventoryStore.pagination.offset + index + 1 }}
             </template>
         </Column>
-        <Column field="warehouse_name" header="Warehouse Name" style="min-width: 15rem">
+        <Column field="warehouse_name" header="Nama Gudang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.warehouse_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Warehouse Name" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Nama Gudang" />
           </template>
         </Column>   
-        <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 12rem">
+        <Column field="incoming_item_code" header="Kode Barang Masuk" style="min-width: 15rem">
           <template #body="{ data }">
             {{ data.incoming_item_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by incoming item code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Barang Masuk" />
           </template>
         </Column>
 
-        <Column field="batch_code" header="Batch Code" style="min-width: 12rem">
+        <Column field="batch_code" header="Kode Batch" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.batch_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Batch Code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Batch" />
           </template>
         </Column>
 
-        <Column field="concat_code_name" header="Item" style="min-width: 12rem">
+        <Column field="concat_code_name" header="Barang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.concat_code_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Item" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Barang" />
           </template>
         </Column>
   
-        <Column field="description" header="Description" style="min-width: 12rem">
+        <Column field="description" header="Deskripsi" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.description }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Description" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Deskripsi" />
           </template>
         </Column>
 
@@ -81,97 +81,72 @@
             {{ data.net_weight }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Net Weight" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Berat Net" />
           </template>
         </Column>
 
-        <Column field="initial_stock" header="Initial Stock" style="min-width: 12rem">
+        <Column field="initial_stock" header="Stock Awal" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.initial_stock }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Initial Stock" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Awal" />
           </template>
         </Column>
 
-        <Column field="available_stock" header="Available Stock" style="min-width: 12rem">
+        <Column field="available_stock" header="Stock Tersedia" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.available_stock }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Available Stock" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Tersedia" />
           </template>
         </Column>
 
-        <Column field="actual_stock" header="Actual Stock" style="min-width: 12rem">
+        <Column field="actual_stock" header="Stock Aktual" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.actual_stock }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Actual Stock" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Aktual" />
           </template>
         </Column>
 
-        <Column field="unit_price" header="Unit Price" style="min-width: 12rem">
+        <Column field="unit_price" header="Harga Satuan" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.unit_price }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Unit Price" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Harga Satuan" />
           </template>
         </Column>
 
-        <Column field="total_price" header="Total Price" style="min-width: 12rem">
+        <Column field="total_price" header="Total Harga" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.total_price }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Total Price" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Total Harga" />
           </template>
         </Column>
 
-        <Column field="labor_cost" header="Labor Cost" style="min-width: 12rem">
+        <Column field="labor_cost" header="Ongkos Kuli" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.labor_cost }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Labor Cost" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Ongkos Kuli" />
           </template>
         </Column>
   
-        <Column field="notes" header="Notes" style="min-width: 12rem">
+        <Column field="notes" header="Keterangan" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.notes }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by notes" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Keterangan" />
           </template>
         </Column>
-  
-        <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.created_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.updated_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <!-- <Column :exportable="false" header="Tindakan" alignFrozen="right" frozen>
-          <template #body="slotProps">
-            <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
-            <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
-          </template>
-        </Column> -->
       </DataTable>
 
       <Paginator
@@ -182,38 +157,19 @@
         @page="handlePageChange"
       ></Paginator>
     </div>
-
-    <Dialog v-model:visible="deleteDialog" :style="{ width: '450px' }" header="Confirm" :modal="true">
-      <div class="flex items-center gap-4">
-        <i class="pi pi-exclamation-triangle !text-3xl" />
-        <span v-if="item">Apakah anda yakin ingin menghapus <b>{{ item.description }}</b>?</span>
-      </div>
-      <template #footer>
-        <Button label="No" icon="pi pi-times" text @click="deleteDialog = false" />
-        <Button label="Yes" icon="pi pi-check" @click="deleteItem(item.id)" :disabled="isDeleting"/>
-      </template>
-    </Dialog>
   </template>
 
 <script setup>
 import { useInventoryStore } from '@/stores/inventory';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useDebounce } from '@vueuse/core';
-import { useToast } from 'primevue/usetoast';
 import { onMounted, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 
-const toast = useToast();
 const dt = ref();
-const formDialog = ref(false);
 const deleteDialog = ref(false);
 const filters = ref({});
-const submitted = ref(false);
-const isEditMode = ref(false);
-const isSaving = ref(false);
 const isDeleting = ref(false);
 const inventoryStore = useInventoryStore();
-const router = useRouter();
 const debouncedFilters = useDebounce(filters, 300);
 
 watch(debouncedFilters, () => {
@@ -260,41 +216,6 @@ const formatDate = (date) => {
 
 const clearFilter = () => {
     initFilters();
-};
-
-const resetForm = () => {
-    item.value = { incoming_item_code: '', description: '', notes: '' };
-    submitted.value = false;
-    isEditMode.value = false;
-};
-
-const openNew = () => {
-    formDialog.value = true;
-    resetForm();
-};
-
-const hideDialog = () => {
-  formDialog.value = false;
-  resetForm();
-};
-
-const confirmDelete = (item) => {
-  item.value = item;
-  deleteDialog.value = true;
-};
-
-const deleteItem = async (id) => {
-   isDeleting.value = true; // Set loading state before deletion
-    try {
-        await itemStore.deleteItem(id);
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Item Deleted', life: 3000 });
-        fetchItems();
-    } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete item', life: 3000 });
-    } finally {
-        deleteDialog.value = false;
-        isDeleting.value = false; // Reset loading state after the process
-    }
 };
 
 const exportCSV = () => {

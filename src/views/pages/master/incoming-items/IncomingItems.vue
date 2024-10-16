@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Incoming Item Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Menu Barang Masuk</h1>
       <Toolbar class="mb-6">
         <template #start>
           <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" />
@@ -24,7 +24,7 @@
         </template>        
         <template #empty>
             <div class="flex items-center justify-center h-full">
-                <span>No Incoming Items found.</span>
+                <span>Data tidak ditemukan.</span>
             </div>
         </template>
         <Column header="No." style="min-width: 4rem">
@@ -32,12 +32,12 @@
                 {{ incomingItemStore.pagination.offset + index + 1 }}
             </template>
         </Column>   
-        <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 12rem">
+        <Column field="incoming_item_code" header="Kode Barang Masuk" style="min-width: 15rem">
           <template #body="{ data }">
             {{ data.incoming_item_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by incoming item code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Barang Masuk" />
           </template>
         </Column>
   
@@ -46,7 +46,7 @@
             {{ data.supplier_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by supplier" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Supplier" />
           </template>
         </Column>
   
@@ -55,29 +55,11 @@
             {{ data.notes }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by notes" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Keterangan" />
           </template>
         </Column>
   
-        <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.created_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.updated_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column :exportable="false" header="Tindakan" alignFrozen="right" style="min-width: 8rem" frozen>
+        <Column :exportable="false" header="Aksi" alignFrozen="right" style="min-width: 8rem" frozen>
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
             <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
@@ -208,15 +190,15 @@ const save = async () => {
   try {
       if (isEditMode.value) {
         await itemStore.updateItem(item.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Item updated successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Barang masuk berhasil diperbarui', life: 3000 });
       } else {
         await itemStore.createItem(item.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Item created successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Barang masuk berhasil dibuat', life: 3000 });
       }
       fetchItems();
       hideDialog();
     } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save item', life: 3000 });
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menyimpan barang masuk', life: 3000 });
     } finally {
       isSaving.value = false; // Set to false after the process is complete
     }
@@ -232,10 +214,10 @@ const deleteItem = async (id) => {
    isDeleting.value = true; // Set loading state before deletion
     try {
         await itemStore.deleteItem(id);
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Item Deleted', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Successful', detail: 'Barang masuk berhasil dihapus', life: 3000 });
         fetchItems();
     } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete item', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menghapus barang masuk', life: 3000 });
     } finally {
         deleteDialog.value = false;
         isDeleting.value = false; // Reset loading state after the process
