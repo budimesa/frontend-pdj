@@ -165,16 +165,9 @@ import { useRouter } from 'vue-router';
   const inventoryStore = useInventoryStore();
   const selectedProduct = ref(null);
   
-  const totalItemPrice = computed(() => {
-    return products.value.reduce((total, product) => {
-      return total + (parseFloat(product.total_price) || 0);
-    }, 0);
-  });
-  
   const formData = ref({ 
     transfer_code: itemTransferStore.newTransferCode,
     transfer_date: '',
-    total_item_price: '',
     shipping_cost: '',
     other_fee: '',
     total_cost: '',
@@ -337,14 +330,12 @@ import { useRouter } from 'vue-router';
     try {
         formData.value.transfer_date = getFormattedDate(formData.value.transfer_date);
         formData.value.transfer_code = itemTransferStore.newTransferCode;
-        formData.value.total_item_price = totalItemPrice.value;
-        formData.value.total_quantity = totalItemQuantity.value;
-        formData.value.total_cost = grandTotal.value;
-  
+        formData.value.total_quantity = totalItemQuantity.value;  
         await itemTransferStore.createItemTransfer({
           ...formData.value,
           details: products.value
         });
+
           
         toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
         // router.push('/pages/incoming-items');

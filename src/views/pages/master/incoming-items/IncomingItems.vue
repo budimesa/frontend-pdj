@@ -3,7 +3,7 @@
       <h1 class="text-2xl font-bold mb-4">Menu Barang Masuk</h1>
       <Toolbar class="mb-6">
         <template #start>
-          <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" />
+          <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" />
         </template>
         <template #end>
           <Button label="Export" icon="pi pi-upload" severity="help" @click="exportCSV($event)" />
