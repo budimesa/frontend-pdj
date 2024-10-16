@@ -1,41 +1,41 @@
 <template>
     <div class="card grid grid-cols-1 md:grid-cols-12 gap-6">
         <div class="col-span-1 md:col-span-3">
-            <label for="transfer_code" class="block font-bold mb-3">Item Transfer Code</label>            
+            <label for="transfer_code" class="block font-bold mb-3">Kode Transfer Barang</label>            
             <InputText type="text" v-model="itemTransferStore.newTransferCode" fluid disabled/>
         </div>
         <div class="col-span-1 md:col-span-3">
-            <label for="transfer_date" class="block font-bold mb-3">Transfer Date</label>            
+            <label for="transfer_date" class="block font-bold mb-3">Tanggal Transfer</label>            
             <DatePicker v-model="formData.transfer_date" :showIcon="true" :showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
         </div>
         <div class="col-span-1 md:col-span-3">
-            <label for="warehouse" class="block font-bold mb-3">From Warehouse</label>            
+            <label for="warehouse" class="block font-bold mb-3">Gudang Asal</label>            
             <Dropdown 
               v-model="formData.from_warehouse_id" 
               :options="warehouseStore.warehouseOptions" 
               optionLabel="label" 
               optionValue="value"
-              :placeholder="selectedOption ? selectedOption.label : 'Select warehouse'"
+              :placeholder="selectedOption ? selectedOption.label : 'Pilih gudang'"
               filter 
               showClear 
               fluid
               />
         </div>
         <div class="col-span-1 md:col-span-3">
-            <label for="warehouse" class="block font-bold mb-3">To Warehouse</label>            
+            <label for="warehouse" class="block font-bold mb-3">Gudang Tujuan</label>            
             <Dropdown 
               v-model="formData.to_warehouse_id" 
               :options="warehouseStore.warehouseOptions" 
               optionLabel="label" 
               optionValue="value"
-              :placeholder="selectedOption ? selectedOption.label : 'Select warehouse'"
+              :placeholder="selectedOption ? selectedOption.label : 'Pilih gudang'"
               filter 
               showClear 
               fluid
               />
         </div>
         <div class="col-span-1 md:col-span-12">
-          <label for="product" class="block font-bold mb-3">Product</label> 
+          <label for="product" class="block font-bold mb-3">Barang</label> 
           <Dropdown 
             v-model="selectedProduct" 
             :options="inventoryStore.filteredProducts" 
@@ -52,7 +52,7 @@
           <DataTable :value="products" editMode="cell" @cell-edit-complete="onCellEditComplete" scrollable>
             <template #empty>
                 <div class="flex items-center justify-center h-full">
-                    <span>No Items found.</span>
+                    <span>Data belum ditambahkan.</span>
                 </div>
             </template>
             <Column  v-for="col in columns" :key="col.field" :field="col.field" :header="col.header"
@@ -113,7 +113,7 @@
                     </template>
                 </template>
             </Column>
-            <Column header="Actions" alignFrozen="right" frozen>
+            <Column header="Tindakan" alignFrozen="right" frozen>
                 <template #body="{ data }">
                   <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
                 </template>
@@ -125,21 +125,21 @@
               <table class="border border-gray-300 w-1/3">
                   <thead>
                       <tr class="bg-gray-100 dark:bg-gray-700">
-                          <th class="py-2 px-4 text-left">Description</th>
-                          <th class="py-2 px-4 text-right">Amount</th>
+                          <th class="py-2 px-4 text-left">Deskripsi</th>
+                          <th class="py-2 px-4 text-right">Jumlah</th>
                       </tr>
                   </thead>
                   <tbody>                  
                       <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Total Item Price:</td>
+                          <td class="py-2 px-4">Total Harga Barang:</td>
                           <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
                       </tr>
                       <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Other Fee:</td>
+                          <td class="py-2 px-4">Biaya Lain-lain:</td>
                           <td class="py-2 px-4 text-right">{{ formatIDR(formData.other_fee) }}</td>
                       </tr>
                       <tr class="border-b hover:bg-gray-50">
-                          <td class="py-2 px-4">Shipping:</td>
+                          <td class="py-2 px-4">Biaya Pengiriman:</td>
                           <td class="py-2 px-4 text-right">{{ formatIDR(formData.shipping_cost) }}</td>
                       </tr>
                       <tr class="font-bold">
@@ -153,19 +153,19 @@
   
         <!-- Uncomment these sections as needed -->
         <div class="col-span-1 md:col-span-4">
-            <label for="shipping_cost" class="block font-bold mb-3">Shipping Cost</label>
+            <label for="shipping_cost" class="block font-bold mb-3">Biaya Pengiriman</label>
             <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR"
               locale="id-ID"
               :formatter="formatIDR" fluid />
         </div>
         <div class="col-span-1 md:col-span-4">
-            <label for="other_fee" class="block font-bold mb-3">Other Fee</label>
+            <label for="other_fee" class="block font-bold mb-3">Biaya Lain-lain</label>
             <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR"
               locale="id-ID"
               :formatter="formatIDR" fluid />
         </div>
         <div class="col-span-1 md:col-span-4">
-            <label for="notes" class="block font-bold mb-3">Notes</label>
+            <label for="notes" class="block font-bold mb-3">Keterangan</label>
             <InputText type="text" v-model="formData.notes" fluid/>
         </div>
         <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
@@ -272,15 +272,15 @@ import { useRouter } from 'vue-router';
   const columns = ref([
       { field: 'item_id', header: 'Item ID' },
       // { field: 'warehouse_name', header: 'Warehouse' },
-      { field: 'incoming_item_code', header: 'Incoming Item Code' },
-      { field: 'batch_code', header: 'Batch Code' },
-      { field: 'name', header: 'Item' },
+      { field: 'incoming_item_code', header: 'Kode Barang Masuk' },
+      { field: 'batch_code', header: 'Kode Batch' },
+      { field: 'name', header: 'Barang' },
       { field: 'net_weight', header: 'Neto (KG)' },
-      { field: 'actual_stock', header: 'Quantity' },
+      { field: 'actual_stock', header: 'Jumlah' },
       { field: 'max_stock', header: 'Max Stock' },
-      { field: 'unit_price', header: 'Unit Price' },
-      { field: 'total_price', header: 'Total Price' },
-      { field: 'notes', header: 'Notes' },
+      { field: 'unit_price', header: 'Harga Satuan' },
+      { field: 'total_price', header: 'Total Harga' },
+      { field: 'notes', header: 'Keterangan' },
   ]);
   
   const onCellEditComplete = (event) => {
@@ -391,10 +391,10 @@ import { useRouter } from 'vue-router';
           details: products.value
         });
           
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Incoming Item created successfully', life: 3000 });     
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save item transfers', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal membuat transfer barang', life: 3000 });
       } finally {
         isSaving.value = false; // Set to false after the process is complete
       }

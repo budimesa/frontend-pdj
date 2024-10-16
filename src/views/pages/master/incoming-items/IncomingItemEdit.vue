@@ -85,7 +85,7 @@
               </template>
             </template>
           </Column>
-          <Column header="Actions" alignFrozen="right" frozen>
+          <Column header="Tindakan" alignFrozen="right" frozen>
             <template #body="{ data }">
               <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
             </template>
@@ -97,13 +97,13 @@
           <table class="border border-gray-300 w-1/3">
             <thead>
               <tr class="bg-gray-100 dark:bg-gray-700">
-                <th class="py-2 px-4 text-left">Description</th>
-                <th class="py-2 px-4 text-right">Amount</th>
+                <th class="py-2 px-4 text-left">Deskripsi</th>
+                <th class="py-2 px-4 text-right">Jumlah</th>
               </tr>
             </thead>
             <tbody>
               <tr class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4">Total Item Price:</td>
+                <td class="py-2 px-4">Total Harga Barang:</td>
                 <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
               </tr>
               <tr class="border-b hover:bg-gray-50">
@@ -111,7 +111,7 @@
                 <td class="py-2 px-4 text-right">{{ formatIDR(totalLaborCost) }}</td>
               </tr>
               <tr class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4">Other Fee:</td>
+                <td class="py-2 px-4">Biaya Lain-lain:</td>
                 <td class="py-2 px-4 text-right">{{ formatIDR(formData.other_fee) }}</td>
               </tr>
               <tr class="border-b hover:bg-gray-50">
@@ -132,7 +132,7 @@
         <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR" locale="id-ID" :formatter="formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">
-        <label for="other_fee" class="block font-bold mb-3">Other Fee</label>
+        <label for="other_fee" class="block font-bold mb-3">Biaya Lain-lain</label>
         <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR" locale="id-ID" :formatter="formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">

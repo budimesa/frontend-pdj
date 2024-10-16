@@ -97,7 +97,7 @@
                         </template>
                     </template>
                 </Column>
-                <Column header="Actions" alignFrozen="right" frozen>
+                <Column header="Tindakan" alignFrozen="right" frozen>
                     <template #body="{ data }">
                         <Button icon="pi pi-trash" outlined rounded severity="danger" @click="deleteRow(data)" />
                     </template>
