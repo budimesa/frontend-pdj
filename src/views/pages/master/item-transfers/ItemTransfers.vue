@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Transfer Item Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Transfer Barang</h1>
       <Toolbar class="mb-6">
         <template #start>
           <Button label="New" icon="pi pi-plus" severity="success" class="mr-2" @click="createNew" />
@@ -32,57 +32,48 @@
                 {{ itemTransferStore.pagination.offset + index + 1 }}
             </template>
         </Column>   
-        <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 14rem">
+        <Column field="incoming_item_code" header="Kode Barang Masuk" style="min-width: 14rem">
           <template #body="{ data }">
             {{ data.incoming_item_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by incoming item code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Barang Masuk" />
           </template>
         </Column>
 
-        <Column field="transfer_code" header="Transfer Code" style="min-width: 12rem">
+        <Column field="transfer_code" header="Kode Transfer" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.transfer_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by Transfer code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Transfer" />
           </template>
         </Column>
   
-        <Column field="from_warehouse_name" header="From Warehouse" style="min-width: 13rem">
+        <Column field="from_warehouse_name" header="Gudang Asal" style="min-width: 13rem">
           <template #body="{ data }">
             {{ data.from_warehouse_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by from warehouse" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Gudang Asal" />
           </template>
         </Column>
 
-        <Column field="to_warehouse_name" header="To Warehouse" style="min-width: 12rem">
+        <Column field="to_warehouse_name" header="Gudang Tujuan" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.to_warehouse_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by to warehouse" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Gudang Tujuan" />
           </template>
         </Column>
   
-        <Column field="total_quantity" header="Total Quantity" style="min-width: 12rem">
+        <Column field="total_quantity" header="Jumlah Barang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.total_quantity }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by total quantity" />
-          </template>
-        </Column>
-
-        <Column field="total_item_price" header="Total Price" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ data.total_item_price }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by total item price" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Jumlah Barang" />
           </template>
         </Column>
 
@@ -91,34 +82,16 @@
             {{ data.transfer_status }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by status" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Status" />
           </template>
         </Column>
 
-        <Column field="notes" header="Notes" style="min-width: 12rem">
+        <Column field="notes" header="Keterangan" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.notes }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by notes" />
-          </template>
-        </Column>
-  
-        <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.created_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.updated_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Keterangan" />
           </template>
         </Column>
   
@@ -153,7 +126,7 @@
 
 <script setup>
 import { useItemTransferStore } from '@/stores/itemTransfer';
-import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import { FilterMatchMode } from '@primevue/core/api';
 import { useDebounce } from '@vueuse/core';
 import { useToast } from 'primevue/usetoast';
 import { onMounted, ref, watch } from 'vue';
@@ -206,7 +179,6 @@ const initFilters = () => {
         to_warehouse_name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         incoming_item_code: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
         // notes: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
     };
 };
 

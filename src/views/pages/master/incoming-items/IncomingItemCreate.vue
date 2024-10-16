@@ -211,7 +211,6 @@ const grandTotal = computed(() => {
 const formData = ref({ 
   incoming_item_code: incomingItemStore.newItemIncomingCode,
   supplier_id: '',  
-  warehouse_id: '' ,
   shipment_date: '',
   received_date: '',
   total_item_price: '',

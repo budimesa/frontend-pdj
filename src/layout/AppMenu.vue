@@ -9,10 +9,10 @@ const model = ref([
         items: [{ label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/' }]
     },
     {
-        label: 'Pengguna',
+        label: 'User',
         items: [
             {
-                label: 'Master Pengguna',
+                label: 'Master User',
                 icon: 'pi pi-fw pi-user',
                 to: '/pages/users'
             },
@@ -60,12 +60,12 @@ const model = ref([
         label: 'Gudang',
         items: [
             {
-                label: 'Manajemen Gudang',
+                label: 'Master Gudang',
                 icon: 'pi pi-fw pi-building',
                 to: '/pages/warehouses'
             },
             {
-                label: 'Transfer Items',
+                label: 'Transfer Barang',
                 icon: 'pi pi-fw pi-send',
                 to: '/pages/item-transfers'
             },

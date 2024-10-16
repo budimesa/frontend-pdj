@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-      <h1 class="text-2xl font-bold mb-4">Warehouse Management</h1>
+      <h1 class="text-2xl font-bold mb-4">Master Gudang</h1>
       <Toolbar class="mb-6">
         <template #start>
           <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -24,54 +24,36 @@
         </template>
         <template #empty>
           <div class="flex items-center justify-center h-full">
-              <span>No Warehouses found.</span>
+              <span>Data tidak ditemukan.</span>
           </div>
         </template>  
-        <Column field="warehouse_code" header="Warehouse Code" style="min-width: 12rem">
+        <Column field="warehouse_code" header="Kode Gudang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.warehouse_code }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by warehouse code" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari Berdasarkan Kode Gudang" />
           </template>
         </Column>
   
-        <Column field="warehouse_name" header="Warehouse Name" style="min-width: 12rem">
+        <Column field="warehouse_name" header="Nama Gudang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.warehouse_name }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by warehouse name" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari Berdasarkan Nama Gudang" />
           </template>
         </Column>
   
-        <Column field="location" header="Location" style="min-width: 12rem">
+        <Column field="location" header="Lokasi" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.location }}
           </template>
           <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Search by location" />
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari Berdasarkan Lokasi" />
           </template>
         </Column>
-  
-        <Column header="Created At" filterField="created_at" dataType="date" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.created_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
-        <Column header="Updated At" field="updated_at" style="min-width: 12rem">
-          <template #body="{ data }">
-            {{ formatDate(data.updated_at) }}
-          </template>
-          <template #filter="{ filterModel }">
-            <DatePicker v-model="filterModel.value" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" />
-          </template>
-        </Column>
-  
+
         <Column :exportable="false" header="Tindakan" alignFrozen="right" style="min-width: 12rem" frozen>
           <template #body="slotProps">
             <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
@@ -81,21 +63,21 @@
       </DataTable>
     </div>
   
-    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Warehouse Details" :modal="true">
+    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Detail Gudang" :modal="true">
       <div class="flex flex-col gap-6">
         <div>
-          <label for="warehouse_code" class="block font-bold mb-3">Warehouse Code</label>
+          <label for="warehouse_code" class="block font-bold mb-3">Kode Gudang</label>
           <!-- <InputText id="warehouse_code" v-model="formData.warehouse_code" required fluid /> -->
           <InputText id="warehouse_code" v-model="formData.warehouse_code" required fluid />
-          <small v-if="submitted && !formData.warehouse_code" class="text-red-500">Warehouse Code is required.</small>
+          <small v-if="submitted && !formData.warehouse_code" class="text-red-500">Kode Gudang wajib diisi.</small>
         </div>
         <div>
-          <label for="warehouse_name" class="block font-bold mb-3">Warehouse Name</label>
+          <label for="warehouse_name" class="block font-bold mb-3">Nama Gudang</label>
           <InputText id="warehouse_name" v-model="formData.warehouse_name" required fluid />
-          <small v-if="submitted && !formData.warehouse_name" class="text-red-500">Warehouse Name is required.</small>
+          <small v-if="submitted && !formData.warehouse_name" class="text-red-500">Nama Gudang wajib diisi.</small>
         </div>
         <div>
-          <label for="location" class="block font-bold mb-3">location</label>
+          <label for="location" class="block font-bold mb-3">Lokasi</label>
           <InputText id="location" v-model="formData.location" fluid />
         </div>
       </div>
@@ -150,7 +132,6 @@ const initFilters = () => {
         warehouse_name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         warehouse_code: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
         location: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-        created_at: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
     };
 };
 
@@ -194,23 +175,23 @@ const save = async () => {
   
   // Check for required fields
   if (!formData.value.warehouse_name || !formData.value.warehouse_code) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Please fill in all required fields.', life: 3000 });
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Harap isi semua kolom yang wajib diisi.', life: 3000 });
     return;
   }
   isSaving.value = true; 
   try {
       if (isEditMode.value) {
         await warehouseStore.updateWarehouse(formData.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Warehouse updated successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Gudang berhasil diperbarui', life: 3000 });
       } else {
         console.log(formData.value)
         await warehouseStore.createWarehouse(formData.value);
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Warehouse created successfully', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Gudang berhasil dibuat', life: 3000 });
       }
       fetchWarehouses();
       hideDialog();
     } catch (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to save warehouse', life: 3000 });
+      toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menyimpan gudang', life: 3000 });
     } finally {
       isSaving.value = false; // Set to false after the process is complete
     }
@@ -226,10 +207,10 @@ const deleteWarehouse = async (id) => {
    isDeleting.value = true; // Set loading state before deletion
     try {
         await warehouseStore.deleteWarehouse(id);
-        toast.add({ severity: 'success', summary: 'Successful', detail: 'Warehouse Deleted', life: 3000 });
+        toast.add({ severity: 'success', summary: 'Successful', detail: 'Gudang berhasil dihapus', life: 3000 });
         fetchWarehouses();
     } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Failed to delete warehouse', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal menghapus gudang', life: 3000 });
     } finally {
         deleteDialog.value = false;
         isDeleting.value = false; // Reset loading state after the process

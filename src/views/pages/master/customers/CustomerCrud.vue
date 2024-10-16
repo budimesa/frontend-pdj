@@ -68,7 +68,7 @@ const save = async () => {
   
   // Check for required fields
   if (!customerStore.formData.customer_name || !customerStore.formData.customer_type) {
-    toast.add({ severity: 'error', summary: 'Error', detail: 'Please fill in all required fields.', life: 3000 });
+    toast.add({ severity: 'error', summary: 'Error', detail: 'Harap isi semua kolom yang wajib diisi.', life: 3000 });
     return;
   }
 

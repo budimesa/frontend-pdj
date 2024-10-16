@@ -31,6 +31,14 @@
             <template #body="{ index }">
                 {{ inventoryStore.pagination.offset + index + 1 }}
             </template>
+        </Column>
+        <Column field="warehouse_name" header="Warehouse Name" style="min-width: 15rem">
+          <template #body="{ data }">
+            {{ data.warehouse_name }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Search by Warehouse Name" />
+          </template>
         </Column>   
         <Column field="incoming_item_code" header="Incoming Item Code" style="min-width: 12rem">
           <template #body="{ data }">
