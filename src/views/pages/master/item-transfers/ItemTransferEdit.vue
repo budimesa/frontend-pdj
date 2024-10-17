@@ -85,7 +85,7 @@
                     <template v-else-if="field === 'net_weight'">
                         <span>{{ data[field] }}</span>
                     </template>
-                    <template v-else-if="field === 'actual_stock'">
+                    <template v-else-if="field === 'transfer_quantity'">
                       <InputNumber 
                             v-model="data[field]" 
                             inputId="horizontal-buttons" 
@@ -200,17 +200,14 @@ import { useRoute, useRouter } from 'vue-router';
                 warehouse_name: selectedProduct.value.warehouse_name,
                 description : selectedProduct.value.description,
                 gross_weight : selectedProduct.value.gross_weight,
-                labor_cost : selectedProduct.value.labor_cost,
                 concat_code_name: selectedProduct.value.concat_code_name,
                 net_weight: selectedProduct.value.net_weight,
                 initial_stock: selectedProduct.value.initial_stock,
-                actual_stock: selectedProduct.value.actual_stock,
+                transfer_quantity: selectedProduct.value.transfer_quantity,
                 max_stock: selectedProduct.value.actual_stock,
-                unit_price: selectedProduct.value.unit_price,
-                total_price: selectedProduct.value.total_price,
                 notes: selectedProduct.value.notes,
             };
-            products.value.push(newProduct);
+            products.value.push(newProduct);            
             selectedProduct.value = null; // Reset after adding
             }
             else {
@@ -230,15 +227,13 @@ import { useRoute, useRouter } from 'vue-router';
   const columns = ref([
       { field: 'item_id', header: 'Item ID' },
       // { field: 'warehouse_name', header: 'Warehouse' },
-      { field: 'incoming_item_code', header: 'Incoming Kode Barang' },
-      { field: 'batch_code', header: 'Batch Code' },
-      { field: 'concat_code_name', header: 'Item' },
+      { field: 'incoming_item_code', header: 'Kode Barang Masuk' },
+      { field: 'batch_code', header: 'Kode Batch' },
+      { field: 'concat_code_name', header: 'Barang' },
       { field: 'net_weight', header: 'Neto (KG)' },
-      { field: 'actual_stock', header: 'Quantity' },
+      { field: 'transfer_quantity', header: 'Jumlah' },
       { field: 'max_stock', header: 'Max Stock' },
-      { field: 'unit_price', header: 'Unit Price' },
-      { field: 'total_price', header: 'Total Price' },
-      { field: 'notes', header: 'Notes' },
+      { field: 'notes', header: 'Keterangan' },
   ]);
   
   const onCellEditComplete = (event) => {
@@ -246,23 +241,8 @@ import { useRoute, useRouter } from 'vue-router';
   
       switch (field) {
           case 'net_weight':
-          case 'actual_stock':
-          case 'unit_price':
+          case 'transfer_quantity':
               if (isPositiveInteger(newValue) || field === 'unit_price') {
-                  data[field] = newValue;
-  
-                  // Hitung total_price otomatis
-                  const unitPrice = parseFloat(data.unit_price) || 0;
-                  const netWeight = parseFloat(data.net_weight) || 0;
-                  const actual_stock = parseFloat(data.actual_stock) || 0;
-                  data.total_price = (unitPrice * actual_stock * netWeight); // Menyimpan total_price sebagai string dengan 2 desimal
-              } else {
-                  event.preventDefault();
-              }
-              break;
-  
-          case 'total_price':
-              if (isPositiveInteger(newValue)) {
                   data[field] = newValue;
               } else {
                   event.preventDefault();
@@ -295,6 +275,7 @@ import { useRoute, useRouter } from 'vue-router';
     await itemTransferStore.fetchItemTransfer(id);    
     formData.value = { ...itemTransferStore.itemTransfer };    
     products.value = itemTransferStore.itemTransferDetails || []    
+    console.log(products.value)
  };
   
   onMounted(() => {
@@ -323,7 +304,7 @@ import { useRoute, useRouter } from 'vue-router';
   };
   
   const cancelForm = () => {
-    router.push('/pages/incoming-items/');
+    router.push('/pages/item-transfers/');
     resetForm();
   };
 
@@ -339,7 +320,7 @@ import { useRoute, useRouter } from 'vue-router';
 
   const totalItemQuantity = computed(() => {
     return products.value.reduce((total, product) => {
-      return total + (parseFloat(product.actual_stock) || 0);
+      return total + (parseFloat(product.transfer_quantity) || 0);
     }, 0);
   });
   

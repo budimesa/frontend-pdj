@@ -42,7 +42,7 @@ export const useItemTransferStore = defineStore('itemTransfer', {
                 const per_page = this.rows
                 const response = await apiClient.get('/item-transfers', {
                     params: { page, per_page, filters }
-                });                
+                });
                 this.items = response.data.data;
                 this.pagination.total = response.data.total;
                 this.pagination.per_page = response.data.per_page;

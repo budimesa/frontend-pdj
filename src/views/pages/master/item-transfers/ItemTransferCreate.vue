@@ -143,7 +143,7 @@ import { useItemTransferStore } from '@/stores/itemTransfer';
 import { useWarehouseStore } from '@/stores/warehouse';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
   
   const formatIDR = (value) => {
@@ -168,11 +168,14 @@ import { useRouter } from 'vue-router';
   const formData = ref({ 
     transfer_code: itemTransferStore.newTransferCode,
     transfer_date: '',
-    shipping_cost: '',
-    other_fee: '',
-    total_cost: '',
     notes: '',
-  
+  });
+
+  // Watch for changes on from_warehouse_id
+  watch(() => formData.value.from_warehouse_id, (newVal) => {
+    if (newVal) {
+      inventoryStore.fetchInventoryDetailOptions(newVal);
+    }
   });
   
   const addProduct = () => {
@@ -283,7 +286,7 @@ import { useRouter } from 'vue-router';
   
   onMounted(() => {
       itemTransferStore.generateNewTransferCode();
-      inventoryStore.fetchInventoryOptions();
+      inventoryStore.fetchInventoryDetailOptions();
       warehouseStore.fetchWarehouseOptions();
   });
   

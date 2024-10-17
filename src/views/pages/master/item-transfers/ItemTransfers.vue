@@ -31,16 +31,7 @@
             <template #body="{ index }">
                 {{ itemTransferStore.pagination.offset + index + 1 }}
             </template>
-        </Column>   
-        <Column field="incoming_item_code" header="Kode Barang Masuk" style="min-width: 14rem">
-          <template #body="{ data }">
-            {{ data.incoming_item_code }}
-          </template>
-          <template #filter="{ filterModel }">
-            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Barang Masuk" />
-          </template>
-        </Column>
-
+        </Column>          
         <Column field="transfer_code" header="Kode Transfer" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.transfer_code }}
@@ -48,8 +39,7 @@
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Kode Transfer" />
           </template>
-        </Column>
-  
+        </Column>  
         <Column field="from_warehouse_name" header="Gudang Asal" style="min-width: 13rem">
           <template #body="{ data }">
             {{ data.from_warehouse_name }}
@@ -58,7 +48,6 @@
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Gudang Asal" />
           </template>
         </Column>
-
         <Column field="to_warehouse_name" header="Gudang Tujuan" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.to_warehouse_name }}
@@ -66,8 +55,7 @@
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Gudang Tujuan" />
           </template>
-        </Column>
-  
+        </Column>  
         <Column field="total_quantity" header="Jumlah Barang" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.total_quantity }}

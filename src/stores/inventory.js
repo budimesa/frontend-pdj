@@ -28,7 +28,6 @@ export const useInventoryStore = defineStore('inventory', {
         },
         inventory: {},
         inventories: [],
-        inventoryDetails: [],
         filteredProducts: [],
         selectedItem: null,
         formDialog: false,
@@ -61,14 +60,19 @@ export const useInventoryStore = defineStore('inventory', {
             await apiClient.delete(`/inventories/${id}`);
             await this.fetchInventories(); // Refresh the inventory list
         },
-        async fetchInventoryOptions() {
-            const response = await apiClient.get('/inventories');
+
+        async fetchInventoryDetailOptions(fromWarehouseId = 1) {
+            console.log(fromWarehouseId)
+            const response = await apiClient.get('/inventory-details', {
+                params: {
+                    from_warehouse_id: fromWarehouseId
+                }
+            });
             this.filteredProducts = response.data.data
-                .filter(inventory => inventory.actual_stock > 0) // Filter untuk actual_stock > 0
-                .map(inventory => ({
-                    ...inventory
-                }));
-            return this.filteredProducts;
+            .filter(inventoryDetail => inventoryDetail.actual_stock > 0)
+            .map(inventoryDetail => ({
+                ...inventoryDetail
+            }));
         }
     }
 })
