@@ -18,7 +18,7 @@
               <InputIcon>
                 <i class="pi pi-search" />
               </InputIcon>
-              <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
+              <InputText v-model="filters['global'].value" placeholder="Masukkan Kata Kunci" />
             </IconField>
           </div>
         </template>
