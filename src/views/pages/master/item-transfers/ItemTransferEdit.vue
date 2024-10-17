@@ -283,7 +283,7 @@ import { useRoute, useRouter } from 'vue-router';
       // itemTransferStore.fetchItemTransfer(id);
     //   itemTransferStore.fetchItemTransferDetails(id);
       fetchItemTransfer(id);
-      inventoryStore.fetchInventoryOptions();
+      inventoryStore.fetchInventoryDetailOptions();
       warehouseStore.fetchWarehouseOptions();
   });
   
