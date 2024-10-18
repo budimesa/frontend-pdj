@@ -51,7 +51,12 @@ const model = ref([
                         label: 'Saldo',
                         icon: 'pi pi-fw pi-wallet',
                         to: '/pages/balances'
-                    },                                     
+                    },
+                    {
+                        label: 'Deposit Saldo',
+                        icon: 'pi pi-fw pi-plus-circle',
+                        to: '/pages/balance-deposits'
+                    },                              
                 ]
             }
         ]

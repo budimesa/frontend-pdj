@@ -58,7 +58,7 @@
             <Column  v-for="col in columns" :key="col.field" :field="col.field" :header="col.header"
                   :class="[{ 'hidden': col.field === 'item_id' || col.field === 'max_stock' }]">                
                 <template #body="{ data, field }">
-                    <!-- <span v-if="field !== 'code'">{{ field === 'total_price' ? formatIDR(data[field]) : data[field] }}</span> -->
+                    <!-- <span v-if="field !== 'code'">{{ field === 'total_price' ? $formatIDR(data[field]) : data[field] }}</span> -->
                     <span v-if="field !== 'code'">{{  data[field] }}</span>
                     <input v-if="field === 'code'" type="hidden" v-model="data[field]" />
                     
@@ -145,13 +145,6 @@ import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-  
-  const formatIDR = (value) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-    }).format(value);
-  };
   
   const selectedOption = ref(null);
   const toast = useToast();

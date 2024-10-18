@@ -56,28 +56,15 @@
                 <input type="hidden" v-model="data[field]" />
               </template>
               <template v-else-if="field === 'initial_stock'">
-                <InputNumber v-model="data[field]" inputId="horizontal-buttons" showButtons buttonLayout="horizontal" :step="1">
-                  <template #incrementicon>
-                    <span class="pi pi-plus" />
-                  </template>
-                  <template #decrementicon>
-                    <span class="pi pi-minus" />
-                  </template>
-                </InputNumber>
+                <InputNumber v-model="data[field]" inputId="horizontal-buttons" showButtons buttonLayout="horizontal" :step="1" />
               </template>
-              <template v-else-if="field === 'batch_code'">
+              <template v-else-if="field === 'gross_weight' || field === 'net_weight'">
+                <InputNumber v-model="data[field]" inputId="horizontal-buttons" showButtons buttonLayout="horizontal" :step=".5" mode="decimal" />
+              </template>
+              <template v-else-if="field === 'batch_code' || field === 'concat_code_name'">
                 <span>{{ data[field] }}</span>
               </template>
-              <template v-else-if="field === 'concat_code_name'">
-                <span>{{ data[field] }}</span>
-              </template>
-              <template v-else-if="field === 'unit_price'">
-                <InputNumber v-model="data[field]" mode="currency" currency="IDR" locale="id-ID" :formatter="formatIDR" autofocus fluid />
-              </template>
-              <template v-else-if="field === 'total_price'">
-                <span>{{ data[field] }}</span>
-              </template>
-              <template v-else-if="field === 'labor_cost'">
+              <template v-else-if="field === 'unit_price' || field === 'labor_cost'">
                 <InputNumber v-model="data[field]" mode="currency" currency="IDR" locale="id-ID" :formatter="formatIDR" autofocus fluid />
               </template>
               <template v-else>
@@ -104,23 +91,23 @@
             <tbody>
               <tr class="border-b hover:bg-gray-50">
                 <td class="py-2 px-4">Total Harga Barang:</td>
-                <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
+                <td class="py-2 px-4 text-right">{{ $formatIDR(totalItemPrice) }}</td>
               </tr>
               <tr class="border-b hover:bg-gray-50">
                 <td class="py-2 px-4">Ongkos Kuli:</td>
-                <td class="py-2 px-4 text-right">{{ formatIDR(totalLaborCost) }}</td>
+                <td class="py-2 px-4 text-right">{{ $formatIDR(totalLaborCost) }}</td>
               </tr>
               <tr class="border-b hover:bg-gray-50">
                 <td class="py-2 px-4">Biaya Lain-lain:</td>
-                <td class="py-2 px-4 text-right">{{ formatIDR(formData.other_fee) }}</td>
+                <td class="py-2 px-4 text-right">{{ $formatIDR(formData.other_fee) }}</td>
               </tr>
               <tr class="border-b hover:bg-gray-50">
                 <td class="py-2 px-4">Biaya Pengiriman:</td>
-                <td class="py-2 px-4 text-right">{{ formatIDR(formData.shipping_cost) }}</td>
+                <td class="py-2 px-4 text-right">{{ $formatIDR(formData.shipping_cost) }}</td>
               </tr>
               <tr class="font-bold">
                 <td class="py-2 px-4">Grand Total:</td>
-                <td class="py-2 px-4 text-right">{{ formatIDR(grandTotal) }}</td>
+                <td class="py-2 px-4 text-right">{{ $formatIDR(grandTotal) }}</td>
               </tr>
             </tbody>
           </table>
@@ -211,13 +198,6 @@ import { useRoute, useRouter } from 'vue-router';
     }));
   };
   
-  const formatIDR = (value) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-    }).format(value);
-  };
-  
   const totalItemPrice = computed(() => {
     return products.value.reduce((total, product) => total + (parseFloat(product.total_price) || 0), 0);
   });
@@ -285,42 +265,48 @@ import { useRoute, useRouter } from 'vue-router';
  };
 
  const onCellEditComplete = (event) => {
-    let { data, newValue, field } = event;
+  let { data, newValue, field } = event;
 
-    switch (field) {
-        case 'net_weight':
-        case 'initial_stock':
-        case 'unit_price':
-            if (isPositiveInteger(newValue) || field === 'unit_price') {
-                data[field] = newValue;
+  switch (field) {
+    case 'net_weight':
+    case 'initial_stock':
+      if (isPositiveInteger(newValue)) {
+        data[field] = newValue;
 
-                // Hitung total_price otomatis
-                const unitPrice = parseFloat(data.unit_price) || 0;
-                const netWeight = parseFloat(data.net_weight) || 0;
-                const initialStock = parseFloat(data.initial_stock) || 0;
-                data.total_price = (unitPrice * initialStock * netWeight); // Menyimpan total_price sebagai string dengan 2 desimal
-            } else {
-                event.preventDefault();
-            }
-            break;
+        // Hitung total_price otomatis
+        const unitPrice = parseFloat(data.unit_price) || 0;
+        const netWeight = parseFloat(data.net_weight) || 0;
+        const initialStock = parseFloat(data.initial_stock) || 0;
+        data.total_price = (unitPrice * initialStock * netWeight).toFixed(2); // Format total_price dengan 2 desimal
+      } else {
+        event.preventDefault();
+      }
+      break;
+    case 'unit_price':
+    case 'labor_cost':
+      if (!isNaN(newValue) && parseFloat(newValue) >= 0) {
+        data[field] = parseFloat(newValue).toFixed(2); // Format harga dengan 2 desimal
+      } else {
+        event.preventDefault();
+      }
+      break;
 
-        case 'total_price':
-        case 'labor_cost':
-            if (isPositiveInteger(newValue)) {
-                data[field] = newValue;
-            } else {
-                event.preventDefault();
-            }
-            break;
+    case 'total_price':
+      if (isPositiveInteger(newValue)) {
+        data[field] = newValue;
+      } else {
+        event.preventDefault();
+      }
+      break;
 
-        default:
-            if (typeof newValue === 'string' && newValue.trim().length > 0) {
-                data[field] = newValue;
-            } else {
-                event.preventDefault();
-            }
-            break;
-    }
+    default:
+      if (typeof newValue === 'string' && newValue.trim().length > 0) {
+        data[field] = newValue;
+      } else {
+        event.preventDefault();
+      }
+      break;
+  }
 };
 
 const isPositiveInteger = (val) => {

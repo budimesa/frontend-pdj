@@ -137,6 +137,11 @@ const router = createRouter({
                     component: () => import('@/views/pages/master/customer-balances/CustomerBalances.vue')
                 },
                 {
+                    path: '/pages/balance-deposits',
+                    name: 'balance-deposits',
+                    component: () => import('@/views/pages/master/customer-balances/CustomerBalanceDeposits.vue')
+                },
+                {
                     path: '/pages/warehouses',
                     name: 'warehouses',
                     component: () => import('@/views/pages/master/warehouses/WarehouseCrud.vue')

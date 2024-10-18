@@ -49,8 +49,10 @@
           <Column  v-for="col in columns" :key="col.field" :field="col.field" :header="col.header"
                 :class="[{ 'hidden': col.field === 'item_id' }]">                
               <template #body="{ data, field }">
-                  <!-- <span v-if="field !== 'code'">{{ field === 'total_price' ? formatIDR(data[field]) : data[field] }}</span> -->
-                  <span v-if="field !== 'code'">{{  data[field] }}</span>
+                <span v-if="field !== 'code'">
+                      {{ (data[field] || 0) === 0 ? '' : (field === 'total_price' || field === 'labor_cost' || field === 'unit_price' ? $formatIDR(data[field]) : data[field]) }}
+                  </span>
+                  <!-- <span v-if="field !== 'code'">{{  data[field] }}</span> -->
                   <input v-if="field === 'code'" type="hidden" v-model="data[field]" />
               </template>
               <template #editor="{ data, field }">
@@ -82,7 +84,7 @@
                         :formatter="formatIDR" autofocus fluid />
                   </template>
                   <template v-else-if="field === 'total_price'">
-                    <span>{{ data[field] }}</span>
+                    <span>{{ $formatIDR(data[field]) }}</span>
                   </template>
                   <template v-else-if="field === 'labor_cost'">
                       <InputNumber v-model="data[field]" mode="currency" currency="IDR"
@@ -113,23 +115,23 @@
                 <tbody>                  
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-2 px-4">Total Harga Barang:</td>
-                        <td class="py-2 px-4 text-right">{{ formatIDR(totalItemPrice) }}</td>
+                        <td class="py-2 px-4 text-right">{{ $formatIDR(totalItemPrice) }}</td>
                     </tr>
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-2 px-4">Ongkos Kuli:</td>
-                        <td class="py-2 px-4 text-right">{{ formatIDR(totalLaborCost) }}</td>
+                        <td class="py-2 px-4 text-right">{{ $formatIDR(totalLaborCost) }}</td>
                     </tr>
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-2 px-4">Biaya Lain-lain:</td>
-                        <td class="py-2 px-4 text-right">{{ formatIDR(formData.other_fee) }}</td>
+                        <td class="py-2 px-4 text-right">{{ $formatIDR(formData.other_fee) }}</td>
                     </tr>
                     <tr class="border-b hover:bg-gray-50">
                         <td class="py-2 px-4">Biaya Pengiriman:</td>
-                        <td class="py-2 px-4 text-right">{{ formatIDR(formData.shipping_cost) }}</td>
+                        <td class="py-2 px-4 text-right">{{ $formatIDR(formData.shipping_cost) }}</td>
                     </tr>
                     <tr class="font-bold">
                         <td class="py-2 px-4">Grand Total:</td>
-                        <td class="py-2 px-4 text-right">{{ formatIDR(grandTotal) }}</td>
+                        <td class="py-2 px-4 text-right">{{ $formatIDR(grandTotal) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -170,13 +172,6 @@ import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
-const formatIDR = (value) => {
-  return new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
-  }).format(value);
-};
 
 const selectedOption = ref(null);
 const toast = useToast();

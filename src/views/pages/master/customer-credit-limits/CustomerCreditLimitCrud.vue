@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <h1 class="text-2xl font-bold mb-4">Customer Credit Limit Management</h1>
+    <h1 class="text-2xl font-bold mb-4">Limit Kredit Pelanggan</h1>
     <Toolbar class="mb-6">
       <template #start>
         <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
@@ -10,7 +10,7 @@
       </template>
     </Toolbar>
     <DataTable v-model:filters="filters" :value="customerLimitStore.creditLimits" paginator showGridlines :rows="10" dataKey="id"
-               filterDisplay="menu" :globalFilterFields="['customer.customer_name']">
+             filterDisplay="menu" :globalFilterFields="['customer.customer_name']">
       <template #header>
         <div class="flex justify-between">
           <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined @click="clearFilter()" />
@@ -32,12 +32,24 @@
           {{ data.customer.customer_name }}
         </template>
         <template #filter="{ filterModel }">
-          <InputText v-model="filterModel.value" type="text" placeholder="Search by customer name" />
+          <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan nama pelanggan" />
         </template>
       </Column>
-      <Column field="limit_amount" header="Jumlah Limit" style="min-width: 12rem" />
-      <Column field="limit_used" header="Limit Terpakai" style="min-width: 12rem" />
-      <Column field="limit_remaining" header="Sisa Limit" style="min-width: 12rem" />
+      <Column field="limit_amount" header="Jumlah Limit" style="min-width: 12rem">
+        <template #body="{ data }">
+          {{ data.limit_amount ? $formatIDR(data.limit_amount) : 'Unlimited' }}
+        </template>
+      </Column>
+      <Column field="limit_used" header="Limit Terpakai" style="min-width: 12rem">
+        <template #body="{ data }">
+          {{ $formatIDR(data.limit_used) }}
+        </template>
+      </Column>
+      <Column field="limit_remaining" header="Sisa Limit" style="min-width: 12rem">
+        <template #body="{ data }">
+          {{ data.limit_remaining ? $formatIDR(data.limit_remaining) : 'Unlimited' }}
+        </template>
+      </Column>
       <Column :exportable="false" header="Aksi" alignFrozen="right" frozen style="min-width: 12rem">
         <template #body="slotProps">
           <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
@@ -45,6 +57,7 @@
         </template>
       </Column>
     </DataTable>
+
   </div>
 
   <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Detail Limit Pelanggan" :modal="true">
@@ -192,10 +205,10 @@ try {
     if (isEditMode.value) {
       console.log(formData.value)
       await customerLimitStore.updateCreditLimit(formData.value);
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Customer Credit Limit updated successfully', life: 3000 });
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Limit kredit berhasil diperbarui', life: 3000 });
     } else {
       await customerLimitStore.createCreditLimit(formData.value);
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Customer Credit Limit created successfully', life: 3000 });
+      toast.add({ severity: 'success', summary: 'Success', detail: 'Limit kredit berhasil dibuat', life: 3000 });
     }
     fetchCreditLimits();
     hideDialog();

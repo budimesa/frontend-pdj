@@ -35,7 +35,11 @@
                 <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Nama Pelanggan" />
                 </template>
             </Column>
-            <Column field="balance_amount" header="Jumlah Saldo" style="min-width: 12rem" />
+            <Column field="balance_amount" header="Jumlah Saldo" style="min-width: 12rem" >
+              <template #body="{ data }">
+                {{ $formatIDR(data.balance_amount) }}
+              </template>
+            </Column>
             <Column :exportable="false" header="Aksi" alignFrozen="right" frozen style="min-width: 12rem">
                 <template #body="slotProps">
                 <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />

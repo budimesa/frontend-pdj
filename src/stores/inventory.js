@@ -62,7 +62,6 @@ export const useInventoryStore = defineStore('inventory', {
         },
 
         async fetchInventoryDetailOptions(fromWarehouseId = 1) {
-            console.log(fromWarehouseId)
             const response = await apiClient.get('/inventory-details', {
                 params: {
                     from_warehouse_id: fromWarehouseId

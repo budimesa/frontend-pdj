@@ -1,5 +1,6 @@
 import '@/assets/styles.scss';
 import '@/assets/tailwind.css';
+import { formatIDR, formatThousand } from '@/utils/format';
 import Aura from '@primevue/themes/aura';
 import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
@@ -25,5 +26,7 @@ app.use(PrimeVue, {
 app.use(pinia);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.config.globalProperties.$formatIDR = formatIDR;
+app.config.globalProperties.$formatThousand = formatThousand;
 
 app.mount('#app');
