@@ -66,11 +66,14 @@
         </Column>
 
         <Column field="transfer_status" header="Status" style="min-width: 12rem">
-          <template #body="{ data }">
+          <!-- <template #body="{ data }">
             {{ data.transfer_status }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Status" />
+          </template> -->
+          <template #body="{ data }">
+            <Tag :value="getStatusText(data.transfer_status)" :severity="getSeverity(data.transfer_status)" />
           </template>
         </Column>
 
@@ -128,6 +131,30 @@ const isDeleting = ref(false);
 const itemTransferStore = useItemTransferStore();
 const router = useRouter();
 const debouncedFilters = useDebounce(filters, 300);
+
+const getSeverity = (transfer_status) => {
+    switch (transfer_status) {
+        case 1: // Instock
+            return 'warn';
+        case 2: // LowStock
+            return 'success';
+        default:
+            return null;
+    }
+};
+
+// Mengambil teks berdasarkan status inventaris
+const getStatusText = (transfer_status) => {
+  console.log(transfer_status)
+    switch (transfer_status) {
+        case 1:
+            return 'DIKIRIM';
+        case 2:
+            return 'DITERIMA';
+        default:
+            return 'Unknown';
+    }
+};
 
 watch(debouncedFilters, () => {
     fetchData(1); // Fetch data for the current page when filters change

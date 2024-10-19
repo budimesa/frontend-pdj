@@ -85,36 +85,45 @@
           </template>
         </Column>
 
-        <Column field="initial_stock" header="Stock Awal" style="min-width: 12rem">
+        <!-- <Column field="initial_stock" header="Stock Awal" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.initial_stock }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Awal" />
           </template>
-        </Column>
+        </Column> -->
 
-        <Column field="available_stock" header="Stock Tersedia" style="min-width: 12rem">
+        <!-- <Column field="available_stock" header="Stock Tersedia" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.available_stock }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Tersedia" />
           </template>
-        </Column>
+        </Column> -->
 
-        <Column field="actual_stock" header="Stock Aktual" style="min-width: 12rem">
+        <!-- <Column field="actual_stock" header="Stock Aktual" style="min-width: 12rem">
           <template #body="{ data }">
             {{ data.actual_stock }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Aktual" />
           </template>
+        </Column> -->
+
+        <Column field="quantity" header="Stock Gudang" style="min-width: 12rem">
+          <template #body="{ data }">
+            {{ data.quantity }}
+          </template>
+          <template #filter="{ filterModel }">
+            <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Stock Gudang" />
+          </template>
         </Column>
 
         <Column field="unit_price" header="Harga Satuan" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.unit_price }}
+            {{ formatIDR(data.unit_price) }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Harga Satuan" />
@@ -123,7 +132,7 @@
 
         <Column field="total_price" header="Total Harga" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.total_price }}
+            {{ formatIDR(data.total_price) }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Total Harga" />
@@ -132,7 +141,7 @@
 
         <Column field="labor_cost" header="Ongkos Kuli" style="min-width: 12rem">
           <template #body="{ data }">
-            {{ data.labor_cost }}
+            {{ formatIDR(data.labor_cost) }}
           </template>
           <template #filter="{ filterModel }">
             <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Ongkos Kuli" />
@@ -161,6 +170,7 @@
 
 <script setup>
 import { useInventoryStore } from '@/stores/inventory';
+import { formatIDR } from '@/utils/format';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useDebounce } from '@vueuse/core';
 import { onMounted, ref, watch } from 'vue';

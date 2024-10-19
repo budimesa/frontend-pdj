@@ -34,6 +34,21 @@
               fluid
               />
         </div>
+        <div class="col-span-1 md:col-span-3">
+            <label for="transfer_status" class="block font-bold mb-3">Status Transfer</label>
+            <Dropdown 
+              v-model="formData.transfer_status" 
+              :options="statusOptions" 
+              optionLabel="label" 
+              optionValue="value" 
+              placeholder="Pilih Status" 
+              fluid 
+            />
+        </div>
+        <div class="col-span-1 md:col-span-9">
+            <label for="notes" class="block font-bold mb-3">Keterangan</label>
+            <InputText type="text" v-model="formData.notes" fluid/>
+        </div>        
         <div class="col-span-1 md:col-span-12">
           <label for="product" class="block font-bold mb-3">Barang</label> 
           <Dropdown 
@@ -114,14 +129,6 @@
             </Column>
           </DataTable>
         </div>  
-        <div class="col-span-1 md:col-span-6">
-            <label for="notes" class="block font-bold mb-3">Keterangan</label>
-            <InputText type="text" v-model="formData.notes" fluid/>
-        </div>
-        <div class="col-span-1 md:col-span-6">
-            <label for="transfer_status" class="block font-bold mb-3">Status</label>
-            <InputText type="text" v-model="formData.notes" fluid/>
-        </div>
         <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
           <Button label="Batal" icon="pi pi-times" text @click="cancelForm" />
           <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" class="ml-2" />
@@ -169,8 +176,12 @@ import { useRoute, useRouter } from 'vue-router';
     transfer_code: '',
     transfer_date: '',
     notes: '',
-  
   });
+
+  const statusOptions = [
+    { label: 'Dikirim', value: 1 },
+    { label: 'Diterima', value: 2 },
+  ];
   
   const addProduct = () => {
       if (selectedProduct.value) {
@@ -262,7 +273,6 @@ import { useRoute, useRouter } from 'vue-router';
     await itemTransferStore.fetchItemTransfer(id);    
     formData.value = { ...itemTransferStore.itemTransfer };    
     products.value = itemTransferStore.itemTransferDetails || []    
-    console.log(products.value)
  };
   
   onMounted(() => {

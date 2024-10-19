@@ -39,7 +39,7 @@ export const useInventoryStore = defineStore('inventory', {
         async fetchInventories(page = 1, filters = {}) {
             try {                
                 const per_page = this.rows
-                const response = await apiClient.get('/inventories', {
+                const response = await apiClient.get('/inventory-details', {
                     params: { page, per_page, filters }
                 });                
                 this.items = response.data.data;

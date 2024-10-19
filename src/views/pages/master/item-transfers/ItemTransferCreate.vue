@@ -37,7 +37,7 @@
         <div class="col-span-1 md:col-span-3">
             <label for="transfer_status" class="block font-bold mb-3">Status Transfer</label>
             <Dropdown 
-              v-model="formData.status" 
+              v-model="formData.transfer_status" 
               :options="statusOptions" 
               optionLabel="label" 
               optionValue="value" 
@@ -45,8 +45,8 @@
               fluid 
               disabled
             />
-        </div>        
-        <div class="col-span-1 md:col-span-3">
+        </div>     
+        <div class="col-span-1 md:col-span-9">
             <label for="notes" class="block font-bold mb-3">Keterangan</label>
             <InputText type="text" v-model="formData.notes" fluid/>
         </div>
@@ -102,7 +102,7 @@
                     <template v-else-if="field === 'net_weight'">
                         <span>{{ data[field] }}</span>
                     </template>
-                    <template v-else-if="field === 'actual_stock'">
+                    <template v-else-if="field === 'quantity'">
                       <InputNumber 
                             v-model="data[field]" 
                             inputId="horizontal-buttons" 
@@ -163,7 +163,7 @@ import { useRouter } from 'vue-router';
   
   const formData = ref({ 
     transfer_code: itemTransferStore.newTransferCode,
-    status: 1,
+    transfer_status: 1,
     transfer_date: '',
     notes: '',
   });
@@ -199,6 +199,7 @@ import { useRouter } from 'vue-router';
                 name: selectedProduct.value.concat_code_name,
                 net_weight: selectedProduct.value.net_weight,
                 initial_stock: selectedProduct.value.initial_stock,
+                quantity: selectedProduct.value.quantity,
                 actual_stock: selectedProduct.value.actual_stock,
                 max_stock: selectedProduct.value.actual_stock,
                 unit_price: selectedProduct.value.unit_price,
@@ -229,7 +230,7 @@ import { useRouter } from 'vue-router';
       { field: 'batch_code', header: 'Kode Batch' },
       { field: 'name', header: 'Barang' },
       { field: 'net_weight', header: 'Neto (KG)' },
-      { field: 'actual_stock', header: 'Jumlah' },
+      { field: 'quantity', header: 'Jumlah' },
       { field: 'max_stock', header: 'Max Stock' },
       { field: 'notes', header: 'Keterangan' },
   ]);
@@ -239,7 +240,7 @@ import { useRouter } from 'vue-router';
   
       switch (field) {
           case 'net_weight':
-          case 'actual_stock':
+          case 'quantity':
               if (isPositiveInteger(newValue) || field === 'unit_price') {
                   data[field] = newValue;
   
@@ -313,7 +314,7 @@ import { useRouter } from 'vue-router';
 
   const totalItemQuantity = computed(() => {
     return products.value.reduce((total, product) => {
-      return total + (parseFloat(product.actual_stock) || 0);
+      return total + (parseFloat(product.quantity) || 0);
     }, 0);
   });
   

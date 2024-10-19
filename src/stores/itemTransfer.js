@@ -105,6 +105,7 @@ export const useItemTransferStore = defineStore('itemTransfer', {
         async updateItemTransfer(itemTransfer) {            
             this.isSaving = true;            
             try {                
+                // console.log(itemTransfer)
                 await apiClient.put(`/item-transfers/${itemTransfer.id}`, itemTransfer);
             } catch (error) {
                 console.error('Error creating item transfer:', error);
