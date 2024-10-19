@@ -34,6 +34,23 @@
               fluid
               />
         </div>
+        <div class="col-span-1 md:col-span-3">
+            <label for="transfer_status" class="block font-bold mb-3">Status Transfer</label>
+            <Dropdown 
+              v-model="formData.status" 
+              :options="statusOptions" 
+              optionLabel="label" 
+              optionValue="value" 
+              placeholder="Pilih Status" 
+              fluid 
+              disabled
+            />
+        </div>        
+        <div class="col-span-1 md:col-span-3">
+            <label for="notes" class="block font-bold mb-3">Keterangan</label>
+            <InputText type="text" v-model="formData.notes" fluid/>
+        </div>
+        
         <div class="col-span-1 md:col-span-12">
           <label for="product" class="block font-bold mb-3">Barang</label> 
           <Dropdown 
@@ -101,12 +118,6 @@
                                 <span class="pi pi-minus" />
                             </template>
                         </InputNumber>
-                    </template>
-                    <template v-else-if="field === 'unit_price'">
-                      <span>{{ data[field] }}</span>
-                    </template>
-                    <template v-else-if="field === 'total_price'">
-                      <span>{{ data[field] }}</span>
                     </template>                 
                     <template v-else>
                         <InputText v-model="data[field]" autofocus fluid />
@@ -119,14 +130,6 @@
                 </template>
             </Column>
           </DataTable>
-        </div>
-        <div class="col-span-1 md:col-span-6">
-            <label for="notes" class="block font-bold mb-3">Keterangan</label>
-            <InputText type="text" v-model="formData.notes" fluid/>
-        </div>
-        <div class="col-span-1 md:col-span-6">
-            <label for="transfer_status" class="block font-bold mb-3">Status</label>
-            <InputText type="text" v-model="formData.notes" fluid/>
         </div>
         <div class="col-span-1 md:col-span-12 flex justify-end mt-4">
           <Button label="Batal" icon="pi pi-times" text @click="cancelForm" />
@@ -160,9 +163,15 @@ import { useRouter } from 'vue-router';
   
   const formData = ref({ 
     transfer_code: itemTransferStore.newTransferCode,
+    status: 1,
     transfer_date: '',
     notes: '',
   });
+
+  const statusOptions = [
+    { label: 'Dikirim', value: 1 },
+    { label: 'Diterima', value: 2 },
+  ];
 
   // Watch for changes on from_warehouse_id
   watch(() => formData.value.from_warehouse_id, (newVal) => {
@@ -222,8 +231,6 @@ import { useRouter } from 'vue-router';
       { field: 'net_weight', header: 'Neto (KG)' },
       { field: 'actual_stock', header: 'Jumlah' },
       { field: 'max_stock', header: 'Max Stock' },
-      { field: 'unit_price', header: 'Harga Satuan' },
-      { field: 'total_price', header: 'Total Harga' },
       { field: 'notes', header: 'Keterangan' },
   ]);
   
@@ -233,7 +240,6 @@ import { useRouter } from 'vue-router';
       switch (field) {
           case 'net_weight':
           case 'actual_stock':
-          case 'unit_price':
               if (isPositiveInteger(newValue) || field === 'unit_price') {
                   data[field] = newValue;
   
@@ -245,16 +251,7 @@ import { useRouter } from 'vue-router';
               } else {
                   event.preventDefault();
               }
-              break;
-  
-          case 'total_price':
-              if (isPositiveInteger(newValue)) {
-                  data[field] = newValue;
-              } else {
-                  event.preventDefault();
-              }
-              break;
-  
+              break;  
           default:
               if (typeof newValue === 'string' && newValue.trim().length > 0) {
                   data[field] = newValue;

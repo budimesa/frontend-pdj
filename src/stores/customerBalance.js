@@ -74,7 +74,6 @@ export const useCustomerBalanceStore = defineStore('customerBalance', {
         async updateDeposit(balanceData) {
             this.isSaving = true;            
             try {                
-                console.log(balanceData)
                 await apiClient.put(`/customer-balances/${balanceData.id}`, balanceData);
             } catch (error) {
                 console.error('Error creating customer balance:', error);

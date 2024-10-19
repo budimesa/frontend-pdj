@@ -164,7 +164,7 @@ function calculateCustomerTotal(name) {
                         <InputIcon>
                             <i class="pi pi-search" />
                         </InputIcon>
-                        <InputText v-model="filters1['global'].value" placeholder="Masukkan Kata Kunci" />
+                        <InputText v-model="filters1['global'].value" placeholder="Masukkan Kata Kunci" fluid />
                     </IconField>
                 </div>
             </template>

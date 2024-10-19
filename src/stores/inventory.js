@@ -68,7 +68,7 @@ export const useInventoryStore = defineStore('inventory', {
                 }
             });
             this.filteredProducts = response.data.data
-            .filter(inventoryDetail => inventoryDetail.actual_stock > 0)
+            .filter(inventoryDetail => inventoryDetail.quantity > 0)
             .map(inventoryDetail => ({
                 ...inventoryDetail
             }));

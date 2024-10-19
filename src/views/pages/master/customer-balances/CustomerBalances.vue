@@ -2,9 +2,6 @@
     <div class="card">
         <h1 class="text-2xl font-bold mb-4">Saldo Pelanggan</h1>
         <Toolbar class="mb-6">
-            <template #start>
-                <Button label="Tambah" icon="pi pi-plus" severity="success" class="mr-2" @click="openNew" />
-            </template>
             <template #end>
                 <Button label="Export" icon="pi pi-upload" severity="help" />
             </template>
@@ -18,7 +15,7 @@
                 <InputIcon>
                 <i class="pi pi-search" />
                 </InputIcon>
-                <InputText v-model="filters['global'].value" placeholder="Masukkan Kata Kunci" />
+                <InputText v-model="filters['global'].value" placeholder="Masukkan Kata Kunci" fluid />
             </IconField>
             </div>
             </template>        
@@ -35,47 +32,18 @@
                 <InputText v-model="filterModel.value" type="text" placeholder="Cari berdasarkan Nama Pelanggan" />
                 </template>
             </Column>
-            <Column field="balance_amount" header="Jumlah Saldo" style="min-width: 12rem" >
-              <template #body="{ data }">
-                {{ $formatIDR(data.balance_amount) }}
-              </template>
+            <Column field="balance_amount" header="Jumlah Saldo" style="min-width: 12rem">
+                <template #body="{ data }">
+                {{ $formatIDR(data.balance_amount) }} 
+                </template>
             </Column>
             <Column :exportable="false" header="Aksi" alignFrozen="right" frozen style="min-width: 12rem">
                 <template #body="slotProps">
-                <Button icon="pi pi-pencil" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
-                <Button icon="pi pi-trash" outlined rounded severity="danger" @click="confirmDelete(slotProps.data)" />
+                <Button icon="pi pi-search" outlined rounded class="mr-2" @click="edit(slotProps.data)" />
                 </template>
             </Column>
         </DataTable>
     </div>
-    <Dialog v-model:visible="formDialog" :style="{ width: '450px' }" header="Deposit Details" :modal="true">
-        <div class="flex flex-col gap-6">
-            <div>
-                <label for="customer_id" class="block font-bold mb-3">Pelanggan</label>
-                <Dropdown
-                v-model="formData.customer_id"
-                :options="customerStore.regularCustomers"
-                optionLabel="customer_name" 
-                optionValue="id"
-                placeholder="Pilih pelanggan"
-                class="w-full"
-                />
-                <small v-if="submitted && !formData.customer_id" class="text-red-500">Pelanggan wajib diisi.</small>
-            </div>      
-            <div>
-                <label for="deposit_date" class="block font-bold mb-3">Tanggal Deposit</label>            
-                <DatePicker v-model="formData.deposit_date" showIcon="true" showButtonBar="true" dateFormat="dd/mm/yy" fluid/>
-            </div>
-            <div>
-                <label for="deposit_amount" class="block font-bold mb-3">Jumlah Deposit</label>
-                <InputNumber v-model="formData.deposit_amount" inputId="currency-us" mode="currency" currency="IDR" locale="id-ID" fluid />
-            </div>
-        </div>
-        <template #footer>
-        <Button label="Batal" icon="pi pi-times" text @click="hideDialog" />
-        <Button label="Simpan" icon="pi pi-check" @click="save" :disabled="isSaving" />
-        </template>
-    </Dialog>
 </template>
 
 <script setup>

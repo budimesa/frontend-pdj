@@ -101,13 +101,7 @@
                                 <span class="pi pi-minus" />
                             </template>
                         </InputNumber>
-                    </template>
-                    <template v-else-if="field === 'unit_price'">
-                      <span>{{ data[field] }}</span>
-                    </template>
-                    <template v-else-if="field === 'total_price'">
-                      <span>{{ data[field] }}</span>
-                    </template>                 
+                    </template>              
                     <template v-else>
                         <InputText v-model="data[field]" autofocus fluid />
                     </template>
