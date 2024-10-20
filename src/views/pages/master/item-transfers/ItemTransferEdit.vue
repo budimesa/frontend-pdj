@@ -12,6 +12,7 @@
             <label for="warehouse" class="block font-bold mb-3">Gudang Asal</label>            
             <Dropdown 
               v-model="formData.from_warehouse_id" 
+              :disabled="isDisabled"              
               :options="warehouseStore.warehouseOptions" 
               optionLabel="label" 
               optionValue="value"
@@ -53,6 +54,7 @@
           <label for="product" class="block font-bold mb-3">Barang</label> 
           <Dropdown 
             v-model="selectedProduct" 
+            :disabled="!formData.from_warehouse_id"
             :options="inventoryStore.filteredProducts" 
             optionLabel="concat_inventory" 
             @change="addProduct"
@@ -170,6 +172,8 @@ import { useRoute, useRouter } from 'vue-router';
   const grandTotal = computed(() => {
     return totalItemPrice.value + (parseFloat(formData.value.other_fee) || 0) + (parseFloat(formData.value.shipping_cost) || 0);
   });
+
+  const isDisabled = computed(() => products.value.length > 0);
   
   const formData = ref({ 
     id: '',

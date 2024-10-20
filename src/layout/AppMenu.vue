@@ -90,6 +90,11 @@ const model = ref([
                 to: '/pages/incoming-items'
             },
             {
+                label: 'Repack Barang',
+                icon: 'pi pi-fw pi-table',
+                to: '/pages/repacks'
+            },
+            {
                 label: 'Inventory',
                 icon: 'pi pi-fw pi-database',
                 to: '/pages/inventories'

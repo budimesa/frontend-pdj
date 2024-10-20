@@ -11,7 +11,7 @@ const apiClient = axios.create({
     withXSRFToken: true
 });
 
-export const useInventoryStore = defineStore('inventory', {
+export const useRepackStore = defineStore('repack', {
     state: () => ({
         items: [],
         totalRecords: 0,
@@ -25,8 +25,8 @@ export const useInventoryStore = defineStore('inventory', {
             last: 0,
             offset: 0,
         },
-        inventory: {},
-        inventories: [],
+        repack: {},
+        repacks: [],
         filteredProducts: [],
         selectedItem: null,
         formDialog: false,
@@ -35,10 +35,10 @@ export const useInventoryStore = defineStore('inventory', {
         isDeleting: false,
     }),
     actions: {
-        async fetchInventories(page = 1, filters = {}) {
+        async fetchRepacks(page = 1, filters = {}) {
             try {                
                 const per_page = this.rows
-                const response = await apiClient.get('/inventory-details', {
+                const response = await apiClient.get('/repacks', {
                     params: { page, per_page, filters }
                 });                
                 this.items = response.data.data;
@@ -52,24 +52,20 @@ export const useInventoryStore = defineStore('inventory', {
                 this.first = (this.pagination.current_page - 1) * this.pagination.per_page;                
                 
             } catch (error) {
-                console.error('Error fetching inventories:', error);
+                console.error('Error fetching repacks:', error);
             }
         },
-        async deleteInventory(id) {
-            await apiClient.delete(`/inventories/${id}`);
-            await this.fetchInventories(); // Refresh the inventory list
+        async deleteRepack(id) {
+            await apiClient.delete(`/repacks/${id}`);
+            await this.fetchRepacks(); // Refresh the Repack list
         },
 
-        async fetchInventoryDetailOptions(fromWarehouseId = 1) {
-            const response = await apiClient.get('/inventory-details', {
-                params: {
-                    from_warehouse_id: fromWarehouseId
-                }
-            });
+        async fetchRepackDetailOptions() {
+            const response = await apiClient.get('/repack-details');
             this.filteredProducts = response.data.data
-            .filter(inventoryDetail => inventoryDetail.quantity > 0)
-            .map(inventoryDetail => ({
-                ...inventoryDetail
+            .filter(repackDetail => repackDetail.quantity > 0)
+            .map(repackDetail => ({
+                ...repackDetail
             }));
         }
     }

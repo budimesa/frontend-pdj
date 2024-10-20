@@ -13,6 +13,7 @@
             <Dropdown 
               v-model="formData.from_warehouse_id" 
               :options="warehouseStore.warehouseOptions" 
+              :disabled="isDisabled"
               optionLabel="label" 
               optionValue="value"
               :placeholder="selectedOption ? selectedOption.label : 'Pilih gudang'"
@@ -55,6 +56,7 @@
           <label for="product" class="block font-bold mb-3">Barang</label> 
           <Dropdown 
             v-model="selectedProduct" 
+            :disabled="!formData.from_warehouse_id"
             :options="inventoryStore.filteredProducts" 
             optionLabel="concat_inventory" 
             @change="addProduct"
@@ -180,6 +182,8 @@ import { useRouter } from 'vue-router';
     }
   });
   
+  const isDisabled = computed(() => products.value.length > 0);
+    
   const addProduct = () => {
       if (selectedProduct.value) {
           const existingProduct = products.value.find(product => product.inventory_id === selectedProduct.value.inventory_id);        

@@ -189,6 +189,16 @@ const router = createRouter({
                     component: () => import('@/views/pages/master/inventories/Inventory.vue'),
                 },
                 {
+                    path: '/pages/repacks/create',
+                    name: 'repacks.create',
+                    component: () => import('@/views/pages/master/repacks/RepackCreate.vue'),
+                },
+                {
+                    path: '/pages/repacks',
+                    name: 'repacks.index',
+                    component: () => import('@/views/pages/master/repacks/Repacks.vue'),
+                },
+                {
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')
