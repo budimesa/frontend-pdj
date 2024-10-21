@@ -48,8 +48,11 @@
           </template>
           <Column v-for="col in columns" :key="col.field" :field="col.field" :header="col.header" :class="[{ 'hidden': col.field === 'item_id' }]">
             <template #body="{ data, field }">
-              <span v-if="field !== 'code'">{{ data[field] }}</span>
-              <input v-if="field === 'code'" type="hidden" v-model="data[field]" />
+                  <span v-if="field !== 'code'">
+                      {{ (data[field] || 0) === 0 ? '' : (field === 'total_price' || field === 'labor_cost' || field === 'unit_price' ? $formatIDR(data[field]) : data[field]) }}
+                  </span>
+                  <!-- <span v-if="field !== 'code'">{{  data[field] }}</span> -->
+                  <input v-if="field === 'code'" type="hidden" v-model="data[field]" />
             </template>
             <template #editor="{ data, field }">
               <template v-if="field === 'item_id'">
@@ -81,46 +84,56 @@
       </div>
       <div class="col-span-1 md:col-span-12">
         <div class="flex justify-end">
-          <table class="border border-gray-300 w-1/3">
+            <table class="border border-gray-300 w-1/3">
             <thead>
-              <tr class="bg-gray-100 dark:bg-gray-700">
+                <tr class="bg-gray-100 dark:bg-gray-700">
                 <th class="py-2 px-4 text-left">Deskripsi</th>
                 <th class="py-2 px-4 text-right">Jumlah</th>
-              </tr>
+                </tr>
             </thead>
             <tbody>
-              <tr class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4">Total Harga Barang:</td>
-                <td class="py-2 px-4 text-right">{{ $formatIDR(totalItemPrice) }}</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4">Ongkos Kuli:</td>
-                <td class="py-2 px-4 text-right">{{ $formatIDR(totalLaborCost) }}</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4">Biaya Lain-lain:</td>
-                <td class="py-2 px-4 text-right">{{ $formatIDR(formData.other_fee) }}</td>
-              </tr>
-              <tr class="border-b hover:bg-gray-50">
-                <td class="py-2 px-4">Biaya Pengiriman:</td>
-                <td class="py-2 px-4 text-right">{{ $formatIDR(formData.shipping_cost) }}</td>
-              </tr>
-              <tr class="font-bold">
+                <tr @click="toggleCollapse" class="cursor-pointer border-b hover:bg-gray-50">
+                <td class="py-2 px-4">Rincian Biaya</td>
+                <td class="py-2 px-4 text-right">
+                    <span :class="isCollapsed ? 'pi pi-chevron-down' : 'pi pi-chevron-up'"></span>
+                </td>
+                </tr>
+
+                <template v-if="!isCollapsed">
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">Total Harga Barang:</td>
+                    <td class="py-2 px-4 text-right">{{ $formatIDR(totalItemPrice) }}</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">Ongkos Kuli:</td>
+                    <td class="py-2 px-4 text-right">{{ $formatIDR(totalLaborCost) }}</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">Biaya Lain-lain:</td>
+                    <td class="py-2 px-4 text-right">{{ $formatIDR(formData.other_fee) }}</td>
+                </tr>
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2 px-4">Biaya Pengiriman:</td>
+                    <td class="py-2 px-4 text-right">{{ $formatIDR(formData.shipping_cost) }}</td>
+                </tr>
+                </template>
+
+                <tr class="font-bold">
                 <td class="py-2 px-4">Grand Total:</td>
                 <td class="py-2 px-4 text-right">{{ $formatIDR(grandTotal) }}</td>
-              </tr>
+                </tr>
             </tbody>
-          </table>
+            </table>
         </div>
       </div>
   
       <div class="col-span-1 md:col-span-4">
         <label for="shipping_cost" class="block font-bold mb-3">Biaya Pengiriman</label>
-        <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR" locale="id-ID" :formatter="formatIDR" fluid />
+        <InputNumber id="shipping_cost" v-model="formData.shipping_cost" mode="currency" currency="IDR" locale="id-ID" :formatter="$formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">
         <label for="other_fee" class="block font-bold mb-3">Biaya Lain-lain</label>
-        <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR" locale="id-ID" :formatter="formatIDR" fluid />
+        <InputNumber id="other_fee" v-model="formData.other_fee" mode="currency" currency="IDR" locale="id-ID" :formatter="$formatIDR" fluid />
       </div>
       <div class="col-span-1 md:col-span-4">
         <label for="notes" class="block font-bold mb-3">Keterangan</label>
@@ -147,6 +160,11 @@ import { useRoute, useRouter } from 'vue-router';
   const incomingItemStore = useIncomingItemStore();
   const supplierStore = useSupplierStore();
   const itemStore = useItemStore();
+  const isCollapsed = ref(true);
+
+  const toggleCollapse = () => {
+    isCollapsed.value = !isCollapsed.value;
+  }
   const formData = ref({
     id: '',
     incoming_item_code: '',
