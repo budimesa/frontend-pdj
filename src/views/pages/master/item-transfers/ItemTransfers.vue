@@ -145,7 +145,6 @@ const getSeverity = (transfer_status) => {
 
 // Mengambil teks berdasarkan status inventaris
 const getStatusText = (transfer_status) => {
-  console.log(transfer_status)
     switch (transfer_status) {
         case 1:
             return 'DIKIRIM';

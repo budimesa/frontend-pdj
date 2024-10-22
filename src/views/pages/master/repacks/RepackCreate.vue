@@ -135,8 +135,6 @@ import { useRouter } from 'vue-router';
   const selectedProduct = ref(null);
   
   const formData = ref({ 
-    transfer_code: itemTransferStore.newTransferCode,
-    transfer_status: 1,
     repack_date: '',
   });
 
@@ -296,18 +294,15 @@ import { useRouter } from 'vue-router';
     isSaving.value = true; 
     try {
         formData.value.repack_date = getFormattedDate(formData.value.repack_date);
-        formData.value.transfer_code = itemTransferStore.newTransferCode;
-        formData.value.total_quantity = totalItemQuantity.value;  
-        await itemTransferStore.createItemTransfer({
-          ...formData.value,
-          details: products.value
-        });
-
-          
-        toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
+        formData.value.repack_leftover = products.value[0].net_weight - formData.value.repack_weight;
+        // await itemTransferStore.createItemTransfer({
+        //   ...formData.value,
+        //   details: products.value
+        // })
+        // toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {
-        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal membuat transfer barang', life: 3000 });
+        toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal membuat repack eceran', life: 3000 });
       } finally {
         isSaving.value = false; // Set to false after the process is complete
       }
