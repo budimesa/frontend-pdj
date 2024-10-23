@@ -158,6 +158,7 @@ import { useRouter } from 'vue-router';
           const existingProduct = products.value.find(product => product.inventory_id === selectedProduct.value.inventory_id);        
             if (!existingProduct) {
               const newProduct = {
+                inventory_detail_id : selectedProduct.value.inventory_detail_id,
                 inventory_id : selectedProduct.value.inventory_id,
                 item_id : selectedProduct.value.item_id,
                 incoming_item_id : selectedProduct.value.incoming_item_id,
@@ -295,10 +296,10 @@ import { useRouter } from 'vue-router';
     try {
         formData.value.repack_date = getFormattedDate(formData.value.repack_date);
         formData.value.repack_leftover = products.value[0].net_weight - formData.value.repack_weight;
-        // await itemTransferStore.createItemTransfer({
-        //   ...formData.value,
-        //   details: products.value
-        // })
+        await repackStore.createRetailRepack({
+          ...formData.value,
+          details: products.value
+        });
         // toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {

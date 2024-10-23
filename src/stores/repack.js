@@ -55,6 +55,18 @@ export const useRepackStore = defineStore('repack', {
                 console.error('Error fetching repacks:', error);
             }
         },
+        async createRetailRepack(retailRepack) {
+            this.isSaving = true;
+            try {                
+                await apiClient.post('/repacks', retailRepack);
+            } catch (error) {
+                console.error('Error creating retail repack:', error);
+                throw error; // Re-throw to handle in component if needed
+            } finally {
+                this.isSaving = false;
+                this.formDialog = false; // Close dialog after save
+            }
+        },
         async deleteRepack(id) {
             await apiClient.delete(`/repacks/${id}`);
             await this.fetchRepacks(); // Refresh the Repack list

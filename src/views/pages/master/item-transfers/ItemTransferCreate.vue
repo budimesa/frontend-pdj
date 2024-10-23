@@ -189,6 +189,7 @@ import { useRouter } from 'vue-router';
           const existingProduct = products.value.find(product => product.inventory_id === selectedProduct.value.inventory_id);        
             if (!existingProduct) {
               const newProduct = {
+                inventory_detail_id : selectedProduct.value.inventory_detail_id,
                 inventory_id : selectedProduct.value.inventory_id,
                 item_id : selectedProduct.value.item_id,
                 incoming_item_id : selectedProduct.value.incoming_item_id,
