@@ -202,6 +202,11 @@ const router = createRouter({
                     path: '/documentation',
                     name: 'documentation',
                     component: () => import('@/views/pages/Documentation.vue')
+                },
+                {
+                    path: '/pages/sales',
+                    name: 'sales.index',
+                    component: () => import('@/views/pages/master/sales/Sales.vue'),
                 }
             ]
         },

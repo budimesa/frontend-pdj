@@ -101,6 +101,16 @@ const model = ref([
             },
         ]
     },
+    {
+        label: 'Penjualan',
+        items: [
+            {
+                label: 'Transaksi Penjualan',
+                icon: 'pi pi-fw pi-shopping-cart',
+                to: '/pages/sales'
+            },
+        ]
+    }
     
 ]);
 </script>
