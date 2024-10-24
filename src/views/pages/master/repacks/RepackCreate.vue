@@ -116,6 +116,7 @@
 <script setup>
 import { useInventoryStore } from '@/stores/inventory';
 import { useItemTransferStore } from '@/stores/itemTransfer';
+import { useRepackStore } from '@/stores/repack';
 import { useWarehouseStore } from '@/stores/warehouse';
 import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
@@ -132,6 +133,7 @@ import { useRouter } from 'vue-router';
   const warehouseStore = useWarehouseStore();
   const itemTransferStore = useItemTransferStore();
   const inventoryStore = useInventoryStore();
+  const repackStore = useRepackStore();
   const selectedProduct = ref(null);
   
   const formData = ref({ 
@@ -300,7 +302,7 @@ import { useRouter } from 'vue-router';
           ...formData.value,
           details: products.value
         });
-        // toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Transfer barang berhasil dibuat', life: 3000 });     
         // router.push('/pages/incoming-items');
       } catch (error) {
         toast.add({ severity: 'error', summary: 'Error', detail: 'Gagal membuat repack eceran', life: 3000 });

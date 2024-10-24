@@ -57,7 +57,7 @@ export const useRepackStore = defineStore('repack', {
         },
         async createRetailRepack(retailRepack) {
             this.isSaving = true;
-            try {                
+            try {               
                 await apiClient.post('/repacks', retailRepack);
             } catch (error) {
                 console.error('Error creating retail repack:', error);
